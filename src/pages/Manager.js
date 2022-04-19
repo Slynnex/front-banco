@@ -5,6 +5,11 @@ import Dashboard from './Dashboard'
 import Accounts from './Accounts'
 import Transfer from './Transfer'
 import Executives from './Executives'
+import Areas from './Areas'
+import Comissions from './Comissions'
+import Concepts from './Concepts'
+import Denominations from './Denominations'
+import Positions from './Positions'
 
 const Manager = () => {
   return (
@@ -14,6 +19,11 @@ const Manager = () => {
                 <Route exact path ={'/accounts'} element={<Accounts/>}/>
                 <Route exact path={'/transfer'} element={<Transfer/>}/>
                 <Route exact path={'/executives'} element={<Executives/>}/>
+                <Route exact path={'/denominations'} element={<Denominations/>}/>
+                <Route exact path={'/positions'} element={<Positions/>}/>
+                <Route exact path={'/areas'} element={<Areas/>}/>
+                <Route exact path={'/comissions'} element={<Comissions/>}/>
+                <Route exact path={'/concepts'} element={<Concepts/>}/>
             </Routes>
     </DashboardSidebar>
   )
