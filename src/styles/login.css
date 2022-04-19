@@ -1,0 +1,36 @@
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .login{
+    width: 100vw;
+    height: 100vh;
+  }
+  .logo{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    width: 211px;
+    height: 176px;
+  }
+  .logo img{
+    background-color: #005596;
+    padding: 10px;
+    border-radius: 50%;
+  }
+  .data{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+.card{
+    padding: 2rem;
+}
+.fields{
+    margin-bottom: 3rem;
+}
