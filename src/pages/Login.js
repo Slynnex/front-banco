@@ -86,7 +86,7 @@ const Login = () => {
                 <TextField id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={saveLoginInfo}/>
               </div>
             </div>
-            <Button variant="contained" color="primary" size="large" onClick={onSubmit}>Contained</Button>
+            <Button variant="contained" color="primary" size="large" onClick={onSubmit}>Sign cdin</Button>
           </form>
         </CardContent>
       </Card>
