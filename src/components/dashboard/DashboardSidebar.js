@@ -9,23 +9,50 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import useStyles from './DashboardStyles';
-
-import {gerente, cashier} from './UserRoutes'
+import '../../styles/dashboard.css';
+import { Button, ThemeProvider} from '@material-ui/core';
+import { theme } from './DashboardStyles';
+import {gerente, cashier} from './UserRoutes';
+import { useNavigate } from "react-router-dom";
 
 const DashboardSidebar = (props) => {
+  const [userInfo, setuserInfo] = React.useState('');
+  const navigate = useNavigate();
+
+  React.useEffect(()=>{
+    setuserInfo(localStorage.getItem('username'));
+  },[]);
+
   const classes = useStyles();
+
+  const logout = () =>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    navigate('/', { replace: true });
+  }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar className='toolbar'>
           <Typography variant="h6" noWrap>
             Bancomex
           </Typography>
+          <div className='rightside'>
+            <ThemeProvider theme={theme}>
+              <Button color="primary" variant="contained" size='small' onClick={logout}>
+                Log out
+              </Button>
+            </ThemeProvider>
+            <div className='userinfo'>
+              <Typography variant="subtitle1" noWrap>
+                Welcome {userInfo} !
+              </Typography>
+              <img className="user" src="https://img.icons8.com/fluency-systems-regular/96/000000/user.png" width="30px" height="30px" alt='user'/>
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
