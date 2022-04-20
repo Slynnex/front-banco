@@ -76,15 +76,6 @@ const DashboardSidebar = (props) => {
             :null
           }
           <Divider />
-          <List>
-            {cashier.map((value, index) => (
-              <ListItem button component="a" href={value.route} key = {index}>
-                <ListItemIcon>{value.icon}</ListItemIcon>
-                <ListItemText primary={value.nameRoute} />
-              </ListItem>
-            ))}
-          </List>
-
           {props.role === 2 
           ?<List>
           {cashier.map((value, index) => (

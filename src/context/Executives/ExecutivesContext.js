@@ -22,6 +22,7 @@ const getExecutives = dispatch => async({setLoader}) => {
         const executives = await server.get('/executives')
         const positions = await server.get('/positions')
         const areas = await server.get('/areas')
+        console.log(executives.data)
         setLoader('none')
         dispatch({type: "get_executives", payload:{executives: executives.data.data,positions: positions.data.data, areas: areas.data.data}})
     }catch(err){
