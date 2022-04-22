@@ -6,7 +6,7 @@ import Manager from './pages/Manager';
 import Cashier from './pages/Cashier';
 
 import {Provider as ExecutiveProvider} from './context/Executives/ExecutivesContext';
-import {Provider as CommissionProvider} from './context/Comissions/ComissionsController';
+import {Provider as CommissionProvider} from './context/Commissions/CommissionsController';
 
 function App() {
   return (

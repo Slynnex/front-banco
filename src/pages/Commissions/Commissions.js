@@ -8,10 +8,10 @@ import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 
 //Modal
-import ModalComissions from './ModalComissions';
+import ModalCommissions from './ModalCommissions';
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 
-import { Context } from '../../context/Comissions/ComissionsController';
+import { Context } from '../../context/Commissions/CommissionsController';
 
 
 const initialForm = {
@@ -21,7 +21,7 @@ const initialForm = {
   id:null
 }
 
-const Comissions = () => {
+const Commissions = () => {
     const { saveCommissions, getCommissions, state, deleteCommissions} = React.useContext(Context);
     //info form
     const [form,setForm] = React.useState(initialForm)
@@ -125,7 +125,7 @@ const Comissions = () => {
           </Table>
         </TableContainer>
         
-        <ModalComissions
+        <ModalCommissions
             form={form}
             handleChange = {handleChange}
             action={action}
@@ -146,4 +146,4 @@ const Comissions = () => {
     )
 }
 
-export default Comissions;
+export default Commissions;
