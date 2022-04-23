@@ -6,17 +6,20 @@ import Manager from './pages/Manager';
 import Cashier from './pages/Cashier';
 
 import {Provider as ExecutiveProvider} from './context/Executives/ExecutivesContext'
+import {Provider as PositionAreaProvider} from './context/PositionArea/PositionAreaContext'
 
 function App() {
   return (
     <ExecutiveProvider>
-      <Router>
-        <Routes>
-          <Route exact path='/' element={<Login/>}/>
-          <Route exact path='/manager/*' element={<Manager/>}/>
-          <Route exact path='/cashier/*' element={<Cashier/>}/>
-        </Routes>
-      </Router>
+      <PositionAreaProvider>
+        <Router>
+          <Routes>
+            <Route exact path='/' element={<Login/>}/>
+            <Route exact path='/manager/*' element={<Manager/>}/>
+            <Route exact path='/cashier/*' element={<Cashier/>}/>
+          </Routes>
+        </Router>
+      </PositionAreaProvider>
     </ExecutiveProvider>
   );
 }
