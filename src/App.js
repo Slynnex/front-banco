@@ -8,7 +8,6 @@ import Cashier from './pages/Cashier';
 
 import { Provider as ExecutiveProvider } from './context/Executives/ExecutivesContext'
 import { Provider as DenominationProvider } from './context/Denominations/DenominationsContext'
-import {Provider as ExecutiveProvider} from './context/Executives/ExecutivesContext'
 import {Provider as PositionAreaProvider} from './context/PositionArea/PositionAreaContext'
 
 
