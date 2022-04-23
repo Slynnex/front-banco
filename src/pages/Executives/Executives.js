@@ -136,7 +136,7 @@ export default function Executives() {
                   {`${ex.name} ${ex.lastname}`}
                 </TableCell>
                 <TableCell>{ex.userid}</TableCell>
-                <TableCell>{ex.Position.name}</TableCell>
+                <TableCell>{ex.Area.Position.name}</TableCell>
                 <TableCell>{ex.Area.name}</TableCell>
                 <TableCell style={{margin:'5px'}}>
                   <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>

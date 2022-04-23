@@ -1,6 +1,5 @@
 import executivesDataContext from "./executivesDataContext";
 import server from '../../config/bdApi';
-import { CallToActionSharp } from "@material-ui/icons";
 
 const executivesReducer = (state, action) =>{
     switch(action.type){
@@ -22,7 +21,6 @@ const getExecutives = dispatch => async({setLoader}) => {
         const executives = await server.get('/executives')
         const positions = await server.get('/positions')
         const areas = await server.get('/areas')
-        console.log(executives.data)
         setLoader('none')
         dispatch({type: "get_executives", payload:{executives: executives.data.data,positions: positions.data.data, areas: areas.data.data}})
     }catch(err){
