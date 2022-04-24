@@ -18,13 +18,13 @@ function App() {
       <PositionAreaProvider>
         <DenominationProvider>
           <CommissionProvider>
-          <Router>
-              <Routes>
-                <Route exact path='/' element={<Login />} />
-                <Route exact path='/manager/*' element={<Manager />} />
-                <Route exact path='/cashier/*' element={<Cashier />} />
-              </Routes>
-           </Router>
+            <Router>
+                <Routes>
+                  <Route exact path='/' element={<Login />} />
+                  <Route exact path='/manager/*' element={<Manager />} />
+                  <Route exact path='/cashier/*' element={<Cashier />} />
+                </Routes>
+             </Router>
           </CommissionProvider>
         </DenominationProvider>
       </PositionAreaProvider>
