@@ -18,7 +18,7 @@ const Manager = () => {
             <Routes>
                 <Route exact path ={'/'} element={<Dashboard/>}/>
                 <Route exact path ={'/accounts'} element={<Accounts/>}/>
-                <Route exact path={'/transfer'} element={<Transfer/>}/>
+                <Route exact path={'/transactions'} element={<Transfer/>}/>
                 <Route exact path={'/executives'} element={<Executives/>}/>
                 <Route exact path={'/denominations'} element={<Denominations/>}/>
                 <Route exact path={'/positionArea'} element={<PositionArea/>}/>

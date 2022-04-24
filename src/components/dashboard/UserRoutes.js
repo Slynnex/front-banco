@@ -23,8 +23,8 @@ export const gerente = [
       },
       {
         id: 3,
-        nameRoute:"Transfer",
-        route:"/manager/transfer",
+        nameRoute:"Transactions",
+        route:"/manager/transactions",
         icon: <CompareArrowsIcon/>
       },
       {
