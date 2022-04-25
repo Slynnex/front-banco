@@ -27,6 +27,12 @@ import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 
 import { Context } from '../../context/Denominations/DenominationsContext'
 
+//Validations
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import DenominationSchema from "./DenominationSchema";
+
+
 const initialForm = {
   id: '',
   name: '',
@@ -54,8 +60,21 @@ const Denominations = () => {
   //action state
   const [action, setAction] = useState('Create')
 
+  //Validation
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    resolver: yupResolver(DenominationSchema)
+  });
+
+  const submit = (form) => {
+    // alert(JSON.stringify(form));
+    console.log(form);
+    console.log(JSON.stringify(form));
+    saveDenominations({ form, id: form.id, setLoader, handleReset, action})
+  };
+
 
   const handleChange = (e) => {
+
     setForm({
       ...form, [e.target.name]: e.target.value
     })
@@ -144,6 +163,10 @@ const Denominations = () => {
       {/* modal */}
 
       <ModalDenominations
+        onSubmit={submit}
+        register={register}
+        formHandleSubmit={handleSubmit}
+        errors={errors}
         form={form}
         handleChange={handleChange}
         action={action}
