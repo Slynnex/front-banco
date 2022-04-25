@@ -23,8 +23,8 @@ export const gerente = [
       },
       {
         id: 3,
-        nameRoute:"Transfer",
-        route:"/manager/transfer",
+        nameRoute:"Transactions",
+        route:"/manager/transactions",
         icon: <CompareArrowsIcon/>
       },
       {
@@ -55,6 +55,18 @@ export const gerente = [
         id:9,
         nameRoute:"Denominations",
         route: "/manager/denominations",
+        icon: <MoneyIcon/>
+      },
+      {
+        id:10,
+        nameRoute:"Interests",
+        route: "/manager/interests",
+        icon: <MoneyIcon/>
+      },
+      {
+        id:11,
+        nameRoute:"Credit Details",
+        route: "/manager/creditdetails",
         icon: <MoneyIcon/>
       }
 ]
