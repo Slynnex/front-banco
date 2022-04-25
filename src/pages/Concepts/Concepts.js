@@ -140,7 +140,6 @@ export default function Concepts() {
         </Table>
       </TableContainer>
       {/* modal */}
-      
       <ModalConcepts
           form={form}
           handleChange = {handleChange}

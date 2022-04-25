@@ -23,5 +23,4 @@ function App() {
     </ExecutiveProvider>
   );
 }
-
 export default App;
