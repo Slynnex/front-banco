@@ -4,12 +4,11 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Dashboard from './Dashboard'
 import Accounts from './Accounts'
 import Transfer from './Transfer'
-import Executives from './Executives'
-import Areas from './Areas'
-import Comissions from './Comissions'
-import Concepts from './Concepts'
-import Denominations from './Denominations'
-import Positions from './Positions'
+import Executives from './Executives/Executives'
+import Comissions from './Comissions/Comissions'
+import Concepts from './Concepts/Concepts'
+import Denominations from './Denominations/Denominations'
+import PositionArea from './PositionArea/PositionArea'
 
 const Manager = () => {
   return (
@@ -20,8 +19,7 @@ const Manager = () => {
                 <Route exact path={'/transfer'} element={<Transfer/>}/>
                 <Route exact path={'/executives'} element={<Executives/>}/>
                 <Route exact path={'/denominations'} element={<Denominations/>}/>
-                <Route exact path={'/positions'} element={<Positions/>}/>
-                <Route exact path={'/areas'} element={<Areas/>}/>
+                <Route exact path={'/positionArea'} element={<PositionArea/>}/>
                 <Route exact path={'/comissions'} element={<Comissions/>}/>
                 <Route exact path={'/concepts'} element={<Concepts/>}/>
             </Routes>

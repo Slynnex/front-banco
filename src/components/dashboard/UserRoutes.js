@@ -41,15 +41,9 @@ export const gerente = [
       },
       {
         id:6,
-        nameRoute: "Positions",
-        route: "/manager/positions",
+        nameRoute: "Position Area",
+        route: "/manager/positionArea",
         icon: <People/>
-      },
-      {
-        id:7,
-        nameRoute:"Areas",
-        route:"/manager/areas",
-        icon: <WorkIcon/>
       },
       {
         id:8,

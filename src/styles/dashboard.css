@@ -1,0 +1,19 @@
+.toolbar{
+    display: flex;
+    justify-content: space-between;
+}
+.rightside{
+    display: flex;
+    width: 18rem;
+    justify-content: space-between;
+}
+.user{
+    background-color: white;
+    border-radius: 10%;
+}
+.userinfo{
+    display: flex;
+}
+.userinfo img{
+    margin-left: 1rem;
+}
