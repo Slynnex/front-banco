@@ -33,6 +33,12 @@ const initialForm = {
   value: ''
 }
 
+const validationForm = {
+  id: false,
+  name: false,
+  value: false
+}
+
 const Denominations = () => {
 
   // context call
@@ -40,6 +46,7 @@ const Denominations = () => {
   // console.log(getDenominations);
   //info form
   const [form, setForm] = useState(initialForm)
+  const [validate, setValidate] = useState(validationForm)
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -48,7 +55,9 @@ const Denominations = () => {
   const handleOpenD = () => setOpenD(true)
   const handleCloseD = () => setOpenD(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
   //loading state
   const [loader, setLoader] = useState('none')
   //action state
@@ -59,7 +68,26 @@ const Denominations = () => {
     setForm({
       ...form, [e.target.name]: e.target.value
     })
-    console.log(form.id);
+    // console.log(form.id)
+    if (form.id.length < 1 && form.value.length < 1 && form.name.length < 1) {
+      setValidate({ id: false, name: false, value: false })
+    } else {
+      validateForm(form)
+    }
+  }
+
+  const validateForm = (form) => {
+    const idValue = /^[a-zA-Z0-9]*$/
+    const text = /[^A-Za-z0-9]+/
+    const value = /^(\d+(\.\d+)?)$/
+    let id = idValue.test(form.id) ? true : false
+    let name = text.test(form.name) ? true : false
+    let num = value.test(form.value) ? true : false
+
+
+    setValidate({ id: id, name: name, value: num })
+    // console.log(validate)
+
   }
 
   const editData = (id) => {
@@ -67,6 +95,7 @@ const Denominations = () => {
     let [denom] = state.denominations.filter(el => el.id === id)
     setForm(denom)
     handleOpen()
+    setValidate({ id: true, name: true, value: true })
   }
 
   const setDataToDelete = (id) => {
@@ -83,6 +112,7 @@ const Denominations = () => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+
   }
 
   useEffect(() => {
@@ -145,6 +175,7 @@ const Denominations = () => {
 
       <ModalDenominations
         form={form}
+        validate={validate}
         handleChange={handleChange}
         action={action}
         saveData={saveDenominations}

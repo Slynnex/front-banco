@@ -6,13 +6,15 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Modal from '@material-ui/core/Modal'
+import TextField from '@material-ui/core/TextField';
 //Icons
 import Fab from '@material-ui/core/Fab'
 import CancelIcon from '@material-ui/icons/Cancel'
 import SaveIcon from '@material-ui/icons/Save'
+// import FormHelperText from '@material-ui/core/FormHelperText';
 
 
-const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset, setLoader, saveData, action }) => {
+const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset, setLoader, saveData, action, validate }) => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -25,6 +27,18 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
     boxShadow: '10px 5px 5px',
     p: 4,
   };
+  // console.log(handleChange);
+  const validation = () => {
+    console.log(form.id)
+    if (form.id.length >= 1 && form.name.length >= 1) {
+      saveData({ form, id: form.id, setLoader, handleReset, action })
+    } else {
+      // validate({ id: false, name: false, value: false })
+      validate.id = validate.name = validate.value = true
+      console.log(validate)
+    }
+  }
+
   return (
     <Modal
       open={open}
@@ -38,25 +52,27 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
         </Typography>
         {action === 'Create' ?
           <FormControl fullWidth={true}>
-            <InputLabel variant="standard" required={true}>ID</InputLabel>
-            <Input id="id" name="id" aria-describedby="id" autoComplete='off' onChange={handleChange} value={form.id} />
+            {/* <InputLabel variant="standard" required={true}>ID</InputLabel> */}
+            <TextField id="id" name="id" label="ID *" aria-describedby="id" autoComplete='off' onChange={handleChange} value={form.id} error={!validate.id} helperText={validate.id ? "" : "Id is required"} />
+            {/* <FormHelperText>{errors.id ? errors.id.message : ""}</FormHelperText> */}
+            {/* <FormHelperText>{!validate.id ? "Id is required" : ""}</FormHelperText> */}
           </FormControl>
           : <></>
         }
 
         <FormControl fullWidth={true}>
-          <InputLabel variant="standard" required={true}>Name</InputLabel>
-          <Input id="name" name="name" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} />
+          {/* <InputLabel variant="standard" required={true}>Name</InputLabel> */}
+          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
         </FormControl>
 
 
         <FormControl fullWidth={true}>
-          <InputLabel variant="standard" required={true}>value</InputLabel>
-          <Input id="value" name="value" aria-describedby="value" autoComplete='off' onChange={handleChange} value={form.value} />
+          {/* <InputLabel variant="standard" required={true}>value</InputLabel> */}
+          <TextField id="value" name="value" label="Value *" aria-describedby="value" autoComplete='off' onChange={handleChange} value={form.value} error={!validate.value} helperText={validate.value ? "" : "Id is required"} />
         </FormControl>
 
         <Grid>
-          <Fab onClick={() => saveData({ form, id: form.id, setLoader, handleReset, action })} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
+          <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
             <SaveIcon />
           </Fab>
           <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
