@@ -29,13 +29,13 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
   };
   // console.log(handleChange);
   const validation = () => {
-    console.log(form.id)
-    if (form.id.length >= 1 && form.name.length >= 1) {
+    // console.log(form.id)
+    if (form.id.length >= 1 && form.name.length >= 1 && !(isNaN(form.value))) {
       saveData({ form, id: form.id, setLoader, handleReset, action })
     } else {
       // validate({ id: false, name: false, value: false })
       validate.id = validate.name = validate.value = true
-      console.log(validate)
+      // console.log(validate)
     }
   }
 

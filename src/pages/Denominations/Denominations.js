@@ -57,6 +57,8 @@ const Denominations = () => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => {
     setOpen(false)
+    setValidate({ id: true, name: true, value: true })
+    // console.log("close")
   }
   //loading state
   const [loader, setLoader] = useState('none')
@@ -78,8 +80,8 @@ const Denominations = () => {
 
   const validateForm = (form) => {
     const idValue = /^[a-zA-Z0-9]*$/
-    const text = /[^A-Za-z0-9]+/
-    const value = /^(\d+(\.\d+)?)$/
+    const text = /^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/
+    const value = /^\d*(\.\d{1})?\d{0,1}$/
     let id = idValue.test(form.id) ? true : false
     let name = text.test(form.name) ? true : false
     let num = value.test(form.value) ? true : false
