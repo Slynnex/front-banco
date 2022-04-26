@@ -17,8 +17,8 @@ export const gerente = [
       },
       {
         id: 2,
-        nameRoute:"Accounts",
-        route:"/manager/accounts",
+        nameRoute:"Clients",
+        route:"/manager/clients",
         icon: <AccountBalanceWalletIcon/>
       },
       {
