@@ -1,7 +1,7 @@
 import React from 'react'
 import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Input from '@material-ui/core/Input'
+// import InputLabel from '@material-ui/core/InputLabel'
+// import Input from '@material-ui/core/Input'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -27,16 +27,24 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
     boxShadow: '10px 5px 5px',
     p: 4,
   };
-  // console.log(handleChange);
+
   const validation = () => {
     // console.log(form.id)
+    // console.log(validate.id)
     if (form.id.length >= 1 && form.name.length >= 1 && !(isNaN(form.value))) {
       saveData({ form, id: form.id, setLoader, handleReset, action })
     } else {
       // validate({ id: false, name: false, value: false })
-      validate.id = validate.name = validate.value = true
-      // console.log(validate)
+      validate.id = validate.name = validate.value = false
+      // handleChange()
+      // console.log("validate")
     }
+  }
+
+  const blurHandler = () => {
+    console.log("blur")
+    // handleChange()
+
   }
 
   return (
@@ -53,7 +61,7 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
         {action === 'Create' ?
           <FormControl fullWidth={true}>
             {/* <InputLabel variant="standard" required={true}>ID</InputLabel> */}
-            <TextField id="id" name="id" label="ID *" aria-describedby="id" autoComplete='off' onChange={handleChange} value={form.id} error={!validate.id} helperText={validate.id ? "" : "Id is required"} />
+            <TextField id="id" name="id" label="Identifier *" aria-describedby="id" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.id} error={!validate.id} helperText={validate.id ? "" : "Identifier is required"} />
             {/* <FormHelperText>{errors.id ? errors.id.message : ""}</FormHelperText> */}
             {/* <FormHelperText>{!validate.id ? "Id is required" : ""}</FormHelperText> */}
           </FormControl>
@@ -62,13 +70,13 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
 
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>Name</InputLabel> */}
-          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
+          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
         </FormControl>
 
 
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>value</InputLabel> */}
-          <TextField id="value" name="value" label="Value *" aria-describedby="value" autoComplete='off' onChange={handleChange} value={form.value} error={!validate.value} helperText={validate.value ? "" : "Id is required"} />
+          <TextField id="value" name="value" label="Value *" aria-describedby="value" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.value} error={!validate.value} helperText={validate.value ? "" : "Value is required only decimal numbers"} />
         </FormControl>
 
         <Grid>
