@@ -74,21 +74,21 @@ const Commissions = () => {
 
   }
 
-  const editData = (id) => {
-    setAction('Update')
-    let [commission] = state.commissions.filter(el => el.id === id);
-    setForm(commission);
-    // console.log([commission])
-    handleOpen()
-    setValidate({ name: true, amount: true })
+  // const editData = (id) => {
+  //   setAction('Update')
+  //   let [commission] = state.commissions.filter(el => el.id === id);
+  //   setForm(commission);
+  //   // console.log([commission])
+  //   handleOpen()
+  //   setValidate({ name: true, amount: true })
 
-  }
+  // }
 
-  const setDataToDelete = (id) => {
-    let [commission] = state.commissions.filter(el => el.id === id)
-    handleOpenD()
-    setUserD(commission)
-  }
+  // const setDataToDelete = (id) => {
+  //   let [commission] = state.commissions.filter(el => el.id === id)
+  //   handleOpenD()
+  //   setUserD(commission)
+  // }
 
   const deleteData = () => {
     deleteCommissions({ id: userD.id, handleReset, setLoader });
@@ -129,7 +129,7 @@ const Commissions = () => {
               <TableCell>#</TableCell>
               <TableCell>Comission concept</TableCell>
               <TableCell>Value</TableCell>
-              <TableCell>Actions</TableCell>
+              {/* <TableCell>Actions</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -146,14 +146,14 @@ const Commissions = () => {
                     {ex.name}
                   </TableCell>
                   <TableCell>{ex.amount}</TableCell>
-                  <TableCell style={{ margin: '5px' }}>
+                  {/* <TableCell style={{ margin: '5px' }}>
                     <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
                       <EditIcon size="small" />
                     </IconButton>
                     <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))
             }

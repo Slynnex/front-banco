@@ -19,10 +19,8 @@ const ModalComissions = ({ form, handleChange, action, saveData, handleClose, op
   };
 
   const validation = () => {
-
-    console.log(form.id)
+    // console.log(form.id)
     if (form.name.length >= 1 && !(isNaN(form.amount))) {
-      // saveData({ form, id: form.id, setLoader, handleReset, action })
       saveData({ form, id: form.id, setLoader, handleReset })
     } else {
       validate.name = validate.amount = false
