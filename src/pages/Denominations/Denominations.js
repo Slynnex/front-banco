@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -33,13 +34,21 @@ const initialForm = {
   value: ''
 }
 
+const validationForm = {
+  id: false,
+  name: false,
+  value: false
+}
+
 const Denominations = () => {
 
   // context call
   const { getDenominations, state, saveDenominations, deleteDenomination } = useContext(Context);
-  // console.log(getDenominations);
+
   //info form
   const [form, setForm] = useState(initialForm)
+  const [validate, setValidate] = useState(validationForm)
+
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -48,7 +57,11 @@ const Denominations = () => {
   const handleOpenD = () => setOpenD(true)
   const handleCloseD = () => setOpenD(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+    setValidate({ id: true, name: true, value: true })
+    // console.log("close")
+  }
   //loading state
   const [loader, setLoader] = useState('none')
   //action state
@@ -59,7 +72,27 @@ const Denominations = () => {
     setForm({
       ...form, [e.target.name]: e.target.value
     })
-    console.log(form.id);
+    // console.log(form.id)
+    if (form.id.length < 1 && form.value.length < 1 && form.name.length < 1) {
+      setValidate({ id: false, name: false, value: false })
+    } else {
+      validateForm(form)
+    }
+  }
+
+  // Validate inputs
+  const validateForm = (form) => {
+    const idValue = /^[a-zA-Z0-9]*$/
+    const text = /^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/
+    const value = /^[0-9]+([.][0-9]+)?$/
+    let id = idValue.test(form.id) ? true : false
+    let name = text.test(form.name) ? true : false
+    let num = value.test(form.value) ? true : false
+
+    // console.log(num);
+    setValidate({ id: id, name: name, value: num })
+    console.log(validate)
+
   }
 
   const editData = (id) => {
@@ -67,6 +100,7 @@ const Denominations = () => {
     let [denom] = state.denominations.filter(el => el.id === id)
     setForm(denom)
     handleOpen()
+    setValidate({ id: true, name: true, value: true })
   }
 
   const setDataToDelete = (id) => {
@@ -83,6 +117,7 @@ const Denominations = () => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+
   }
 
   useEffect(() => {
@@ -103,6 +138,8 @@ const Denominations = () => {
             handleOpen();
             setAction('Create');
             setForm(initialForm)
+            setValidate({ id: true, name: true, value: true })
+
           }}
           style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
@@ -145,6 +182,7 @@ const Denominations = () => {
 
       <ModalDenominations
         form={form}
+        validate={validate}
         handleChange={handleChange}
         action={action}
         saveData={saveDenominations}
