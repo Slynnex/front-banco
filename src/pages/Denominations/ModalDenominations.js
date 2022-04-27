@@ -42,11 +42,10 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
     }
   }
 
-  const blurHandler = () => {
-    console.log("blur")
-    // handleChange()
-
-  }
+  // const blurHandler = () => {
+  //   console.log("blur")
+  //   // handleChange()
+  // }
 
   return (
     <Modal
@@ -62,7 +61,7 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
         {action === 'Create' ?
           <FormControl fullWidth={true}>
             {/* <InputLabel variant="standard" required={true}>ID</InputLabel> */}
-            <TextField id="id" name="id" label="Identifier *" aria-describedby="id" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.id} error={!validate.id} helperText={validate.id ? "" : "Identifier is required"} />
+            <TextField id="id" name="id" label="Identifier *" aria-describedby="id" autoComplete='off' onChange={handleChange} value={form.id} error={!validate.id} helperText={validate.id ? "" : "Identifier is required"} />
             {/* <FormHelperText>{errors.id ? errors.id.message : ""}</FormHelperText> */}
             {/* <FormHelperText>{!validate.id ? "Id is required" : ""}</FormHelperText> */}
           </FormControl>
@@ -71,19 +70,25 @@ const ModalDenominations = ({ form, handleChange, handleClose, open, handleReset
 
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>Name</InputLabel> */}
-          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
+          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
         </FormControl>
 
 
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>value</InputLabel> */}
-          <TextField id="value" name="value" label="Value *" aria-describedby="value" autoComplete='off' onChange={handleChange} onBlur={handleChange} value={form.value} error={!validate.value} helperText={validate.value ? "" : "Value is required only decimal numbers"} />
+          <TextField id="value" name="value" label="Value *" aria-describedby="value" autoComplete='off' onChange={handleChange} value={form.value} error={!validate.value} helperText={validate.value ? "" : "Value is required only decimal numbers"} />
         </FormControl>
 
         <Grid>
-          <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
-            <SaveIcon />
-          </Fab>
+          {form.id.length >= 1 && form.name.length >= 1 && !(isNaN(form.value)) && form.value.length >= 1 ?
+            <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
+              <SaveIcon />
+            </Fab>
+            :
+            <Fab onClick={validation} disabled color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
+              <SaveIcon />
+            </Fab>
+          }
           <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
             <CancelIcon />
           </Fab>

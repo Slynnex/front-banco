@@ -83,7 +83,7 @@ const Denominations = () => {
   // Validate inputs
   const validateForm = (form) => {
     const idValue = /^[a-zA-Z0-9]*$/
-    const text = /^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/
+    const text = /^([a-zñA-ZÑ0-9\s]){0,55}[a-zñA-ZÑ0-9]$/
     const value = /^[0-9]+([.][0-9]+)?$/
     let id = idValue.test(form.id) ? true : false
     let name = text.test(form.name) ? true : false
@@ -91,7 +91,7 @@ const Denominations = () => {
 
     // console.log(num);
     setValidate({ id: id, name: name, value: num })
-    console.log(validate)
+    // console.log(validate)
 
   }
 
