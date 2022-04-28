@@ -119,7 +119,7 @@ const Interests = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.interests.map((ex,index) => (
+              {state.interests !== null && state.interests.map((ex,index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
