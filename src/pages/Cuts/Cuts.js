@@ -32,19 +32,19 @@ const initialForm = {
   type:'',
   CashboxId:'',
   denominations:{
-    m10c:0,
-    m50c:0,
-    m1p:0,
-    m2p:0,
-    m5p:0,
-    m10p:0,
-    m20p:0,
-    b20p:0,
-    b50p:0,
-    b100p:0,
-    b200p:0,
-    b500p:0,
-    b1000p:0,
+    m10c:'',
+    m50c:'',
+    m1p:'',
+    m2p:'',
+    m5p:'',
+    m10p:'',
+    m20p:'',
+    b20p:'',
+    b50p:'',
+    b100p:'',
+    b200p:'',
+    b500p:'',
+    b1000p:'',
   },
   id:null
 }
@@ -68,17 +68,15 @@ const Cuts = () => {
   //action state
   const [action, setAction] = useState('Create')
 
-  //alert
-  const notify = (message) => toast.success(message)
-  const notifyE = (message) => toast.error(message)
+
+
 
   const handleChange = (e)=>{
+    
     let denominations = form.denominations
     if(e.target.name!=='type' && e.target.name!=='total_cut' && e.target.name!=='CashboxId'){
       denominations = {...form.denominations,[e.target.name]:e.target.value}
     }
-    console.log(form)
-    
     setForm({
       ...form,[e.target.name]:e.target.value,denominations:denominations
     })
@@ -94,19 +92,19 @@ const Cuts = () => {
       type:cut.type,
       CashboxId:cut.CashboxId,
       denominations:{
-        m10c:0,
-        m50c:0,
-        m1p:0,
-        m2p:0,
-        m5p:0,
-        m10p:0,
-        m20p:0,
-        b20p:0,
-        b50p:0,
-        b100p:0,
-        b200p:0,
-        b500p:0,
-        b1000p:0,
+        m10c:'',
+        m50c:'',
+        m1p:'',
+        m2p:'',
+        m5p:'',
+        m10p:'',
+        m20p:'',
+        b20p:'',
+        b50p:'',
+        b100p:'',
+        b200p:'',
+        b500p:'',
+        b1000p:'',
       },
       id:cut.id
     }
@@ -206,6 +204,8 @@ const Cuts = () => {
           cashboxes = {state.cashboxes}
           total_system = {state.total_system}
           open={open}
+          state={state}
+          setForm = {setForm}
         />
       {/* <Alert_Dialog
         openD={openD}
