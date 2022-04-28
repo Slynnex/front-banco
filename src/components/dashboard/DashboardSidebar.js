@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,17 +13,26 @@ import useStyles from './DashboardStyles';
 import '../../styles/dashboard.css';
 import { Button, ThemeProvider} from '@material-ui/core';
 import { theme } from './DashboardStyles';
-import {gerente, cashier} from './UserRoutes';
+import {gerente, cashier, executives} from './UserRoutes';
 import { useNavigate } from "react-router-dom";
 
 const DashboardSidebar = (props) => {
   const [userInfo, setuserInfo] = React.useState('');
+  const [routes, setRoutes] = React.useState([]);
   const navigate = useNavigate();
 
-  React.useEffect(()=>{
+  useEffect(()=>{
+    console.log(props.role)
     let upperUser = localStorage.getItem('username')[0].toUpperCase() + localStorage.getItem('username').slice(1);
     setuserInfo(upperUser);
-  },[]);
+    if(props.role === 1){
+      setRoutes(gerente);
+    }else if(props.role === 2){
+      setRoutes(cashier);
+    }else {
+      setRoutes(executives);
+    }
+  },[props.role]);
 
   const classes = useStyles();
 
@@ -65,31 +74,14 @@ const DashboardSidebar = (props) => {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          {props.role === 1
-            ?<List>
-              {gerente.map((value, index) => (
+          <List>
+              {routes.map((value, index) => (
                 <ListItem button component="a" href={value.route} key = {index}>
                   <ListItemIcon>{value.icon}</ListItemIcon>
                   <ListItemText primary={value.nameRoute} />
                 </ListItem>
               ))}
-            </List>
-            :null
-          }
-          <Divider />
-          {props.role === 2 
-          ?<List>
-          {cashier.map((value, index) => (
-            <ListItem button component="a" href={value.route} key = {index}>
-              <ListItemIcon>{value.icon}</ListItemIcon>
-              <ListItemText primary={value.nameRoute} />
-            </ListItem>
-          ))}
-        </List>
-          :null
-          
-          }
-          
+          </List>          
         </div>
       </Drawer>
       <main className={classes.content}>
