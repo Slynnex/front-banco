@@ -10,13 +10,11 @@ import {Provider as ConceptProvider} from './context/Concepts/ConceptsContext'
 import { Provider as ExecutiveProvider } from './context/Executives/ExecutivesContext'
 import { Provider as DenominationProvider } from './context/Denominations/DenominationsContext'
 import {Provider as PositionAreaProvider} from './context/PositionArea/PositionAreaContext'
-import {Provider as CommissionProvider} from './context/Commissions/CommissionsController'
-import {Provider as InterestsProvider} from './context/Interests/InterestsContext'
-import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditDetailsContext'
+import {Provider as CommissionProvider} from './context/Commissions/CommissionsController';
+import {Provider as ClientsProvider} from './context/Clients/ClientsContext';
+import {Provider as CreditDetailsProvider} from './context/Credit Detail/CreditDetailContext';
+import {Provider as InterestsProvider} from './context/Interests/InterestsContext';
 import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
-
-
-
 
 function App() {
   return (
@@ -24,21 +22,23 @@ function App() {
       <PositionAreaProvider>
         <DenominationProvider>
           <CommissionProvider>
-            <InterestsProvider>
-              <ConceptProvider>
-                <CreditDetailsProvider>
-                  <TransactionsProvider>
-                    <Router>
+            <ClientsProvider>
+              <CreditDetailsProvider>
+                <InterestsProvider>
+                  <ConceptProvider>
+                    <TransactionsProvider>
+                      <Router>
                       <Routes>
                         <Route exact path='/' element={<Login />} />
                         <Route exact path='/manager/*' element={<Manager />} />
                         <Route exact path='/cashier/*' element={<Cashier />} />
                       </Routes>
                     </Router>
-                  </TransactionsProvider>
-                </CreditDetailsProvider>
-              </ConceptProvider>
-            </InterestsProvider>
+                    </TransactionsProvider>
+                  </ConceptProvider>
+                </InterestsProvider>
+              </CreditDetailsProvider>
+            </ClientsProvider>
           </CommissionProvider>
         </DenominationProvider>
       </PositionAreaProvider>
