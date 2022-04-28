@@ -1,15 +1,21 @@
 import React, {useContext, useEffect} from 'react'
 import '../../styles/clients.css'
 import { FormControl, InputLabel, Input, MenuItem, Select} from '@material-ui/core'
-import { Context } from '../../context/Credit Detail/CreditDetailContext'
+import { Context } from '../../context/CreditDetails/CreditDetailsContext'
 
 const TabAccount = ({type, nip, amount, setAmount, setNip,setCreditDetail,creditDetail}) => {
 
-    const {get,state} = useContext(Context)
+    const {getCreditDetails,state} = useContext(Context)
 
     useEffect(() => {
-        get();
+        const setLoader = () => {};
+        getCreditDetails({setLoader});
     },[])
+
+    useEffect(() => {
+        console.log(state)
+    },[state])
+
   return (
     <div>
         <div className='row'>

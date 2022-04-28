@@ -4,11 +4,16 @@ import { FormControl, InputLabel, Input, MenuItem, Select} from '@material-ui/co
 import { Context } from '../../context/Interests/InterestsContext'
 
 const TabMortage = () => {
-  const {get,state} = useContext(Context);
+  const {getInterests,state} = useContext(Context);
 
   useEffect(() => {
-    get()
+    const setLoader = () => {};
+    getInterests({setLoader});
   },[])
+
+  useEffect(() => {
+    console.log(state)
+  },[state])
 
   return (
     <div>

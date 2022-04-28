@@ -3,6 +3,7 @@ import '../../styles/clients.css'
 import { FormControl, InputLabel, Input, MenuItem, Select} from '@material-ui/core'
 
 const TabPersonalInfo = ({form,handleForm}) => {
+
   return (
     <div>
       <div className='row'>
