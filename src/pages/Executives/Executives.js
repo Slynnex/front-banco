@@ -45,6 +45,7 @@ const initialForm = {
 export default function Executives() {
 
   const { saveExecutives, getExecutives, state, deleteExecutive} = useContext(Context);
+  console.log(state);
 
   //info form
   const [form,setForm] = useState(initialForm)

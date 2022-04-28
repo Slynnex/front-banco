@@ -11,6 +11,7 @@ import PositionArea from './PositionArea/PositionArea'
 import Interests from './Interests/Interests'
 import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
+import Cuts from './Cuts/Cuts'
 
 const Manager = () => {
   return (
@@ -26,6 +27,7 @@ const Manager = () => {
                 <Route exact path={'/concepts'} element={<Concepts/>}/>
                 <Route exact path={'/interests'} element={<Interests/>}/>
                 <Route exact path={'/creditdetails'} element={<CreditDetails/>}/>
+                <Route exact path={'/cuts'} element={<Cuts/>}/>
             </Routes>
     </DashboardSidebar>
   )
