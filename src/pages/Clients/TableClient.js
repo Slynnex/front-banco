@@ -15,7 +15,7 @@ import { Context } from '../../context/Clients/ClientsContext'
 import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 
-const TableClient = () => {
+const TableClient = ({editData,showData}) => {
 
     const {state} = useContext(Context)
   return (
@@ -26,6 +26,9 @@ const TableClient = () => {
               <TableCell>#</TableCell>
               <TableCell>Full name</TableCell>
               <TableCell>Curp</TableCell>
+              <TableCell>Account</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Amount</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -38,11 +41,26 @@ const TableClient = () => {
                   <TableCell>{index+1}</TableCell>
                   <TableCell>{cl.name} {cl.lastname}</TableCell>
                   <TableCell>{cl.curp}</TableCell>
+                  <TableCell>
+                    {cl.Accounts.map((el,index)=>(
+                      <li key={index}>{cl.Accounts[index].no_acc}</li>                      
+                    ))}
+                  </TableCell>
+                  <TableCell>
+                    {cl.Accounts.map((el,index)=>(
+                      <li key={index}>{cl.Accounts[index].type}</li>                      
+                    ))}
+                  </TableCell>
+                  <TableCell>
+                    {cl.Accounts.map((el,index)=>(
+                      <li key={index}>{cl.Accounts[index].amount}</li>                      
+                    ))}
+                  </TableCell>
                   <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small">
+                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(cl.id)}>
                     <EditIcon size="small"/>
                   </IconButton>
-                  <IconButton aria-label="delete" size="small" >
+                  <IconButton aria-label="delete" size="small" onClick={(e)=>showData(cl.id)}>
                     <VisibilityIcon/>
                   </IconButton>
                 </TableCell>
