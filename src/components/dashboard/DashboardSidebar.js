@@ -21,7 +21,8 @@ const DashboardSidebar = (props) => {
   const navigate = useNavigate();
 
   React.useEffect(()=>{
-    setuserInfo(localStorage.getItem('username'));
+    let upperUser = localStorage.getItem('username')[0].toUpperCase() + localStorage.getItem('username').slice(1);
+    setuserInfo(upperUser);
   },[]);
 
   const classes = useStyles();

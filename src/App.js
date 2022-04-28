@@ -13,6 +13,7 @@ import {Provider as PositionAreaProvider} from './context/PositionArea/PositionA
 import {Provider as CommissionProvider} from './context/Commissions/CommissionsController'
 import {Provider as InterestsProvider} from './context/Interests/InterestsContext'
 import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditDetailsContext'
+import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
 
 
 
@@ -26,13 +27,15 @@ function App() {
             <InterestsProvider>
               <ConceptProvider>
                 <CreditDetailsProvider>
-                  <Router>
-                    <Routes>
-                      <Route exact path='/' element={<Login />} />
-                      <Route exact path='/manager/*' element={<Manager />} />
-                      <Route exact path='/cashier/*' element={<Cashier />} />
-                    </Routes>
-                  </Router>
+                  <TransactionsProvider>
+                    <Router>
+                      <Routes>
+                        <Route exact path='/' element={<Login />} />
+                        <Route exact path='/manager/*' element={<Manager />} />
+                        <Route exact path='/cashier/*' element={<Cashier />} />
+                      </Routes>
+                    </Router>
+                  </TransactionsProvider>
                 </CreditDetailsProvider>
               </ConceptProvider>
             </InterestsProvider>
