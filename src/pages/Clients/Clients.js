@@ -1,4 +1,5 @@
 import React,{useState,useEffect,useContext} from 'react'
+import axios from 'axios'
 import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
@@ -84,7 +85,7 @@ const Clients = () => {
     const [formBeneficiarie, setFormBeneficiarie] = useState(initialBeneficiarieForm)
     const [formDocuments, setFormDocuments] = useState(initialDocuments)
     const [formMortgage, setFormMortgage] = useState(initialMortgage);
-    const [fromProperties, setFormProperties] = useState(initialProperties);
+    const [formProperties, setFormProperties] = useState(initialProperties);
     const [formGuarantees, setFormGuarantees] = useState(initialGuarantees); 
     const [nip, setNip] = useState('')
     const [amount,setAmount] = useState('');
@@ -117,6 +118,12 @@ const Clients = () => {
         })
     }
 
+    const handleMortgage = (e) => {
+        setFormMortgage({
+            ...formMortgage, [e.target.name]: e.target.value
+        })
+    }
+
     const handleClose = () => {
         setDialog(false);
     }
@@ -142,7 +149,6 @@ const Clients = () => {
             break;
             }
         case "credit":{
-          console.log(creditDetail)
             const form = {
                 client: formClient,
                 account: {
@@ -156,7 +162,21 @@ const Clients = () => {
             save({form,setCreate,setDialog,setShow,type});
             break;
         }
-
+        case "mortgages":{
+            const form = {
+                client: formClient,
+                account: {
+                    amount
+                },
+                documents: formDocuments,
+                mortgage: formMortgage,
+                guarantees: formGuarantees,
+                properties: formProperties
+            }
+            console.log(form)
+            save({form,setCreate,setDialog,setShow,type});
+            break;
+        }
         }
     }
 
@@ -164,6 +184,34 @@ const Clients = () => {
         let newDocuments = [...formDocuments];
         newDocuments[index].document_url = document;
         setFormDocuments(newDocuments);
+    }
+
+    const updateFieldGuarantees = (index, e) => {
+        let newGuarantees = [...formGuarantees];
+        newGuarantees[index][e.target.name] = e.target.value;
+        setFormGuarantees(newGuarantees);
+    }
+
+    const updateFieldProperties = async(index, e) => {
+        if(e.target.name === 'value'){
+            let newProperties = [...formProperties];
+            newProperties[index][e.target.name] = e.target.value;
+            setFormProperties(newProperties);
+        }else{
+            const files = e.target.files;
+            const data = new FormData();
+            data.append("file", files[0]);
+            data.append("upload_preset", "lccyzc02");
+            try{
+                const res = await axios.post('https://api.cloudinary.com/v1_1/dnesdnfxy/image/upload',data);
+                let newProperties = [...formProperties];
+                newProperties[index][e.target.name] = res.data.url;
+                setFormProperties(newProperties);
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
     }
 
   return (
@@ -194,6 +242,12 @@ const Clients = () => {
                     creditDetail={creditDetail}
                     type={type}
                     setType={setType}
+                    handleMortgage={handleMortgage}
+                    formMortgage={formMortgage}
+                    updateFieldGuarantees={updateFieldGuarantees}
+                    formGuarantees={formGuarantees}
+                    updateFieldProperties={updateFieldProperties}
+                    formProperties={formProperties}
                   />
                 :null
         }
