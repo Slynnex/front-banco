@@ -16,10 +16,14 @@ import EditIcon from '@material-ui/icons/Edit'
 
 //Modal
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
+import Show_info from '../../components/show_info/Show_info'
 import TabsClients from './TabsClients'
 
 import { Context } from '../../context/Clients/ClientsContext'
 import TableClient from './TableClient'
+import ModalClients from './ModalClients'
+
+import server from '../../config/bdApi';
 
 
 const initialClientForm = {
@@ -38,7 +42,28 @@ const initialClientForm = {
         curp: "",
         rfc: "",
         no_ine: "",
-        email: ""
+        email: "",
+        id:null,
+}
+
+const initialShowClient = {
+    name: "",
+    lastname: "",
+    gender: 0,
+    street: "",
+    number_ext: 0,
+    colony: "",
+    postalcode: 0,
+    city: "",
+    municipality: "",
+    state: "",
+    celphone: "",
+    landline: "",
+    curp: "",
+    rfc: "",
+    no_ine: "",
+    email: "",
+    Accounts:[]
 }
 
 const initialBeneficiarieForm ={
@@ -77,8 +102,8 @@ const initialGuarantees = [
 
 ]
 
-
 const Clients = () => {
+    const {state} = useContext(Context)
     //Formulario de clientes
     const [formClient,setFormClient] = useState(initialClientForm)
     const [formBeneficiarie, setFormBeneficiarie] = useState(initialBeneficiarieForm)
@@ -92,9 +117,24 @@ const Clients = () => {
     const [show,setShow] = useState(true)
     const [create, setCreate] = useState(false);
     const [dialog, setDialog] = useState(false);
+    const [open, setOpen] = useState(false)
+    const [openS, setOpenS] = useState(false)
+    const [dataClient, setDataClient] = useState(initialShowClient)
     const [type, setType] = useState("debit");
+     //loading state
+    const [loader, setLoader] = useState('none')
 
     const {save, get} = useContext(Context);
+    const handleOpenM = () => setOpen(true)
+    const handleOpenS = () => setOpenS(true)
+    const handleCloseS = () => setOpenS(false)
+    const handleCloseM = () => setOpen(false)
+
+    const handleReset = (e)=>{
+        handleOpenM()
+        handleCloseM()
+        formClient(initialClientForm)
+      }
 
     useEffect(() => {
         get();
@@ -121,8 +161,65 @@ const Clients = () => {
         setDialog(false);
     }
 
+    const editData = (id) => {
+        let [clients] = state.clients.filter(el => el.id === id)
+        let initialClientFormToUpdate = {
+            name:clients.name,
+            lastname:clients.lastname,
+            gender:clients.gender,
+            street:clients.street,
+            number_ext:clients.number_ext,
+            colony:clients.colony,
+            postalcode:clients.postalcode,
+            city:clients.city,
+            municipality:clients.municipality,
+            state:clients.state,
+            celphone:clients.celphone,
+            landline:clients.landline,
+            curp:clients.curp,
+            rfc:clients.rfc,
+            no_ine:clients.no_ine,
+            email:clients.email,
+            id:clients.id,
+        }
+        setFormClient(clients)
+        handleOpenM()
+      }
+
+    //salvar el cliente
+    const saveDataModal = async ()=>{
+        try{
+            setLoader('flex')
+            let clientS = await server.put(`/clients/${formClient.id}`,formClient)
+            get()
+            setLoader('none')
+            handleCloseM()
+        }catch(error){
+            console.log(error)
+            setLoader('none')
+            handleCloseM()
+        }
+       
+    }
+    //mostrar datos del cliente en un modal
+    const showData = async (id)=>{
+        try{
+            setLoader('flex')
+            let clientS = await server.get(`/clients/${id}`)
+            setDataClient(clientS.data.data)
+            handleOpenS()
+            get()
+            setLoader('none')
+        }catch(error){
+            console.log(error)
+            setLoader('none')
+            handleCloseM()
+        }
+       
+    }
+
+
     const saveData = () => {
-        console.log(type)
         switch(type){
         case "debit":{
             const form = {
@@ -169,6 +266,7 @@ const Clients = () => {
   return (
     <>
         <ToastContainer autoClose={2000}/>
+        <Loader display={loader}/>
         <div style={{padding:'5px'}}>
             <span style={{fontSize:'20px'}}>Clients</span>
             <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
@@ -176,7 +274,7 @@ const Clients = () => {
             </Fab>
         </div>
         {show
-            ?<TableClient/>
+            ?<TableClient editData={editData} showData={showData}/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}
@@ -197,6 +295,17 @@ const Clients = () => {
                   />
                 :null
         }
+        <ModalClients
+          form={formClient}
+          saveData={saveDataModal}
+          handleChange = {handleClient}
+          action={'Update'}
+          handleClose={handleCloseM}
+          handleReset={handleReset}
+          setLoader = {setLoader}
+          open={open}
+        />
+
         <Alert_Dialog
             openD={dialog}
             handleCloseD={handleClose}
@@ -205,6 +314,14 @@ const Clients = () => {
             description={"You want to create: "}
             title={"Create client"}
         />
+
+        <Show_info
+            openS={openS}
+            handleCloseS={handleCloseS}
+            data={dataClient}
+            showData={showData}
+        />
+
     </>
   )
 }
