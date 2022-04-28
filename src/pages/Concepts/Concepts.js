@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Context } from '../../context/Concepts/ConceptsContext'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -28,16 +28,26 @@ import ModalConcepts from './ModalConcepts'
 
 // Form: new concept
 const initialForm = {
-  id:null,
-  name:''
+  id: null,
+  name: ''
+}
+
+const validationForm = {
+  name: false
+}
+
+const message = {
+  title: 'Deleted',
+  description: 'Are you sure to delete'
 }
 
 export default function Concepts() {
 
-  const { saveConcepts, getConcepts, state, deleteConcept} = useContext(Context);
+  const { saveConcepts, getConcepts, state, deleteConcept } = useContext(Context);
 
   //info form
-  const [form,setForm] = useState(initialForm);
+  const [form, setForm] = useState(initialForm);
+  const [validate, setValidate] = useState(validationForm)
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -54,45 +64,61 @@ export default function Concepts() {
   //action state
   const [action, setAction] = useState('Create');
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     setForm({
-      ...form,[e.target.name]:e.target.value
+      ...form, [e.target.name]: e.target.value
     })
+
+    if (form.name.length < 1) {
+      setValidate({ name: false })
+    } else {
+      validateForm(form)
+    }
+
+  }
+
+  const validateForm = (form) => {
+    const text = /^([a-zñA-ZÑ0-9\s]){5,55}[a-zñA-ZÑ0-9]$/
+    let name = text.test(form.name) ? true : false
+    // console.log(num);
+    setValidate({ name: name })
+    // console.log(validate)
+
   }
 
   // Edit concepts
-  const editData = (id)=>{
+  const editData = (id) => {
     setAction('Update');
-    let [editConcept] = state.concepts.filter(el=>el.id===id);
+    let [editConcept] = state.concepts.filter(el => el.id === id);
     setForm(editConcept);
     handleOpen();
-    console.log("edit Concept: ");
-    console.log(editConcept);
+    // console.log("edit Concept: ");
+    // console.log(editConcept);
   }
 
   // Delete data
-  const setDataToDelete = (id) =>{
-    let [delConcept] = state.concepts.filter(el=>el.id===id)
+  const setDataToDelete = (id) => {
+    let [delConcept] = state.concepts.filter(el => el.id === id)
     handleOpenD()
     setConceptD(delConcept)
   }
 
-  const deleteData = () =>{
-    deleteConcept({id: conceptD.id, handleReset, setLoader});
+  const deleteData = () => {
+    deleteConcept({ id: conceptD.id, handleReset, setLoader });
   }
 
   // use Effect
   useEffect(() => {
-    getConcepts({setLoader});
-  },[])
+    getConcepts({ setLoader });
+  }, [])
 
   useEffect(() => {
-    console.log("useEffect: ")
-    console.log(state);
-  },[state])
+    // console.log("useEffect: ")
+    // console.log(state);
+  }, [state])
 
   // Handle reset
-  const handleReset = (e)=>{
+  const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
@@ -100,11 +126,19 @@ export default function Concepts() {
 
   return (
     <>
-    <ToastContainer autoClose={2000}/>
-      <Loader display={loader}/>
-      <div style={{padding:'5px'}}>
-        <span style={{fontSize:'20px'}}>Concepts</span>
-        <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+      <ToastContainer autoClose={2000} />
+      <Loader display={loader} />
+      <div style={{ padding: '5px' }}>
+        <span style={{ fontSize: '20px' }}>Concepts</span>
+        <Fab color="primary" aria-label="add" size="small"
+          onClick={() => {
+            handleOpen();
+            setAction('Create');
+            setForm(initialForm)
+            setValidate({ name: true })
+
+          }}
+          style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
         </Fab>
       </div>
@@ -118,20 +152,20 @@ export default function Concepts() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {state.concepts.map((ex,index) => (
+            {state.concepts.map((ex, index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{index+1}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell component="th" scope="row">
                   {`${ex.name}`} </TableCell>
-                <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
-                    <EditIcon size="small"/>
+                <TableCell style={{ margin: '5px' }}>
+                  <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
+                    <EditIcon size="small" />
                   </IconButton>
-                  <IconButton aria-label="delete" size="small" onClick={(e)=>setDataToDelete(ex.id)}>
-                    <DeleteIcon/>
+                  <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -141,19 +175,22 @@ export default function Concepts() {
       </TableContainer>
       {/* modal */}
       <ModalConcepts
-          form={form}
-          handleChange = {handleChange}
-          action={action}
-          saveData={saveConcepts}
-          handleClose={handleClose}
-          handleReset={handleReset}
-          setLoader = {setLoader}
-          open={open}
-        />
+        form={form}
+        handleChange={handleChange}
+        action={action}
+        saveData={saveConcepts}
+        handleClose={handleClose}
+        handleReset={handleReset}
+        setLoader={setLoader}
+        open={open}
+        validate={validate}
+      />
 
-      <Alert_Dialog 
+      <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={`${conceptD.name}`}
         deleteData={deleteData}
       />
