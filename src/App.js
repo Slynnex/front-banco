@@ -16,6 +16,7 @@ import {Provider as ClientsProvider} from './context/Clients/ClientsContext';
 import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditDetailsContext';
 import {Provider as InterestsProvider} from './context/Interests/InterestsContext';
 import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
+import Executive from './pages/Executive';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
                             <Route exact path='/' element={<Login />} />
                             <Route exact path='/manager/*' element={<Manager />} />
                             <Route exact path='/cashier/*' element={<Cashier />} />
+                            <Route exact path='/executive/*' element={<Executive/>}/> 
                           </Routes>
                         </Router>
                       </CutsProvider>

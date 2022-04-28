@@ -13,15 +13,17 @@ import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
 
-const Cashier = () => {
+
+const Executive = () => {
   return (
-    <DashboardSidebar role={2}>
+    <DashboardSidebar role={3}>
             <Routes>
                 <Route exact path={'/transactions'} element={<Transactions/>}/>
                 <Route exact path={'/cuts'} element={<Cuts/>}/>
+                <Route exact path={'/clients'} element={<Clients/>}/>
             </Routes>
     </DashboardSidebar>
   )
 }
 
-export default Cashier
+export default Executive

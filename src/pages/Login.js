@@ -7,6 +7,7 @@ import Manager from './Manager';
 import Loader from '../assets/Loader';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import jwt_decode from "jwt-decode";
 
 const Login = () => {
   const [loader, setLoader] = useState('none')
@@ -50,14 +51,22 @@ const Login = () => {
     axios.post('http://localhost:9000/api/v1/login',loginInfo)
     .then(({data}) =>{
         if(!data.token){
-          console.log('hola')
+          console.log(data)
           setErrorS({...errorS,display:'block'});
         }else{
           setUser(data);
           localStorage.setItem('username', loginInfo.userid);
           localStorage.setItem("token", data.token);
-          navigate('/manager/', { replace: true });
-          window.location.reload(true);
+          const decoded = jwt_decode(data.token);
+          console.log(decoded)
+
+          if(decoded.session.rol === 'manager'){
+            navigate('/manager/', { replace: true });
+          }else if(decoded.session.rol === 'executive'){
+            navigate('/executive/', { replace: true });
+          }else{
+            navigate('/cashier/', { replace: true });
+          }
         }
         setLoader('none')
     })

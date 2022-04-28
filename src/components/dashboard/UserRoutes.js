@@ -79,27 +79,36 @@ export const gerente = [
 
 export const cashier = [
   {
-    id: 1,
-    nameRoute:"Dashboard",
-    route:"/cashier",
-    icon: <DashboardIcon/>
+    id:1,
+    nameRoute:"Transactions",
+    route: "/cashier/transactions",
+    icon: <MoneyIcon/>
   },
   {
-    id: 2,
-    nameRoute:"Withdraw Cash",
-    route:"/cashier/accounts",
+    id:2,
+    nameRoute:"Cuts",
+    route: "/cashier/cuts",
+    icon: <MoneyIcon/>
+  }
+]
+
+export const executives = [
+  {
+    id:1,
+    nameRoute:"Transactions",
+    route: "/executive/transactions",
+    icon: <MoneyIcon/>
+  },
+  {
+    id:2,
+    nameRoute:"Cuts",
+    route: "/executive/cuts",
     icon: <MoneyIcon/>
   },
   {
     id: 3,
-    nameRoute:"Card Replace",
-    route:"/cashier/cardreplace",
+    nameRoute:"Clients",
+    route:"/executive/clients",
     icon: <AccountBalanceWalletIcon/>
-  },
-  {
-    id: 4,
-    nameRoute:"Available Cash",
-    route:"/cashier/availablecash",
-    icon: <AttachMoneyIcon/>
   }
 ]
