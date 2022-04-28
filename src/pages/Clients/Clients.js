@@ -1,14 +1,5 @@
 import React,{useState,useEffect,useContext} from 'react'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
 import Fab from '@material-ui/core/Fab'
-
 
 //alerts toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,6 +17,9 @@ import EditIcon from '@material-ui/icons/Edit'
 //Modal
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 import TabsClients from './TabsClients'
+
+import { Context } from '../../context/Clients/ClientsContext'
+import TableClient from './TableClient'
 
 
 const initialClientForm = {
@@ -57,15 +51,54 @@ const initialBeneficiarieForm ={
     email: ""
 }
 
+const initialDocuments = [
+    {document_url: '', type: 'ine'},{document_url: '', type: 'address'},{document_url: '', type: 'income'}
+]
+
+const initialMortgage = {
+    solicited_amount: "",
+    InterestId: ""
+}
+
+const initialProperties= [
+    {   
+        url:"",
+        value:""
+    }
+]
+
+const initialGuarantees = [
+    {
+        name:"",
+        lastname: "",
+        address: "",
+        telephone: ""
+    }
+
+]
+
 
 const Clients = () => {
     //Formulario de clientes
     const [formClient,setFormClient] = useState(initialClientForm)
     const [formBeneficiarie, setFormBeneficiarie] = useState(initialBeneficiarieForm)
+    const [formDocuments, setFormDocuments] = useState(initialDocuments)
+    const [formMortgage, setFormMortgage] = useState(initialMortgage);
+    const [fromProperties, setFormProperties] = useState(initialProperties);
+    const [formGuarantees, setFormGuarantees] = useState(initialGuarantees); 
     const [nip, setNip] = useState('')
     const [amount,setAmount] = useState('');
+    const [creditDetail,setCreditDetail] = useState('')
     const [show,setShow] = useState(true)
     const [create, setCreate] = useState(false);
+    const [dialog, setDialog] = useState(false);
+    const [type, setType] = useState("debit");
+
+    const {save, get} = useContext(Context);
+
+    useEffect(() => {
+        get();
+    },[])
     
     const handleCreate = () => {
         setShow(false)
@@ -83,6 +116,56 @@ const Clients = () => {
             ...formBeneficiarie,[e.target.name]:e.target.value
         })
     }
+
+    const handleClose = () => {
+        setDialog(false);
+    }
+
+    const saveData = () => {
+        console.log(type)
+        switch(type){
+        case "debit":{
+            const form = {
+                client: formClient,
+                account: {
+                    amount
+                },
+                beneficiaries: [
+                    formBeneficiarie
+                ],
+                documents: formDocuments,
+                card: {
+                    nip
+                }
+            }
+            save({form,setCreate,setDialog,setShow,type});
+            break;
+            }
+        case "credit":{
+          console.log(creditDetail)
+            const form = {
+                client: formClient,
+                account: {
+                    amount
+                },
+                documents: formDocuments,
+                creditdetail: {
+                    CreditdetailId: creditDetail
+                }
+            }
+            save({form,setCreate,setDialog,setShow,type});
+            break;
+        }
+
+        }
+    }
+
+    const updateFieldChanged = (index,document )=> {
+        let newDocuments = [...formDocuments];
+        newDocuments[index].document_url = document;
+        setFormDocuments(newDocuments);
+    }
+
   return (
     <>
         <ToastContainer autoClose={2000}/>
@@ -93,7 +176,7 @@ const Clients = () => {
             </Fab>
         </div>
         {show
-            ?null
+            ?<TableClient/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}
@@ -104,9 +187,24 @@ const Clients = () => {
                     setNip={setNip}
                     formBeneficiarie={formBeneficiarie}
                     handleBeneficiarie={handleBeneficiarie}
+                    setDialog={setDialog}
+                    setCreate={setCreate}
+                    updateFieldChanged={updateFieldChanged}
+                    setCreditDetail={setCreditDetail}
+                    creditDetail={creditDetail}
+                    type={type}
+                    setType={setType}
                   />
                 :null
         }
+        <Alert_Dialog
+            openD={dialog}
+            handleCloseD={handleClose}
+            name={`${formClient.name} ${formClient.lastname}`}
+            deleteData={saveData}
+            description={"You want to create: "}
+            title={"Create client"}
+        />
     </>
   )
 }
