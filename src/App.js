@@ -29,7 +29,7 @@ function App() {
                   <ConceptProvider>
                     <TransactionsProvider>
                       <CutsProvider>
-                        <Ruoter/>
+                        <Router>
                           <Routes>
                             <Route exact path='/' element={<Login />} />
                             <Route exact path='/manager/*' element={<Manager />} />
