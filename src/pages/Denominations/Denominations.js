@@ -40,6 +40,11 @@ const validationForm = {
   value: false
 }
 
+const message = {
+  title: 'Deleted',
+  description: 'Are you sure to delete'
+}
+
 const Denominations = () => {
 
   // context call
@@ -194,6 +199,8 @@ const Denominations = () => {
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={`${denomina.name}`}
         deleteData={deleteData}
       />
