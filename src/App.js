@@ -10,6 +10,7 @@ import {Provider as ConceptProvider} from './context/Concepts/ConceptsContext'
 import { Provider as ExecutiveProvider } from './context/Executives/ExecutivesContext'
 import { Provider as DenominationProvider } from './context/Denominations/DenominationsContext'
 import {Provider as PositionAreaProvider} from './context/PositionArea/PositionAreaContext'
+import {Provider as CutsProvider} from './context/Cuts/CutsContext'
 import {Provider as CommissionProvider} from './context/Commissions/CommissionsController';
 import {Provider as ClientsProvider} from './context/Clients/ClientsContext';
 import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditDetailsContext';
@@ -27,13 +28,15 @@ function App() {
                 <InterestsProvider>
                   <ConceptProvider>
                     <TransactionsProvider>
-                      <Router>
-                      <Routes>
-                        <Route exact path='/' element={<Login />} />
-                        <Route exact path='/manager/*' element={<Manager />} />
-                        <Route exact path='/cashier/*' element={<Cashier />} />
-                      </Routes>
-                    </Router>
+                      <CutsProvider>
+                        <Ruoter/>
+                          <Routes>
+                            <Route exact path='/' element={<Login />} />
+                            <Route exact path='/manager/*' element={<Manager />} />
+                            <Route exact path='/cashier/*' element={<Cashier />} />
+                          </Routes>
+                        </Router>
+                      </CutsProvider>
                     </TransactionsProvider>
                   </ConceptProvider>
                 </InterestsProvider>

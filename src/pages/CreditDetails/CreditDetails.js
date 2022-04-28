@@ -117,7 +117,7 @@ const CreditDetails = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.creditDetails.map((ex,index) => (
+              {state.interests !== null && state.creditDetails.map((ex,index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
