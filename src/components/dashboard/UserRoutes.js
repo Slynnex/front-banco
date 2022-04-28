@@ -17,14 +17,14 @@ export const gerente = [
       },
       {
         id: 2,
-        nameRoute:"Accounts",
-        route:"/manager/accounts",
+        nameRoute:"Clients",
+        route:"/manager/clients",
         icon: <AccountBalanceWalletIcon/>
       },
       {
         id: 3,
-        nameRoute:"Transfer",
-        route:"/manager/transfer",
+        nameRoute:"Transactions",
+        route:"/manager/transactions",
         icon: <CompareArrowsIcon/>
       },
       {
@@ -55,6 +55,24 @@ export const gerente = [
         id:9,
         nameRoute:"Denominations",
         route: "/manager/denominations",
+        icon: <MoneyIcon/>
+      },
+      {
+        id:10,
+        nameRoute:"Interests",
+        route: "/manager/interests",
+        icon: <MoneyIcon/>
+      },
+      {
+        id:11,
+        nameRoute:"Credit Details",
+        route: "/manager/creditdetails",
+        icon: <MoneyIcon/>
+      },
+      {
+        id:12,
+        nameRoute:"Cuts",
+        route: "/manager/cuts",
         icon: <MoneyIcon/>
       }
 ]

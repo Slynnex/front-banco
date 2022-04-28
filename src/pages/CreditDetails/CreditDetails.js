@@ -24,28 +24,21 @@ import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 
 //Modal
-import ModalExecutives from './ModalExecutives';
+import ModalCreditDetails from './ModalCreditDetails';
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 
-import { Context } from '../../context/Executives/ExecutivesContext'
-
+import { Context } from '../../context/CreditDetails/CreditDetailsContext'
 
 const initialForm = {
   name:'',
-  lastname:'',
-  userid:'',
-  password:'',
-  PositionId:'',
-  AreaId:'',
-  BranchId:'1',
-  date_init:new Date(),
+  debterms:'',
+  interests:'',
+  extra_charge:'',
   id:null
 }
 
-export default function Executives() {
-
-  const { saveExecutives, getExecutives, state, deleteExecutive} = useContext(Context);
-  console.log(state);
+const CreditDetails = () => {
+  const { saveCreditDetails,getCreditDetails, state, deleteCreditDetails} = useContext(Context);
 
   //info form
   const [form,setForm] = useState(initialForm)
@@ -53,7 +46,7 @@ export default function Executives() {
   //modal state vars
   const [open, setOpen] = useState(false)
   const [openD, setOpenD] = useState(false)
-  const [userD, setUserD] = useState(initialForm)
+  const [creditDetailD, setCreditDetailD] = useState(initialForm)
   const handleOpenD = () => setOpenD(true)
   const handleCloseD = () => setOpenD(false)
   const handleOpen = () => setOpen(true)
@@ -75,20 +68,19 @@ export default function Executives() {
 
   const editData = (id)=>{
     setAction('Update')
-    let [user] = state.executives.filter(el=>el.id===id)
-    user.password = ''
-    setForm(user)
+    let [creditdetail] = state.creditDetails.filter(el=>el.id===id)
+    setForm(creditdetail)
     handleOpen()
   }
 
   const setDataToDelete = (id) =>{
-    let [user] = state.executives.filter(el=>el.id===id)
+    let [creditdetail] = state.creditDetails.filter(el=>el.id===id)
     handleOpenD()
-    setUserD(user)
+    setCreditDetailD(creditdetail)
   }
 
   const deleteData = () =>{
-    deleteExecutive({id: userD.id, handleReset, setLoader});
+    deleteCreditDetails({id: creditDetailD.id, handleReset, setLoader});
   }
 
   const handleReset = (e)=>{
@@ -98,8 +90,7 @@ export default function Executives() {
   }
     
   useEffect(() => {
-    getExecutives({setLoader});
-    
+    getCreditDetails({setLoader})
   }, [])
 
 
@@ -118,26 +109,26 @@ export default function Executives() {
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
-              <TableCell>Full Name</TableCell>
-              <TableCell>User</TableCell>
-              <TableCell>Position</TableCell>
-              <TableCell>Area</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Debterms</TableCell>
+              <TableCell>Interests</TableCell>
+              <TableCell>Extra_charge</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.executives.map((ex,index) => (
+              {state.creditDetails.map((ex,index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell>{index+1}</TableCell>
                 <TableCell component="th" scope="row">
-                  {`${ex.name} ${ex.lastname}`}
+                  {ex.name}
                 </TableCell>
-                <TableCell>{ex.userid}</TableCell>
-                <TableCell>{ex.Area.Position.name}</TableCell>
-                <TableCell>{ex.Area.name}</TableCell>
+                <TableCell>{ex.debterms}</TableCell>
+                <TableCell>{ex.interest}</TableCell>
+                <TableCell>{ex.extra_charge}</TableCell>
                 <TableCell style={{margin:'5px'}}>
                   <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
                     <EditIcon size="small"/>
@@ -153,13 +144,11 @@ export default function Executives() {
       </TableContainer>
       {/* modal */}
       
-      <ModalExecutives
+      <ModalCreditDetails
           form={form}
           handleChange = {handleChange}
           action={action}
-          positions={state.positions}
-          areas={state.areas}
-          saveData={saveExecutives}
+          saveData={saveCreditDetails}
           handleClose={handleClose}
           handleReset={handleReset}
           setLoader = {setLoader}
@@ -168,10 +157,11 @@ export default function Executives() {
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
-        name={`${userD.name} ${userD.lastname}`}
+        name={creditDetailD.name}
         deleteData={deleteData}
       />
-
-    </>
+    </> 
   )
 }
+
+export default CreditDetails

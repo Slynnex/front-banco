@@ -1,12 +1,20 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {Card, CardContent, TextField, Button} from '@material-ui/core';
 import '../styles/login.css';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Manager from './Manager';
+import Loader from '../assets/Loader';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const Login = () => {
-  const [loginInfo, setloginInfo] = React.useState({
+  const [loader, setLoader] = useState('none')
+  const [errorS, setErrorS] = useState({
+    display:"none",
+    message:'invalid user or password'
+  })
+  const [loginInfo, setloginInfo] = useState({
     userid: '',
     password: ''
   });
@@ -14,7 +22,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
 
-  React.useState(()=>{
+  useState(()=>{
     if(!localStorage.getItem('token')){
       setisLoggedIn(false);
     }else{
@@ -38,58 +46,63 @@ const Login = () => {
   }
 
   const onSubmit = () =>{
-    console.log(loginInfo);
+    setLoader('flex')
     axios.post('http://localhost:9000/api/v1/login',loginInfo)
     .then(({data}) =>{
-        console.log('hola');
-        console.log(data);
-        console.log(!data.token);
         if(!data.token){
-          alert('User not found');
+          console.log('hola')
+          setErrorS({...errorS,display:'block'});
         }else{
           setUser(data);
-          console.log(data.token);
           localStorage.setItem('username', loginInfo.userid);
           localStorage.setItem("token", data.token);
-          alert('Log In sucessfull, welcome');
           navigate('/manager/', { replace: true });
           window.location.reload(true);
         }
-        console.log(data);
+        setLoader('none')
     })
     .catch(({response}) =>{
-        alert('User not found');
-        console.log(response);
+        setErrorS({message:response,display:'block'})
+        setLoader('none')
     });
 }
 
   return (
   <>
+    <Loader display={loader}/>
     {isLoggedIn        
       ? <Manager/>
       :     
-      <div className='center login'>
-      <Card sx={{ maxWidth: 900, maxHeigth: 900, minWidth: 900, minHeigth: 900 }} className='card'>
-        <CardContent className='center'>
-          <div className='logo'>
-            <img src='https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/ffffff/external-bank-fintech-kmg-design-detailed-outline-kmg-design.png' text='Bantexico' alt='logo'></img>
-            <h1>Bancomex</h1>
-          </div>
-          <form className='data'>
-            <div className='fields'>
-              <div className='field'>
-                <p>User ID</p>
-                <TextField id="outlined-basic" label="Write here" variant="outlined" name="userid" value={loginInfo.userid} onChange={saveLoginInfo}/>
-              </div>
-              <div className='field'>
-                <p>Password</p>
-                <TextField id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={saveLoginInfo}/>
-              </div>
+      <div className='login'>
+        <div sx={{ maxWidth: 900, maxHeigth: 900, minWidth: 900, minHeigth: 900 }} className='login-body'>
+          
+          <div className='card-login'>
+            <div className='logo'>
+              <img src='https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/ffffff/external-bank-fintech-kmg-design-detailed-outline-kmg-design.png' text='Bantexico' alt='logo'></img>
+              <h1>Bancomex</h1>
             </div>
-            <Button variant="contained" color="primary" size="large" onClick={onSubmit}>Sign cdin</Button>
-          </form>
-        </CardContent>
-      </Card>
+            <form className='data'>
+              <div className='card-alert'>
+              <Stack style={{display:errorS.display,marginBottom:'10px'}} sx={{ width: '100%' }} spacing={2}>
+                <Alert severity="warning">{errorS.message}</Alert>
+              </Stack>
+              </div>
+              <div className='fields'>
+                <div className='field'>
+                  <p>User ID</p>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" name="userid" autoComplete='off' value={loginInfo.userid} onChange={saveLoginInfo}/>
+                </div>
+                <div className='field'>
+                  <p>Password</p>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={saveLoginInfo}/>
+                </div>
+              </div>
+              <div className='footer-login'>
+                <Button style={{textAling:'right'}} variant="contained" color="primary" size="large" onClick={onSubmit}>Sign in</Button>
+              </div>
+            </form>
+          </div>
+        </div>
     </div>     
     }
   </>

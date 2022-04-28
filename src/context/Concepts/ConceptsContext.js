@@ -1,6 +1,7 @@
 import conceptsDataContext from "./conceptsDataContext";
 import server from '../../config/bdApi';
 
+
 const conceptReducer = (state, action) => {
     switch (action.type){
         case "add_concept":
@@ -20,7 +21,6 @@ const getConcepts = dispatch => async({setLoader}) => {
         setLoader('flex');
         const concepts = await server.get('/concepts');
         setLoader('none');
-        console.log(concepts.data.data);
         dispatch({type:"add_concept", payload:concepts.data.data});
     } catch (error) {
         console.log(error);
