@@ -6,10 +6,11 @@ let url = '/cuts/'
 const cutsReducer = (state, action) => {
   switch (action.type) {
     case "get_cuts":
-      return { cuts: action.payload.cuts, cashboxes: action.payload.cashboxes, total_system: action.payload.total_system };
+      return { cuts: action.payload.cuts, cashboxes: action.payload.cashboxes, total_system: action.payload.total_system, errors:[] };
     case "refresh":
-      return { ...state, cuts: action.payload.cuts }
-
+      return { ...state, cuts: action.payload.cuts, errors:[] };
+    case "errors":
+      return {cuts: action.payload.cuts, cashboxes: action.payload.cashboxes, total_system: action.payload.total_system, errors: action.payload.errors};
     default:
       return state;
   }
@@ -22,7 +23,7 @@ const getCuts = dispatch => async ({ setLoader }) => {
     const cashboxes = await server.get('/cashboxes/')
     const total_system = await server.get('/cuts/search/cashboxes/')
     setLoader('none');
-    dispatch({ type: "get_cuts", payload: { cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data } })
+    dispatch({ type: "get_cuts", payload: { cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors:[] } })
   } catch (error) {
     console.log({ error })
   }
@@ -41,11 +42,16 @@ const saveCuts = dispatch => async ({ setLoader, id, form, handleReset, action }
     const cuts = refreshData();
     handleReset();
     cuts.then(function (value) {
-      dispatch({ type: "refresh", payload: { cuts: value } })
+      dispatch({ type: "refresh", payload: { cuts: value }, errors:[] })
       setLoader('none');
     })
   } catch (error) {
-    console.log(error.message)
+    console.log(error.response.data);
+    const cuts = await server.get(url);
+    const cashboxes = await server.get('/cashboxes/')
+    const total_system = await server.get('/cuts/search/cashboxes/')
+    dispatch({type: "errors", payload:{cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors: error.response.data}});
+    setLoader('none');
   }
 }
 
@@ -75,5 +81,5 @@ const refreshData = async () => {
 }
 
 export const { Provider, Context } = cutsDataContext(
-  cutsReducer, { getCuts, saveCuts, deleteCuts }, { cuts: [], cashboxes:[], total_system:null }
+  cutsReducer, { getCuts, saveCuts, deleteCuts }, { cuts: [], cashboxes:[], total_system:null, errors:[] }
 )
