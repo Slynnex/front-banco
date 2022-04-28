@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-const Alert_Dialog = ({openD,handleCloseD,name,deleteData}) => {
+const Alert_Dialog = ({openD,handleCloseD,name,deleteData,title,description}) => {
 
     const style = {
         position: 'absolute',
@@ -33,9 +33,9 @@ const Alert_Dialog = ({openD,handleCloseD,name,deleteData}) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-              Delete Executive
+              {title}
           </Typography>
-              Are you sure to delete the executive <b>{`${name}`}</b> ?
+              {description} <b>{`${name}`}</b> ?
           <Grid>
             <Fab onClick={deleteData} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'50px',marginRight:'10px'}}>
               <CheckCircleIcon />
