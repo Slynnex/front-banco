@@ -147,6 +147,16 @@ const Clients = () => {
     const handleCreate = () => {
         setShow(false)
         setCreate(true)
+        setFormClient(initialClientForm);
+        setFormBeneficiarie(initialBeneficiarieForm);
+        setFormDocuments(initialDocuments);
+        setFormMortgage(initialMortgage);
+        setFormProperties(initialProperties);
+        setFormGuarantees(initialGuarantees);
+        setNip('');
+        setAmount('');
+        setCreditDetail('');
+
     }
 
     const handleClient = (e) => {
@@ -287,12 +297,14 @@ const Clients = () => {
         }
     }
 
+    //Update documents from client
     const updateFieldChanged = (index,document )=> {
         let newDocuments = [...formDocuments];
         newDocuments[index].document_url = document;
         setFormDocuments(newDocuments);
     }
 
+    //Change state to create account
     const createAccount = (id) => {
         setSelectId(id);
         setShow(false);
@@ -350,9 +362,9 @@ const Clients = () => {
                     onChange={e => setSearch(e.target.value)} 
                     />
             </FormControl>
-            {!create
+            {show
                 ?<Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
-                <AddIcon />
+                    <AddIcon />
                 </Fab>
                 :null
             }
