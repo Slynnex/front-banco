@@ -34,7 +34,7 @@ const TableClient = ({editData,showData,createAccount}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-             {state.clients.map((cl, index) => (
+             {state.clients !==null && state.clients.map((cl, index) => (
                  <TableRow
                  key={cl.id}
                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
