@@ -27,6 +27,8 @@ import ModalClients from './ModalClients'
 import server from '../../config/bdApi';
 import Accounts from '../Accounts/Accounts';
 
+import {FormControl, TextField} from '@material-ui/core';
+
 
 const initialClientForm = {
         name: "",
@@ -134,15 +136,13 @@ const Clients = () => {
     const handleCloseS = () => setOpenS(false)
     const handleCloseM = () => setOpen(false)
 
+    
+
     const handleReset = (e)=>{
         handleOpenM()
         handleCloseM()
         formClient(initialClientForm)
       }
-
-    useEffect(() => {
-        get();
-    },[])
     
     const handleCreate = () => {
         setShow(false)
@@ -323,6 +323,16 @@ const Clients = () => {
         }
     }
 
+    const [search, setSearch] = React.useState('inicial');
+
+    useEffect(() => {
+        if(search===''){
+            setSearch('inicial')
+        }else{
+          get(search);  
+        }
+    },[search])
+
 
   return (
     <>
@@ -330,6 +340,13 @@ const Clients = () => {
         <Loader display={loader}/>
         <div style={{padding:'5px'}}>
             <span style={{fontSize:'20px'}}>Clients</span>
+            <FormControl fullWidth={true} style={{marginTop:'10px',marginBottom:'20px'}}>
+                    <TextField autoComplete='off'
+                    label="Type the full name of any client"
+                    name="search"
+                    onChange={e => setSearch(e.target.value)} 
+                    />
+            </FormControl>
             {!create
                 ?<Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
                 <AddIcon />
