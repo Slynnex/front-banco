@@ -13,10 +13,10 @@ export default function Dashboard() {
       let acounts = await server.get('/reports/accounts') 
       let transactions = await server.get('/reports/transactions')
 
-      let acountInfo = {}
-      let transactionInfo = {}
+      let acountInfo = {credit:0,debit:0,mortgage:0}
+      let transactionInfo = {withdrawl:0,deposti:0,payment:0}
 
-      
+      if(acounts.data.data!==null){
         acounts.data.data.forEach((el,index)=>{
           if(el.type==='credit'){
             acountInfo.credit=el.count
@@ -26,7 +26,9 @@ export default function Dashboard() {
             acountInfo.mortgage=el.count
           }
         })
-      
+      }
+        
+      if(transactions.data.data!==null){
         transactions.data.data.forEach((el,index)=>{
           if(el.ConceptId===1){
             transactionInfo.withdrawl=el.count
@@ -38,8 +40,8 @@ export default function Dashboard() {
             transactionInfo.opening=el.count
           }
         })
+      }
       
-      console.log(acountInfo)
       setAccount(acountInfo)
       setTransaction(transactionInfo)
 
@@ -47,9 +49,6 @@ export default function Dashboard() {
     getData()
 
   }, [])
-
-  let dateToday = new Date().toString()
-  console.log(dateToday)
 
   const data = [
     ["Type","Today's Accounts"],
@@ -81,7 +80,6 @@ export default function Dashboard() {
   const options2 = {
     chart: {
       title: "Today's Transactions",
-      sutitle:dateToday
     },
   };
 

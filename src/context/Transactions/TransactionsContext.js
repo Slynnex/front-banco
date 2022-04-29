@@ -15,10 +15,11 @@ const transactionsReducer = (state, action) =>{
     }
 }
 
-const getTransactions = dispatch => async({setLoader}) => {
+const getTransactions = dispatch => async({setLoader},search) => {
     try{
         setLoader('flex');
-        const transactions = await server.get('/transactions')
+        console.log(search)
+        const transactions = await server.get(`/transactions/${search}`)
         setLoader('none');
         dispatch({type: "get_transactions", payload:{transactions: transactions.data.data, errors: []}})
     }catch(err){

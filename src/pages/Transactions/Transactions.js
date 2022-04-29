@@ -13,6 +13,8 @@ import ModalTransactions from './ModalTransactions';
 import { Context } from '../../context/Transactions/TransactionsContext';
 import { Context as ConceptContext } from '../../context/Concepts/ConceptsContext';
 
+import {FormControl, TextField} from '@material-ui/core';
+
 
 // Init the object where the input info will be saved
 const initialForm = {
@@ -30,6 +32,7 @@ const Transactions = () => {
 
     const [concepts, setConcepts] = React.useState([]);
     const [concept, setConcept] = React.useState('');
+    const [search, setSearch] = React.useState('inicial');
 
     React.useEffect(()=>{
       setConcepts(ConceptsState.state.concepts);
@@ -65,17 +68,24 @@ const Transactions = () => {
     }
   // Set the transactions to show and get the concepts for the database
     React.useEffect(() => {
-      getTransactions({setLoader});
+      getTransactions({setLoader},search);
       ConceptsState.getConcepts({setLoader});
-    }, []);
+    }, [search]);
 
-  
     return (
       <>
         <ToastContainer />
         <Loader display={loader}/>
+        
         <div style={{padding:'5px'}}>
           <span style={{fontSize:'20px'}}>Transactions</span>
+          <FormControl fullWidth={true} style={{marginTop:'10px',marginBottom:'20px'}}>
+                    <TextField autoComplete='off'
+                    label="Type account number to search"
+                    name="search"
+                    onChange={e => setSearch(e.target.value)} 
+                    />
+        </FormControl>
           <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
             <AddIcon />
           </Fab>
@@ -98,6 +108,7 @@ const Transactions = () => {
                 ? <TableRow><TableCell></TableCell></TableRow>
                 : 
                 state.transactions.map((ex,index) => (
+                  ex.Card!==null &&
                   <TableRow
                     key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
