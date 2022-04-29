@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Modal from '@material-ui/core/Modal'
 import Fab from '@material-ui/core/Fab'
+import { toast } from 'react-toastify';
 
 //Icons
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -38,8 +39,10 @@ const ModalPosition = ({ openP, setOpenP, action, name, setName, setLoader, id }
   const saveData = () => {
     if (action === 'Create') {
       addPosition({ setLoader, name, setOpenP });
+      toast.success('Position created');
     } else {
-      editPosition({ setLoader, name, id, setOpenP })
+      editPosition({ setLoader, name, id, setOpenP });
+      toast.success('Position updated');
     }
   }
   return (

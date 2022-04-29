@@ -96,6 +96,16 @@ export default function Concepts() {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Create'){
+      toast.success('Commision created');
+    }
+    if(action === 'Update'){
+      toast.success('Commision updated');
+    }
+    if(action === 'Delete'){
+      toast.success('Commision deleted');
+    }
+    console.log(action);
   }
 
   return (

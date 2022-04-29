@@ -82,17 +82,23 @@ const Interests = () => {
 
   const deleteData = () =>{
     deleteInterests({id: interestD.id, handleReset, setLoader});
+    toast.success('Interest deleted');
   }
 
   const handleReset = (e)=>{
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Create'){
+      toast.success('Interest created');
+    }
+    if(action === 'Update'){
+      toast.success('Interest updated');
+    }
   }
     
   useEffect(() => {
     getInterests({setLoader})
-    
   }, [])
 
 

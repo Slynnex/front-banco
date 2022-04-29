@@ -38,6 +38,8 @@ const style = {
 
 const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleReset,setLoader,cashboxes,total_system, state, setForm}) => {
     const [errors, setErrors] = React.useState('');
+    const [block, setBlock] = React.useState(true);
+
     
 
     React.useEffect(()=>{
@@ -63,11 +65,16 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
     }
 
     const handleBlur = (e) =>{
+        if((form.total_cut === 0 || form.type.length === 0 || form.CashboxId.length === 0) || (form.denominations.m10c === 0 && form.denominations.m50c === 0 && form.denominations.m1p === 0 && form.denominations.m2p === 0 && form.denominations.m5p === 0 && form.denominations.m10p === 0 && form.denominations.m20p === 0 && form.denominations.b20p === 0 && form.denominations.b50p === 0 && form.denominations.b100p === 0 && form.denominations.b200p === 0 && form.denominations.b500p === 0 && form.denominations.b1000p === 0)){
+            setBlock(true);
+        }else{
+            setBlock(false);
+        }
         let total = 0;
 
         if(isNaN(parseInt(e.target.value))){
             toast.error('Write just numbers');
-
+            setBlock(true);
         }else{
             let numberArr = []
             let arr = Object.values(form.denominations);
@@ -245,7 +252,7 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
                 </Grid>    
             </Grid>
             <Grid>
-                <Fab onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
+                <Fab onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} disabled={block}>
                     <SaveIcon />
                 </Fab>
                 <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>

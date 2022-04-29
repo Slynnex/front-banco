@@ -6,6 +6,8 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Modal from '@material-ui/core/Modal'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 //Icons
 import Fab from '@material-ui/core/Fab'

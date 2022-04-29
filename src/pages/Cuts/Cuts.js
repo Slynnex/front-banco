@@ -127,12 +127,19 @@ const Cuts = () => {
 
   const deleteData = () =>{
     deleteCuts({id: cutD.id, handleReset, setLoader});
+    toast.success('Cut deleted');
   }
 
   const handleReset = (e)=>{
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Create'){
+      toast.success('Cut created');
+    }
+    if(action === 'Update'){
+      toast.success('Cut updated');
+    }
   }
     
   useEffect(() => {
