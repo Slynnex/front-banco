@@ -3,7 +3,6 @@ import axios from 'axios'
 import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -28,7 +27,7 @@ import server from '../../config/bdApi';
 import Accounts from '../Accounts/Accounts';
 
 import {FormControl, TextField} from '@material-ui/core';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const initialClientForm = {
         name: "",
@@ -370,7 +369,7 @@ const Clients = () => {
             }
         </div>
         {show
-            ? <TableClient editData={editData} showData={showData} createAccount={createAccount}/>
+            ? <TableClient editData={editData} showData={showData} createAccount={createAccount} toast={toast}/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}

@@ -19,7 +19,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import EmailIcon from '@material-ui/icons/Email'
 import SendIcon from '@material-ui/icons/Send';
 
-const TableClient = ({editData,showData,createAccount}) => {
+const TableClient = ({editData,showData,createAccount,toast}) => {
 
     const {state} = useContext(Context)
 
@@ -28,6 +28,7 @@ const TableClient = ({editData,showData,createAccount}) => {
     const sendAccount = async (id) => {
       try{
         await server.get(`/reports/sendData/${id}`);
+        toast.success("Email sended");
       }catch(error){
         console.log(error)
       }
@@ -37,6 +38,7 @@ const TableClient = ({editData,showData,createAccount}) => {
     const sendAccountStatus = async (id) => {
       try{
         await server.get(`/reports/accountStatus/${id}`);
+        toast.success("Email sended");
       }catch(error){
         console.log(error)
       }
