@@ -104,7 +104,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
     >
         <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-            {`${action} Cuts`}
+            {`${action} Client`}
             </Typography>
             <Grid container>
                 <Grid item md={4}>

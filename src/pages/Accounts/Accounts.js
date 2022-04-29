@@ -124,7 +124,7 @@ const Accounts = ({handleClose,id}) => {
             }
             try{
                 server.post(`accounts/debit`,form);
-                get();
+                get('inicial');  
                 handleClose();
             }catch(error){
                 console.log(error.response);
@@ -144,7 +144,7 @@ const Accounts = ({handleClose,id}) => {
             try{
                 server.post(`accounts/credit`,form);
                 handleClose();
-                get();
+                get('inicial');  
             }catch(error){
                 console.log(error.response);
             }
@@ -163,7 +163,7 @@ const Accounts = ({handleClose,id}) => {
             try{
                 server.post(`accounts/mortgage`,form);
                 handleClose();
-                get();
+                get('inicial');  
             }catch(error){
                 console.log(error.response);
             }
@@ -274,8 +274,8 @@ const Accounts = ({handleClose,id}) => {
         <Alert_Dialog
             openD={dialog}
             handleCloseD={() => setDialog(false)}
-            name=''
-            description={"You want to create: "}
+            name={type}
+            description={"You want to create an account type"}
             title={"Create account"}
             deleteData={save}
         />
