@@ -3,7 +3,6 @@ import axios from 'axios'
 import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -28,7 +27,7 @@ import server from '../../config/bdApi';
 import Accounts from '../Accounts/Accounts';
 
 import {FormControl, TextField} from '@material-ui/core';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const initialClientForm = {
         name: "",
@@ -147,6 +146,16 @@ const Clients = () => {
     const handleCreate = () => {
         setShow(false)
         setCreate(true)
+        setFormClient(initialClientForm);
+        setFormBeneficiarie(initialBeneficiarieForm);
+        setFormDocuments(initialDocuments);
+        setFormMortgage(initialMortgage);
+        setFormProperties(initialProperties);
+        setFormGuarantees(initialGuarantees);
+        setNip('');
+        setAmount('');
+        setCreditDetail('');
+
     }
 
     const handleClient = (e) => {
@@ -287,12 +296,14 @@ const Clients = () => {
         }
     }
 
+    //Update documents from client
     const updateFieldChanged = (index,document )=> {
         let newDocuments = [...formDocuments];
         newDocuments[index].document_url = document;
         setFormDocuments(newDocuments);
     }
 
+    //Change state to create account
     const createAccount = (id) => {
         setSelectId(id);
         setShow(false);
@@ -350,15 +361,15 @@ const Clients = () => {
                     onChange={e => setSearch(e.target.value)} 
                     />
             </FormControl>
-            {!create
+            {show
                 ?<Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
-                <AddIcon />
+                    <AddIcon />
                 </Fab>
                 :null
             }
         </div>
         {show
-            ? <TableClient editData={editData} showData={showData} createAccount={createAccount}/>
+            ? <TableClient editData={editData} showData={showData} createAccount={createAccount} toast={toast}/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}

@@ -267,7 +267,7 @@ const Accounts = ({handleClose,id}) => {
             <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
-            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
+            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => handleClose()}>
                 <CancelIcon />
             </Fab>
         </Grid>
