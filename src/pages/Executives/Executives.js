@@ -127,17 +127,23 @@ export default function Executives() {
 
   const deleteData = () => {
     deleteExecutive({ id: userD.id, handleReset, setLoader });
+    toast.success('Executive deleted');
   }
 
   const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Update'){
+      toast.success('Executive updated');
+    }
+    if(action === 'Create'){
+      toast.success('Executive created');
+    }
   }
 
   useEffect(() => {
     getExecutives({ setLoader });
-
   }, [])
 
 

@@ -17,6 +17,8 @@ import '../../styles/positionArea.css'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import { Context } from '../../context/PositionArea/PositionAreaContext'
 
@@ -34,6 +36,7 @@ const Positions = ({setOpenP,setAction,setName,setId,setLoader}) => {
 
   return (
     <Box className='containerForm'>
+        <ToastContainer autoClose={2000} />
         <div style={{padding:'5px'}}>
           <span style={{fontSize:'20px'}}>Positions</span>
           <Fab color="primary" aria-label="add" size="small" onClick={()=>{setOpenP(true); setAction("Create"); setName('')}} style={{float:'right',marginBottom:'20px'}}>
@@ -63,7 +66,7 @@ const Positions = ({setOpenP,setAction,setName,setId,setLoader}) => {
                     <IconButton aria-label="edit" size="small" onClick={() => editData(position.id)}>
                       <EditIcon size="small"/>
                     </IconButton>
-                    <IconButton aria-label="delete" size="small" onClick={() => deletePosition({id: position.id,setLoader})}>
+                    <IconButton aria-label="delete" size="small" onClick={() => {deletePosition({id: position.id,setLoader}); toast.success('Position deleted');}}>
                       <DeleteIcon/>
                     </IconButton>
                   </TableCell>

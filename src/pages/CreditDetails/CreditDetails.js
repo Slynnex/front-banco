@@ -81,12 +81,19 @@ const CreditDetails = () => {
 
   const deleteData = () =>{
     deleteCreditDetails({id: creditDetailD.id, handleReset, setLoader});
+    toast.success('Credits details deleted');
   }
 
   const handleReset = (e)=>{
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Create'){
+      toast.success('Credits details created');
+    }
+    if(action === 'Update'){
+      toast.success('Credits details updated');
+    }
   }
     
   useEffect(() => {

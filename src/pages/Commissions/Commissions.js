@@ -98,6 +98,7 @@ const Commissions = () => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    toast.success('Commision created');
   }
 
   React.useEffect(() => {
