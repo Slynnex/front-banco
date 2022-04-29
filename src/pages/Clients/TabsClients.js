@@ -15,7 +15,8 @@ import SaveIcon from '@material-ui/icons/Save'
 
 
 const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
-    formBeneficiarie,handleBeneficiarie,setDialog,setCreate,updateFieldChanged,setCreditDetail,creditDetail,type,setType}) => {
+    formBeneficiarie,handleBeneficiarie,setDialog,setCreate,updateFieldChanged,setCreditDetail,creditDetail,type,setType,
+      handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties}) => {
   const [value, setValue] = useState(0);
   
 
@@ -54,7 +55,7 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
                     <Select id="type" name="type" onChange={(e) => setType(e.target.value)} value={type}>
                         <MenuItem value={"credit"}>Credit</MenuItem>
                         <MenuItem value={"debit"}>Debit</MenuItem>
-                        <MenuItem value={"mortgage"}>Mortgage</MenuItem>
+                        <MenuItem value={"mortgages"}>Mortgage</MenuItem>
                     </Select>
           </FormControl>
           </div>
@@ -72,7 +73,7 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
               <Tab label="Account" {...a11yProps(1)} />
               <Tab label="Documents" {...a11yProps(2)} />
               <Tab label="Beneficiaries" {...a11yProps(3)} disabled={type === 'debit' ?false :true}/>
-              <Tab label="Mortgage" {...a11yProps(4)} disabled={type === 'mortgage' ?false :true}/>
+              <Tab label="Mortgages" {...a11yProps(4)} disabled={type === 'mortgages' ?false :true}/>
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
@@ -101,7 +102,15 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
             />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <TabMortage/>
+            <TabMortage
+              formMortgage={formMortgage}
+              handleMortgage={handleMortgage}
+              updateFieldGuarantees={updateFieldGuarantees}
+              formGuarantees={formGuarantees}
+              updateFieldChanged={updateFieldProperties}
+              formProperties={formProperties}
+              updateFieldProperties={updateFieldProperties}
+            />
           </TabPanel>
       </div>
       <Grid>
