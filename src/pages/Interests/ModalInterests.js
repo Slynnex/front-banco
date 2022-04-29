@@ -1,7 +1,7 @@
 import React from 'react'
 import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Input from '@material-ui/core/Input'
+// import InputLabel from '@material-ui/core/InputLabel'
+// import Input from '@material-ui/core/Input'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -26,14 +26,14 @@ const ModalInterests = ({ form, handleChange, action, saveData, handleClose, ope
     p: 4,
   };
 
-  //   console.log(form.debterms)
+  //   console.log(!isNaN(form.debterms))
+  //   console.log(form.interest)
   const validation = () => {
-    if (form.name.length >= 1 && form.debterms.length > 1 && form.interests.length > 1 && form.extra_charge.length > 1 && !(isNaN(form.debterms))) {
-      //   saveData({ form, id: form.id, setLoader, handleReset })
-      // saveData({ form, id: form.id, setLoader, handleReset })
+    if (form.name.length >= 1 && form.debterms.length >= 1 && form.interest.length >= 1 && form.extra_charge.length >= 1) {
+      saveData({ form, id: form.id, setLoader, handleReset })
       console.log("I'm sending")
     } else {
-      validate.name = validate.debterms = validate.interests = validate.extra_charge = false
+      validate.name = validate.debterms = validate.interest = validate.extra_charge = false
     }
   }
 
@@ -47,27 +47,30 @@ const ModalInterests = ({ form, handleChange, action, saveData, handleClose, ope
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          {`${action} Executive`}
+          {`${action} Interests`}
         </Typography>
         <FormControl fullWidth={true}>
-          <InputLabel variant="standard" required={true}>Name</InputLabel>
-          <Input id="name" name="name" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} />
+          {/* <InputLabel variant="standard" required={true}>Name</InputLabel>
+          <Input id="name" name="name" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} /> */}
+          <TextField id="name" name="name" label="Name *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Name is require"} />
         </FormControl>
         <FormControl fullWidth={true}>
-          <InputLabel variant="standard" required={true}>Debterms</InputLabel>
-          <Input id="debterms" name="debterms" aria-describedby="debterms" autoComplete='off' onChange={handleChange} value={form.debterms} />
+          {/* <InputLabel variant="standard" required={true}>Debterms</InputLabel>
+          <Input id="debterms" name="debterms" aria-describedby="debterms" autoComplete='off' onChange={handleChange} value={form.debterms} /> */}
+          <TextField id="debterms" name="debterms" label="Debterms *" aria-describedby="debterms" autoComplete='off' onChange={handleChange} value={form.debterms} error={!validate.debterms} helperText={validate.debterms ? "" : "Debterms must be a number"} />
         </FormControl>
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>Interest</InputLabel>
           <Input id="interest" name="interest" aria-describedby="interest" autoComplete='off' onChange={handleChange} value={form.interest} /> */}
-          <TextField id="interest" name="interest" label="Interest *" aria-describedby="interest" autoComplete='off' onChange={handleChange} value={form.interest} />
+          <TextField id="interest" name="interest" label="Interest *" aria-describedby="interest" autoComplete='off' onChange={handleChange} value={form.interest} error={!validate.interest} helperText={validate.interest ? "" : "Interest must be a number"} />
         </FormControl>
         <FormControl fullWidth={true}>
-          <InputLabel variant="standard" required={true}>extra_charge</InputLabel>
-          <Input id="extra_chargue" name="extra_charge" aria-describedby="extra_charge" autoComplete='off' onChange={handleChange} value={form.extra_charge} />
+          {/* <InputLabel variant="standard" required={true}>extra_charge</InputLabel>
+          <Input id="extra_chargue" name="extra_charge" aria-describedby="extra_charge" autoComplete='off' onChange={handleChange} value={form.extra_charge} /> */}
+          <TextField id="extra_charge" name="extra_charge" label="Extra Charge *" aria-describedby="extra_charge" autoComplete='off' onChange={handleChange} value={form.extra_charge} error={!validate.extra_charge} helperText={validate.extra_charge ? "" : "Extra Charge must be a number"} />
         </FormControl>
         <Grid>
-          {form.name.length >= 1 && form.debterms.length > 1 && form.interests.length > 1 && form.extra_charge.length > 1 ?
+          {form.name.length >= 1 && form.debterms.length >= 1 && form.interest.length >= 1 && form.extra_charge.length >= 1 && !(isNaN(form.debterms)) && !(isNaN(form.interest)) && !(isNaN(form.extra_charge)) ?
             <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
               <SaveIcon />
             </Fab>

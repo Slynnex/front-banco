@@ -32,8 +32,7 @@ import { Context } from '../../context/Interests/InterestsContext'
 const initialForm = {
   name: '',
   debterms: '',
-  interests: '',
-  password: '',
+  interest: '',
   extra_charge: '',
   id: null
 }
@@ -41,8 +40,13 @@ const initialForm = {
 const validationForm = {
   name: false,
   debterms: false,
-  interests: false,
+  interest: false,
   extra_charge: false,
+}
+
+const message = {
+  title: 'Deleted',
+  description: 'Are you sure to delete'
 }
 
 const Interests = () => {
@@ -73,11 +77,11 @@ const Interests = () => {
     setForm({
       ...form, [e.target.name]: e.target.value
     })
-    console.log(form.interests)
-    console.log(form.debterms)
+    // console.log(form)
+    // console.log(form)
 
-    if (form.name.length < 1 && form.debterms < 1 && form.interests < 1 && form.extra_charge < 1) {
-      setValidate({ name: false, debterms: false, interests: false, extra_charge: false })
+    if (form.name.length < 1 && form.debterms < 1 && form.interest < 1 && form.extra_charge < 1) {
+      setValidate({ name: false, debterms: false, interest: false, extra_charge: false })
     } else {
       validateForm(form)
     }
@@ -88,11 +92,11 @@ const Interests = () => {
     const value = /^[0-9]+([.][0-9]+)?$/
     let name = text.test(form.name) ? true : false
     let num = value.test(form.debterms) ? true : false
-    let interests = value.test(form.interests) ? true : false
+    let interest = value.test(form.interest) ? true : false
     let extra = value.test(form.extra_charge) ? true : false
 
     // console.log(num);
-    setValidate({ name: name, debterms: num, interests: interests, extra_charge: extra })
+    setValidate({ name: name, debterms: num, interest: interest, extra_charge: extra })
   }
 
 
@@ -100,7 +104,10 @@ const Interests = () => {
     setAction('Update')
     let [interest] = state.interests.filter(el => el.id === id)
     setForm(interest)
+    // console.log([interest])
     handleOpen()
+    setValidate({ name: true, debterms: true, interest: true, extra_charge: true })
+
   }
 
   const setDataToDelete = (id) => {
@@ -130,13 +137,13 @@ const Interests = () => {
       <ToastContainer autoClose={2000} />
       <Loader display={loader} />
       <div style={{ padding: '5px' }}>
-        <span style={{ fontSize: '20px' }}>Ejecutivos</span>
+        <span style={{ fontSize: '20px' }}>Interests</span>
         <Fab color="primary" aria-label="add" size="small"
           onClick={() => {
             handleOpen();
             setAction('Create');
             setForm(initialForm)
-            setValidate({ name: true, debterms: true, interests: true, extra_charge: true })
+            setValidate({ name: true, debterms: true, interest: true, extra_charge: true })
           }}
           style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
@@ -197,6 +204,8 @@ const Interests = () => {
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={interestD.name}
         deleteData={deleteData}
       />
