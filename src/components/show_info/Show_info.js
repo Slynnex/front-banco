@@ -14,7 +14,7 @@ const Show_info = ({openS,handleCloseS,data}) => {
     
     useEffect(() => {
       setDataR(data)
-    }, [])
+    }, [data])
     
 
     const style = {
@@ -73,7 +73,7 @@ const Show_info = ({openS,handleCloseS,data}) => {
               {el.Cards.map((card,indexCard)=>(
                 <div style={{marginTop:'10px'}}>
                   <div><b>Cards</b></div>
-                  <li style={{marginLeft:"20px"}}>Card number: <b>{card.card_number}</b></li>
+                  <li style={{marginLeft:"20px"}}>Card<b>{card.card_number}</b></li>
                 </div>
               ))}
               </div>
