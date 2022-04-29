@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
+import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
 
 import { Context } from '../../context/Clients/ClientsContext'
@@ -15,7 +16,7 @@ import { Context } from '../../context/Clients/ClientsContext'
 import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 
-const TableClient = ({editData,showData}) => {
+const TableClient = ({editData,showData,createAccount}) => {
 
     const {state} = useContext(Context)
   return (
@@ -62,6 +63,9 @@ const TableClient = ({editData,showData}) => {
                   </IconButton>
                   <IconButton aria-label="delete" size="small" onClick={(e)=>showData(cl.id)}>
                     <VisibilityIcon/>
+                  </IconButton>
+                  <IconButton aria-label="delete" size="small" onClick={() => createAccount(cl.id)}>
+                    <AddIcon/>
                   </IconButton>
                 </TableCell>
                 </TableRow>
