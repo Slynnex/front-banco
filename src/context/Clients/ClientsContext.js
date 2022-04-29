@@ -13,9 +13,9 @@ const clientsReducer = (state, action) =>{
     }
 }
 
-const get = dispatch => async() => {
+const get = dispatch => async(search) => {
     try{
-        const response = await server.get('/clients');
+        const response = await server.get(`/clients/index/name/${search}`);
         dispatch({type: "get_clients", payload: response.data.data})
     }catch(error){
         console.log({error});
@@ -39,7 +39,7 @@ const save = dispatch => async({form,setCreate,setDialog,setShow,type}) => {
 
 const refreshData = async ()=>{
     try{
-        const response = await server.get('/clients')
+        const response = await server.get(`/clients/index/name/inicial`)
         return  response.data.data;
 
     }catch(err){

@@ -10,11 +10,9 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const Show_info = ({openS,handleCloseS,data}) => {
-    const [dataR, setDataR] = useState(data)
-    
     useEffect(() => {
-      setDataR(data)
-    }, [])
+      
+    }, [data])
     
 
     const style = {
@@ -40,7 +38,7 @@ const Show_info = ({openS,handleCloseS,data}) => {
         
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginTop:'20px'}}>
-              Client name  <b>{`${dataR.name} ${dataR.lastname}`}</b>
+              Client name  <b>{`${data.name} ${data.lastname}`}</b>
           </Typography>
           <Grid>
             <div style={{margin:'10px',fontSize:'15px'}}>
@@ -48,20 +46,20 @@ const Show_info = ({openS,handleCloseS,data}) => {
             </div>
             
             <div style={{marginLeft:"20px"}}>
-              <li>CURP: <b>{dataR.curp}</b></li>
-              <li>RFC: <b>{dataR.rfc}</b></li>
-              <li>INE: <b>{dataR.no_ine}</b></li>
-              <li>Street: <b>{dataR.street} {dataR.number_ext}</b></li>
-              <li>Colony: <b>{dataR.colony}</b></li>
-              <li>Municipality: <b>{dataR.municipality}</b></li>
-              <li>State: <b>{dataR.state}</b></li>
+              <li>CURP: <b>{data.curp}</b></li>
+              <li>RFC: <b>{data.rfc}</b></li>
+              <li>INE: <b>{data.no_ine}</b></li>
+              <li>Street: <b>{data.street} {data.number_ext}</b></li>
+              <li>Colony: <b>{data.colony}</b></li>
+              <li>Municipality: <b>{data.municipality}</b></li>
+              <li>State: <b>{data.state}</b></li>
 
             </div>
             
             <div style={{margin:'10px',fontSize:'15px'}}>
               <b>Accounts:</b>
             </div>
-            {dataR.Accounts.map((el,index)=>(
+            {data.Accounts.map((el,index)=>(
               <div key={'tt'+index} style={{marginLeft:"20px"}}> 
               <div key={'t'+index}>
                  #{index+1}
@@ -73,7 +71,7 @@ const Show_info = ({openS,handleCloseS,data}) => {
               {el.Cards.map((card,indexCard)=>(
                 <div style={{marginTop:'10px'}}>
                   <div><b>Cards</b></div>
-                  <li style={{marginLeft:"20px"}}>Card number: <b>{card.card_number}</b></li>
+                  <li style={{marginLeft:"20px"}}>Card<b>{card.card_number}</b></li>
                 </div>
               ))}
               </div>

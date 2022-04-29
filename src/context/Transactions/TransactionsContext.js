@@ -15,10 +15,15 @@ const transactionsReducer = (state, action) =>{
     }
 }
 
-const getTransactions = dispatch => async({setLoader}) => {
+const getTransactions = dispatch => async({setLoader},search) => {
     try{
-        setLoader('flex');
-        const transactions = await server.get('/transactions')
+        if(search==='inicial'){
+            setLoader('flex');
+        }
+        if(search===''){
+            search='inicial'
+        }
+        const transactions = await server.get(`/transactions/${search}`)
         setLoader('none');
         dispatch({type: "get_transactions", payload:{transactions: transactions.data.data, errors: []}})
     }catch(err){
@@ -48,7 +53,7 @@ const saveTransactions = dispatch => async({setLoader, id, form, handleReset}) =
 
 const refreshData = async ()=>{
     try{
-        const response = await server.get('/transactions/')
+        const response = await server.get('/transactions/inicial')
         return  response.data.data;
 
     }catch(err){

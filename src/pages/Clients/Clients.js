@@ -1,8 +1,8 @@
 import React,{useState,useEffect,useContext} from 'react'
+import axios from 'axios'
 import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -24,7 +24,10 @@ import TableClient from './TableClient'
 import ModalClients from './ModalClients'
 
 import server from '../../config/bdApi';
+import Accounts from '../Accounts/Accounts';
 
+import {FormControl, TextField} from '@material-ui/core';
+import { ToastContainer, toast } from 'react-toastify';
 
 const initialClientForm = {
         name: "",
@@ -82,6 +85,7 @@ const initialDocuments = [
 
 const initialMortgage = {
     solicited_amount: "",
+    solicitied_date: "",
     InterestId: ""
 }
 
@@ -109,7 +113,7 @@ const Clients = () => {
     const [formBeneficiarie, setFormBeneficiarie] = useState(initialBeneficiarieForm)
     const [formDocuments, setFormDocuments] = useState(initialDocuments)
     const [formMortgage, setFormMortgage] = useState(initialMortgage);
-    const [fromProperties, setFormProperties] = useState(initialProperties);
+    const [formProperties, setFormProperties] = useState(initialProperties);
     const [formGuarantees, setFormGuarantees] = useState(initialGuarantees); 
     const [nip, setNip] = useState('')
     const [amount,setAmount] = useState('');
@@ -121,6 +125,7 @@ const Clients = () => {
     const [openS, setOpenS] = useState(false)
     const [dataClient, setDataClient] = useState(initialShowClient)
     const [type, setType] = useState("debit");
+    const [selectId, setSelectId] = useState(0);
      //loading state
     const [loader, setLoader] = useState('none')
 
@@ -130,19 +135,27 @@ const Clients = () => {
     const handleCloseS = () => setOpenS(false)
     const handleCloseM = () => setOpen(false)
 
+    
+
     const handleReset = (e)=>{
         handleOpenM()
         handleCloseM()
         formClient(initialClientForm)
       }
-
-    useEffect(() => {
-        get();
-    },[])
     
     const handleCreate = () => {
         setShow(false)
         setCreate(true)
+        setFormClient(initialClientForm);
+        setFormBeneficiarie(initialBeneficiarieForm);
+        setFormDocuments(initialDocuments);
+        setFormMortgage(initialMortgage);
+        setFormProperties(initialProperties);
+        setFormGuarantees(initialGuarantees);
+        setNip('');
+        setAmount('');
+        setCreditDetail('');
+
     }
 
     const handleClient = (e) => {
@@ -157,8 +170,16 @@ const Clients = () => {
         })
     }
 
+    const handleMortgage = (e) => {
+        setFormMortgage({
+            ...formMortgage, [e.target.name]: e.target.value
+        })
+    }
+
     const handleClose = () => {
         setDialog(false);
+        setShow(true);
+        setCreate(false);
     }
 
     const editData = (id) => {
@@ -191,7 +212,11 @@ const Clients = () => {
         try{
             setLoader('flex')
             let clientS = await server.put(`/clients/${formClient.id}`,formClient)
-            get()
+            if(search===''){
+                setSearch('inicial')
+            }else{
+              get(search);  
+            }
             setLoader('none')
             handleCloseM()
         }catch(error){
@@ -208,7 +233,6 @@ const Clients = () => {
             let clientS = await server.get(`/clients/${id}`)
             setDataClient(clientS.data.data)
             handleOpenS()
-            get()
             setLoader('none')
         }catch(error){
             console.log(error)
@@ -253,15 +277,76 @@ const Clients = () => {
             save({form,setCreate,setDialog,setShow,type});
             break;
         }
+        case "mortgages":{
+            const form = {
+                client: formClient,
+                account: {
+                    amount
+                },
+                documents: formDocuments,
+                mortgage: formMortgage,
+                guarantees: formGuarantees,
+                properties: formProperties
+            }
+            console.log(form)
+            save({form,setCreate,setDialog,setShow,type});
+            break;
+        }
 
         }
     }
 
+    //Update documents from client
     const updateFieldChanged = (index,document )=> {
         let newDocuments = [...formDocuments];
         newDocuments[index].document_url = document;
         setFormDocuments(newDocuments);
     }
+
+    //Change state to create account
+    const createAccount = (id) => {
+        setSelectId(id);
+        setShow(false);
+    }
+
+    const updateFieldGuarantees = (index, e) => {
+        let newGuarantees = [...formGuarantees];
+        newGuarantees[index][e.target.name] = e.target.value;
+        setFormGuarantees(newGuarantees);
+    }
+
+    const updateFieldProperties = async(index, e) => {
+        if(e.target.name === 'value'){
+            let newProperties = [...formProperties];
+            newProperties[index][e.target.name] = e.target.value;
+            setFormProperties(newProperties);
+        }else{
+            const files = e.target.files;
+            const data = new FormData();
+            data.append("file", files[0]);
+            data.append("upload_preset", "lccyzc02");
+            try{
+                const res = await axios.post('https://api.cloudinary.com/v1_1/dnesdnfxy/image/upload',data);
+                let newProperties = [...formProperties];
+                newProperties[index][e.target.name] = res.data.url;
+                setFormProperties(newProperties);
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+    }
+
+    const [search, setSearch] = React.useState('inicial');
+
+    useEffect(() => {
+        if(search===''){
+            setSearch('inicial')
+        }else{
+          get(search);  
+        }
+    },[search])
+
 
   return (
     <>
@@ -269,12 +354,22 @@ const Clients = () => {
         <Loader display={loader}/>
         <div style={{padding:'5px'}}>
             <span style={{fontSize:'20px'}}>Clients</span>
-            <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
-            <AddIcon />
-            </Fab>
+            <FormControl fullWidth={true} style={{marginTop:'10px',marginBottom:'20px'}}>
+                    <TextField autoComplete='off'
+                    label="Type the full name of any client"
+                    name="search"
+                    onChange={e => setSearch(e.target.value)} 
+                    />
+            </FormControl>
+            {show
+                ?<Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
+                    <AddIcon />
+                </Fab>
+                :null
+            }
         </div>
         {show
-            ?<TableClient editData={editData} showData={showData}/>
+            ? <TableClient editData={editData} showData={showData} createAccount={createAccount} toast={toast}/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}
@@ -292,8 +387,20 @@ const Clients = () => {
                     creditDetail={creditDetail}
                     type={type}
                     setType={setType}
+                    handleClose={handleClose}
+                    handleMortgage={handleMortgage}
+                    formMortgage={formMortgage}
+                    updateFieldGuarantees={updateFieldGuarantees}
+                    formGuarantees={formGuarantees}
+                    updateFieldProperties={updateFieldProperties}
+                    formProperties={formProperties}
                   />
-                :null
+                :<Accounts
+                    dialog={dialog}
+                    setDialog={setDialog}
+                    handleClose={handleClose}
+                    id={selectId}
+                />
         }
         <ModalClients
           form={formClient}

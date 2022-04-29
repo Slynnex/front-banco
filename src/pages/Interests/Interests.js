@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -30,19 +30,31 @@ import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 import { Context } from '../../context/Interests/InterestsContext'
 
 const initialForm = {
-  name:'',
-  debterms:'',
-  interests:'',
-  password:'',
-  extra_charge:'',
-  id:null
+  name: '',
+  debterms: '',
+  interest: '',
+  extra_charge: '',
+  id: null
+}
+
+const validationForm = {
+  name: false,
+  debterms: false,
+  interest: false,
+  extra_charge: false,
+}
+
+const message = {
+  title: 'Deleted',
+  description: 'Are you sure to delete'
 }
 
 const Interests = () => {
-  const {saveInterests, getInterests, state, deleteInterests} = useContext(Context);
+  const { saveInterests, getInterests, state, deleteInterests } = useContext(Context);
 
   //info form
-  const [form,setForm] = useState(initialForm)
+  const [form, setForm] = useState(initialForm)
+  const [validate, setValidate] = useState(validationForm)
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -61,31 +73,57 @@ const Interests = () => {
   const notify = (message) => toast.success(message)
   const notifyE = (message) => toast.error(message)
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     setForm({
-      ...form,[e.target.name]:e.target.value
+      ...form, [e.target.name]: e.target.value
     })
+    // console.log(form)
+    // console.log(form)
+
+    if (form.name.length < 1 && form.debterms < 1 && form.interest < 1 && form.extra_charge < 1) {
+      setValidate({ name: false, debterms: false, interest: false, extra_charge: false })
+    } else {
+      validateForm(form)
+    }
   }
 
-  const editData = (id)=>{
+  const validateForm = (form) => {
+    const text = /^([a-zñA-ZÑ0-9\s]){0,55}[a-zñA-ZÑ0-9]$/
+    const value = /^[0-9]+([.][0-9]+)?$/
+    let name = text.test(form.name) ? true : false
+    let num = value.test(form.debterms) ? true : false
+    let interest = value.test(form.interest) ? true : false
+    let extra = value.test(form.extra_charge) ? true : false
+
+    // console.log(num);
+    setValidate({ name: name, debterms: num, interest: interest, extra_charge: extra })
+  }
+
+
+  const editData = (id) => {
     setAction('Update')
-    let [interest] = state.interests.filter(el=>el.id===id)
+    let [interest] = state.interests.filter(el => el.id === id)
     setForm(interest)
+    // console.log([interest])
     handleOpen()
+    setValidate({ name: true, debterms: true, interest: true, extra_charge: true })
+
   }
 
-  const setDataToDelete = (id) =>{
-    let [interest] = state.interests.filter(el=>el.id===id)
+  const setDataToDelete = (id) => {
+    let [interest] = state.interests.filter(el => el.id === id)
     handleOpenD()
     setInterestD(interest)
   }
 
+
   const deleteData = () =>{
     deleteInterests({id: interestD.id, handleReset, setLoader});
     toast.success('Interest deleted');
+
   }
 
-  const handleReset = (e)=>{
+  const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
@@ -96,19 +134,26 @@ const Interests = () => {
       toast.success('Interest updated');
     }
   }
-    
+
   useEffect(() => {
-    getInterests({setLoader})
+    getInterests({ setLoader })
   }, [])
 
 
   return (
     <>
-    <ToastContainer autoClose={2000}/>
-      <Loader display={loader}/>
-      <div style={{padding:'5px'}}>
-        <span style={{fontSize:'20px'}}>Ejecutivos</span>
-        <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+      <ToastContainer autoClose={2000} />
+      <Loader display={loader} />
+      <div style={{ padding: '5px' }}>
+        <span style={{ fontSize: '20px' }}>Interests</span>
+        <Fab color="primary" aria-label="add" size="small"
+          onClick={() => {
+            handleOpen();
+            setAction('Create');
+            setForm(initialForm)
+            setValidate({ name: true, debterms: true, interest: true, extra_charge: true })
+          }}
+          style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
         </Fab>
       </div>
@@ -125,24 +170,24 @@ const Interests = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.interests !== null && state.interests.map((ex,index) => (
+            {state.interests !== null && state.interests.map((ex, index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{index+1}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell component="th" scope="row">
                   {ex.name}
                 </TableCell>
                 <TableCell>{ex.debterms}</TableCell>
                 <TableCell>{ex.interest}</TableCell>
                 <TableCell>{ex.extra_charge}</TableCell>
-                <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
-                    <EditIcon size="small"/>
+                <TableCell style={{ margin: '5px' }}>
+                  <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
+                    <EditIcon size="small" />
                   </IconButton>
-                  <IconButton aria-label="delete" size="small" onClick={(e)=>setDataToDelete(ex.id)}>
-                    <DeleteIcon/>
+                  <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -151,20 +196,24 @@ const Interests = () => {
         </Table>
       </TableContainer>
       {/* modal */}
-      
+
       <ModalInterests
-          form={form}
-          handleChange = {handleChange}
-          action={action}
-          saveData={saveInterests}
-          handleClose={handleClose}
-          handleReset={handleReset}
-          setLoader = {setLoader}
-          open={open}
-        />
+        form={form}
+        handleChange={handleChange}
+        action={action}
+        saveData={saveInterests}
+        handleClose={handleClose}
+        handleReset={handleReset}
+        setLoader={setLoader}
+        open={open}
+        validate={validate}
+
+      />
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={interestD.name}
         deleteData={deleteData}
       />

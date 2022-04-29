@@ -58,7 +58,6 @@ const Login = () => {
           localStorage.setItem('username', loginInfo.userid);
           localStorage.setItem("token", data.token);
           const decoded = jwt_decode(data.token);
-          console.log(decoded)
 
           if(decoded.session.rol === 'manager'){
             navigate('/manager/', { replace: true });
