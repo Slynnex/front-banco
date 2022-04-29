@@ -203,7 +203,11 @@ const Clients = () => {
         try{
             setLoader('flex')
             let clientS = await server.put(`/clients/${formClient.id}`,formClient)
-            get()
+            if(search===''){
+                setSearch('inicial')
+            }else{
+              get(search);  
+            }
             setLoader('none')
             handleCloseM()
         }catch(error){
@@ -220,7 +224,6 @@ const Clients = () => {
             let clientS = await server.get(`/clients/${id}`)
             setDataClient(clientS.data.data)
             handleOpenS()
-            get()
             setLoader('none')
         }catch(error){
             console.log(error)
@@ -355,7 +358,7 @@ const Clients = () => {
             }
         </div>
         {show
-            ?<TableClient editData={editData} showData={showData} createAccount={createAccount}/>
+            ? <TableClient editData={editData} showData={showData} createAccount={createAccount}/>
             :create
                 ?<TabsClients
                     handleClient={handleClient}
