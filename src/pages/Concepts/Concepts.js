@@ -78,7 +78,7 @@ export default function Concepts() {
   }
 
   const validateForm = (form) => {
-    const text = /^([a-zñA-ZÑ0-9\s]){5,55}[a-zñA-ZÑ0-9]$/
+    const text = /^([a-zñA-ZÑ0-9\s]){2,55}[a-zñA-ZÑ0-9]$/
     let name = text.test(form.name) ? true : false
     // console.log(num);
     setValidate({ name: name })
@@ -87,21 +87,21 @@ export default function Concepts() {
   }
 
   // Edit concepts
-  const editData = (id) => {
-    setAction('Update');
-    let [editConcept] = state.concepts.filter(el => el.id === id);
-    setForm(editConcept);
-    handleOpen();
-    // console.log("edit Concept: ");
-    // console.log(editConcept);
-  }
+  // const editData = (id) => {
+  //   setAction('Update');
+  //   let [editConcept] = state.concepts.filter(el => el.id === id);
+  //   setForm(editConcept);
+  //   handleOpen();
+  //   // console.log("edit Concept: ");
+  //   // console.log(editConcept);
+  // }
 
-  // Delete data
-  const setDataToDelete = (id) => {
-    let [delConcept] = state.concepts.filter(el => el.id === id)
-    handleOpenD()
-    setConceptD(delConcept)
-  }
+  // // Delete data
+  // const setDataToDelete = (id) => {
+  //   let [delConcept] = state.concepts.filter(el => el.id === id)
+  //   handleOpenD()
+  //   setConceptD(delConcept)
+  // }
 
   const deleteData = () => {
     deleteConcept({ id: conceptD.id, handleReset, setLoader });
@@ -122,13 +122,13 @@ export default function Concepts() {
     handleClose()
     handleCloseD()
     setForm(initialForm)
-    if(action === 'Create'){
+    if (action === 'Create') {
       toast.success('Commision created');
     }
-    if(action === 'Update'){
+    if (action === 'Update') {
       toast.success('Commision updated');
     }
-    if(action === 'Delete'){
+    if (action === 'Delete') {
       toast.success('Commision deleted');
     }
     console.log(action);
@@ -152,13 +152,13 @@ export default function Concepts() {
           <AddIcon />
         </Fab>
       </div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} style={{ marginTop: 20, minWidth: 250, maxWidth: 500 }}>
+        <Table sx={{ maxWidth: 550 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
               <TableCell>Concept</TableCell>
-              <TableCell>Actions</TableCell>
+              {/* <TableCell>Actions</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -170,14 +170,14 @@ export default function Concepts() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell component="th" scope="row">
                   {`${ex.name}`} </TableCell>
-                <TableCell style={{ margin: '5px' }}>
+                {/* <TableCell style={{ margin: '5px' }}>
                   <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
                     <EditIcon size="small" />
                   </IconButton>
                   <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
                     <DeleteIcon />
                   </IconButton>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
