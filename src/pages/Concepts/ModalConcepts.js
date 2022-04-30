@@ -55,11 +55,11 @@ const ModalConcepts = ({ form, handleChange, action, saveData, handleClose, open
           {/* <InputLabel variant="standard" required={true}>Concept</InputLabel>
           <Input id="name" name="name" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} /> */}
 
-          <TextField id="name" name="name" label="Concept *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Concept must be greater than 6 characters"} />
+          <TextField id="name" name="name" label="Concept *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Concept must be greater than 4 characters"} />
         </FormControl>
 
         <Grid>
-          {form.name.length >= 1 ?
+          {form.name.length >= 4 ?
             <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
               <SaveIcon />
             </Fab>
