@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../styles/clients.css'
-import { FormControl, InputLabel, Input, TextField} from '@material-ui/core'
+import { FormControl, InputLabel, Input, TextField, MenuItem, Select} from '@material-ui/core'
 
 const TabBeneficiaries = ({form,handleForm}) => {
 
@@ -29,10 +29,20 @@ const TabBeneficiaries = ({form,handleForm}) => {
              </div>
          </div>
          <div className='row'>
-            <FormControl>
+
+            <FormControl className='item gender'>
                 <InputLabel variant="standard" required={true}>Relation</InputLabel>
-                <Input id="relation" name="relation" aria-describedby="relation" autoComplete='off' value={form.relation} onChange={handleForm}/> 
+                <Select id="relation" name="relation"  onChange={handleForm} value={form.relation}>
+                    <MenuItem value={"Father"}>Father</MenuItem>
+                    <MenuItem value={"Mother"}>Mother</MenuItem>
+                    <MenuItem value={"Brother"}>Brother</MenuItem>
+                    <MenuItem value={"Grandfather"}>Grandfather</MenuItem>
+                    <MenuItem value={"Cousin"}>Cousin</MenuItem>
+                    <MenuItem value={"Uncle"}>Uncle</MenuItem>
+                    <MenuItem value={"Friend"}>Friend</MenuItem>
+                </Select>
             </FormControl>
+
             <div className='item'>
             <FormControl className='item'>
                 <InputLabel variant="standard" required={true}>Percentage</InputLabel>
