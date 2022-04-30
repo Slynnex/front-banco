@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -30,18 +30,18 @@ import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 import { Context } from '../../context/CreditDetails/CreditDetailsContext'
 
 const initialForm = {
-  name:'',
-  debterms:'',
-  interests:'',
-  extra_charge:'',
-  id:null
+  name: '',
+  debterms: '',
+  interests: '',
+  extra_charge: '',
+  id: null
 }
 
 const CreditDetails = () => {
-  const { saveCreditDetails,getCreditDetails, state, deleteCreditDetails} = useContext(Context);
+  const { saveCreditDetails, getCreditDetails, state, deleteCreditDetails } = useContext(Context);
 
   //info form
-  const [form,setForm] = useState(initialForm)
+  const [form, setForm] = useState(initialForm)
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -60,21 +60,21 @@ const CreditDetails = () => {
   const notify = (message) => toast.success(message)
   const notifyE = (message) => toast.error(message)
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     setForm({
-      ...form,[e.target.name]:e.target.value
+      ...form, [e.target.name]: e.target.value
     })
   }
 
-  const editData = (id)=>{
+  const editData = (id) => {
     setAction('Update')
-    let [creditdetail] = state.creditDetails.filter(el=>el.id===id)
+    let [creditdetail] = state.creditDetails.filter(el => el.id === id)
     setForm(creditdetail)
     handleOpen()
   }
 
-  const setDataToDelete = (id) =>{
-    let [creditdetail] = state.creditDetails.filter(el=>el.id===id)
+  const setDataToDelete = (id) => {
+    let [creditdetail] = state.creditDetails.filter(el => el.id === id)
     handleOpenD()
     setCreditDetailD(creditdetail)
   }
@@ -84,7 +84,7 @@ const CreditDetails = () => {
     toast.success('Credits details deleted');
   }
 
-  const handleReset = (e)=>{
+  const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
@@ -95,19 +95,19 @@ const CreditDetails = () => {
       toast.success('Credits details updated');
     }
   }
-    
+
   useEffect(() => {
-    getCreditDetails({setLoader})
+    getCreditDetails({ setLoader })
   }, [])
 
 
   return (
     <>
-    <ToastContainer autoClose={2000}/>
-      <Loader display={loader}/>
-      <div style={{padding:'5px'}}>
-        <span style={{fontSize:'20px'}}>Ejecutivos</span>
-        <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+      <ToastContainer autoClose={2000} />
+      <Loader display={loader} />
+      <div style={{ padding: '5px' }}>
+        <span style={{ fontSize: '20px' }}>Credit Details</span>
+        <Fab color="primary" aria-label="add" size="small" onClick={() => { handleOpen(); setAction('Create'); setForm(initialForm) }} style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
         </Fab>
       </div>
@@ -124,24 +124,24 @@ const CreditDetails = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.interests !== null && state.creditDetails.map((ex,index) => (
+            {state.interests !== null && state.creditDetails.map((ex, index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{index+1}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell component="th" scope="row">
                   {ex.name}
                 </TableCell>
                 <TableCell>{ex.debterms}</TableCell>
                 <TableCell>{ex.interest}</TableCell>
                 <TableCell>{ex.extra_charge}</TableCell>
-                <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
-                    <EditIcon size="small"/>
+                <TableCell style={{ margin: '5px' }}>
+                  <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
+                    <EditIcon size="small" />
                   </IconButton>
-                  <IconButton aria-label="delete" size="small" onClick={(e)=>setDataToDelete(ex.id)}>
-                    <DeleteIcon/>
+                  <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -150,24 +150,24 @@ const CreditDetails = () => {
         </Table>
       </TableContainer>
       {/* modal */}
-      
+
       <ModalCreditDetails
-          form={form}
-          handleChange = {handleChange}
-          action={action}
-          saveData={saveCreditDetails}
-          handleClose={handleClose}
-          handleReset={handleReset}
-          setLoader = {setLoader}
-          open={open}
-        />
+        form={form}
+        handleChange={handleChange}
+        action={action}
+        saveData={saveCreditDetails}
+        handleClose={handleClose}
+        handleReset={handleReset}
+        setLoader={setLoader}
+        open={open}
+      />
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
         name={creditDetailD.name}
         deleteData={deleteData}
       />
-    </> 
+    </>
   )
 }
 
