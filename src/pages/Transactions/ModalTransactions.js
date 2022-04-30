@@ -163,6 +163,7 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
                         <MenuItem value={newConcepts[index].id} key = {concepts[index].id}>{newConcepts[index].name}</MenuItem>
                     )
                 })}
+                <MenuItem value={4} key = {4}>opening</MenuItem>
             </Select>
             </FormControl>
             <FormControl fullWidth={true}>
