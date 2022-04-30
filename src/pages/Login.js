@@ -25,7 +25,7 @@ const Login = () => {
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
   const [decoded, setDecoded] = React.useState('');
   const [clicked, setClicked] = React.useState(false);
-  const [token, setToken] = React.useState('');
+ 
 
   useState(()=>{
     if(!localStorage.getItem('token')){
@@ -60,7 +60,6 @@ const Login = () => {
           localStorage.setItem('username', loginInfo.userid);
           localStorage.setItem("token", data.token);
           setDecoded(jwt_decode(data.token));
-          setToken(data.token);
         }
         setLoader('none')
     })
