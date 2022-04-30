@@ -21,10 +21,12 @@ import Loader from '../../assets/Loader'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 
 //Modal
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 import ModalConcepts from './ModalConcepts'
+import ModalConceptsDescription from './ModalConceptsDescription'
 
 // Form: new concept
 const initialForm = {
@@ -52,11 +54,16 @@ export default function Concepts() {
   //modal state vars
   const [open, setOpen] = useState(false)
   const [openD, setOpenD] = useState(false)
+  const [openV, setOpenV] = useState(false)
   const [conceptD, setConceptD] = useState(initialForm)
-  const handleOpenD = () => setOpenD(true)
-  const handleCloseD = () => setOpenD(false)
+
   const handleOpen = () => setOpen(true)
+  const handleOpenD = () => setOpenD(true)
+  const handleOpenV = () => setOpenV(true)
+
   const handleClose = () => setOpen(false)
+  const handleCloseD = () => setOpenD(false)
+  const handleCloseV = () => setOpenV(false)
 
   //loading state
   const [loader, setLoader] = useState('none');
@@ -103,6 +110,14 @@ export default function Concepts() {
   //   setConceptD(delConcept)
   // }
 
+  const visibility = (id) => {
+    // console.log(id);
+    // setAction('Information');
+    let [showConcept] = state.concepts.filter(el => el.id === id);
+    setForm(showConcept);
+    handleOpenV()
+  }
+
   const deleteData = () => {
     deleteConcept({ id: conceptD.id, handleReset, setLoader });
   }
@@ -121,6 +136,7 @@ export default function Concepts() {
   const handleReset = (e) => {
     handleClose()
     handleCloseD()
+    handleCloseV()
     setForm(initialForm)
     if (action === 'Create') {
       toast.success('Commision created');
@@ -178,6 +194,11 @@ export default function Concepts() {
                     <DeleteIcon />
                   </IconButton>
                 </TableCell> */}
+                <TableCell>
+                  <IconButton aria-label="visibility" size="small" onClick={(e) => visibility(ex.id)}>
+                    <VisibilityIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -194,6 +215,16 @@ export default function Concepts() {
         setLoader={setLoader}
         open={open}
         validate={validate}
+      />
+
+      <ModalConceptsDescription
+        form={form}
+        handleChange={handleChange}
+        saveData={saveConcepts}
+        handleClose={handleCloseV}
+        handleReset={handleReset}
+        setLoader={setLoader}
+        open={openV}
       />
 
       <Alert_Dialog
