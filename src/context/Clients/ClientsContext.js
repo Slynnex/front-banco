@@ -39,7 +39,7 @@ const save = dispatch => async({form,setCreate,setDialog,setShow,type}) => {
 
 const refreshData = async ()=>{
     try{
-        const response = await server.get('/clients')
+        const response = await server.get(`/clients/index/name/inicial`)
         return  response.data.data;
 
     }catch(err){

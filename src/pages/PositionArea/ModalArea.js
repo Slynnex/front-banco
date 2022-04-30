@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Modal from '@material-ui/core/Modal'
 import Fab from '@material-ui/core/Fab'
+import { toast } from 'react-toastify'
 
 //Icons
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -18,7 +19,6 @@ import SaveIcon from '@material-ui/icons/Save'
 import { Context } from '../../context/PositionArea/PositionAreaContext'
 
 const ModalArea = ({ name, openA, setOpenA, action, setLoader, setName, setPositionId, PositionId, id }) => {
-
 
   const { state, addArea, editArea } = useContext(Context)
 
@@ -42,8 +42,10 @@ const ModalArea = ({ name, openA, setOpenA, action, setLoader, setName, setPosit
   const saveData = () => {
     if (action === 'Create') {
       addArea({ name, PositionId, setLoader, setOpenA });
+      toast.success('Area created');
     } else {
       editArea({ name, PositionId, id, setLoader, setOpenA })
+      toast.success('Area updated');
     }
   }
   return (

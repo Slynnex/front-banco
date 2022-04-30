@@ -51,7 +51,6 @@ const Login = () => {
     axios.post('http://localhost:9000/api/v1/login',loginInfo)
     .then(({data}) =>{
         if(!data.token){
-          console.log(data)
           setErrorS({...errorS,display:'block'});
         }else{
           setUser(data);

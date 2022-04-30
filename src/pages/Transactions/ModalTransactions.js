@@ -32,6 +32,7 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
     const [display, setDisplay] = React.useState('flex');
     const [accountType, setaccountType] = React.useState('');
     const [newConcepts, setnewConcepts] = React.useState([]);
+    const [block, setBlock] = React.useState(true);
 
 
 // Search account in database with the card number
@@ -42,10 +43,12 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
                 setFlag(true);
                 setAccount('');
                 setaccountType('');
+                setBlock(true);
             } else{
                 setAccount(response.data.data.Account.Client);
                 setaccountType(response.data.data.Account.type);
                 setFlag(false);
+                setBlock(false);
             }
         })
         .catch(function (error) {
@@ -71,10 +74,10 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
     React.useEffect(()=>{
         if(errors === 'invalid card number or nip'){
             setFlag2(true);
-        } 
+        }
         if(errors === 'Invalid amount'){
             setFlag3(true);
-        } 
+        }
         if(typeof errors === 'string'){
             if(errors.length > 0){
                 toast.error(errors);
@@ -160,6 +163,7 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
                         <MenuItem value={newConcepts[index].id} key = {concepts[index].id}>{newConcepts[index].name}</MenuItem>
                     )
                 })}
+                <MenuItem value={4} key = {4}>opening</MenuItem>
             </Select>
             </FormControl>
             <FormControl fullWidth={true}>
@@ -234,7 +238,7 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
             <></>
             }
             <Grid>
-            <Fab onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
+            <Fab onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} disabled={block}>
                 <SaveIcon />
             </Fab>
             <Fab onClick={()=>{handleClose(); setAccount(''); setaccountType('')}} color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>

@@ -14,28 +14,88 @@ import Modal from '@material-ui/core/Modal'
 import Fab from '@material-ui/core/Fab'
 import CancelIcon from '@material-ui/icons/Cancel'
 import SaveIcon from '@material-ui/icons/Save'
+import { toast } from 'react-toastify'
 
 const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     border:'none'
   }));
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 700,
+    bgcolor: 'background.paper',
+    border: '2px solid #cecece',
+    borderRadius:10,
+    boxShadow: '10px 5px 5px',
+    p: 4,
+    };
 
 const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handleReset,setLoader}) => {
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 700,
-        bgcolor: 'background.paper',
-        border: '2px solid #cecece',
-        borderRadius:10,
-        boxShadow: '10px 5px 5px',
-        p: 4,
-        };
-    
-  return (
+    const [block, setBlock] = React.useState(true);
 
+        const handleBlur = (e)=>{
+            if(form.name.lengt === 0 || form.lastname.length === 0 || form.gender === 0 || form.street.length === 0 || form.number_ext === 0 || form.colony.length === 0 || form.postalcode === 0 || form.city.length === 0 || form.municipality.length === 0 || form.email.length === 0 || form.state.length === 0 || form.celphone.length === 0 || form.landline.length === 0 || form.curp.length === 0 || form.rfc.length === 0 || form.no_ine.length === 0){
+                toast.error('Complete all the fields');
+                setBlock(true);
+            }else{
+                setBlock(false);
+            }
+            if(e.target.name === 'no_ine'){
+                if(e.target.value.length !== 18){
+                    toast.error('INE number has to be 18 items long');
+                    setBlock(true);
+                }
+                
+            }
+            if(e.target.name === 'curp'){
+                if(e.target.value.length !== 18 ){
+                    toast.error('CURP has to be 18 items long');
+                    setBlock(true);
+                }
+            }
+            if(e.target.name === 'rfc'){
+                if(e.target.value.length < 12 || e.target.value.length > 13 ){
+                    toast.error('RFC has to be between 12 and 13 items long');
+                    setBlock(true);
+                }
+            }
+            if(e.target.name === 'landline' || e.target.name === 'celphone' || e.target.name === 'postalcode' || e.target.name === 'number_ext'){
+                if(isNaN(parseInt(e.target.value))){
+                    toast.error('Write only numbers in this field');
+                    setBlock(true);
+                }
+            } 
+
+        }
+        const actions = ()=>{
+            saveData({form,id:form.id,setLoader,handleReset,action})
+            console.log(form);
+            console.log('actions');
+        }
+        const initialClientForm = {
+            name: "",
+            lastname: "",
+            gender: 0,
+            street: "",
+            number_ext: 0,
+            colony: "",
+            postalcode: 0,
+            city: "",
+            municipality: "",
+            state: "",
+            celphone: "",
+            landline: "",
+            curp: "",
+            rfc: "",
+            no_ine: "",
+            email: "",
+            id:null,
+    }
+    //React.useEffect
+  return (
     <Modal
         open={open}
         onClose={handleClose}
@@ -44,7 +104,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
     >
         <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-            {`${action} Cuts`}
+            {`${action} Client`}
             </Typography>
             <Grid container>
                 <Grid item md={4}>
@@ -78,7 +138,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Email</InputLabel>
-                        <Input type="email" id="email" name="email" aria-describedby="email" autoComplete='off' onChange={handleChange} value={form.email}/> 
+                        <Input type="email" id="email" name="email" aria-describedby="email" autoComplete='off' onChange={handleChange} value={form.email} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>              
                 </Grid>
@@ -86,7 +146,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Street</InputLabel>
-                        <Input type="street" id="street" name="street" aria-describedby="street" autoComplete='off' onChange={handleChange} value={form.street}/> 
+                        <Input type="text" id="street" name="street" aria-describedby="street" autoComplete='off' onChange={handleChange} value={form.street} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -94,7 +154,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Number ext</InputLabel>
-                        <Input type="number" id="number_ext" name="number_ext" aria-describedby="number_ext" autoComplete='off'  onChange={handleChange} value={form.number_ext}/> 
+                        <Input type="text" id="number_ext" name="number_ext" aria-describedby="number_ext" autoComplete='off'  onChange={handleChange} value={form.number_ext} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -102,7 +162,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Colony</InputLabel>
-                        <Input type="text" id="colony" name="colony" aria-describedby="colony" autoComplete='off'  onChange={handleChange} value={form.colony}/> 
+                        <Input type="text" id="colony" name="colony" aria-describedby="colony" autoComplete='off'  onChange={handleChange} value={form.colony} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -110,7 +170,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Postal Code</InputLabel>
-                        <Input type="number" id="postalcode" name="postalcode" aria-describedby="postalcode" autoComplete='off'  onChange={handleChange} value={form.postalcode}/> 
+                        <Input type="text" id="postalcode" name="postalcode" aria-describedby="postalcode" autoComplete='off'  onChange={handleChange} value={form.postalcode} onBlur={handleBlur}/> 
                         </FormControl>
                        
                     </div>
@@ -119,7 +179,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>City</InputLabel>
-                        <Input type="text" id="city" name="city" aria-describedby="city" autoComplete='off'  onChange={handleChange} value={form.city}/> 
+                        <Input type="text" id="city" name="city" aria-describedby="city" autoComplete='off'  onChange={handleChange} value={form.city} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -127,7 +187,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Municipality</InputLabel>
-                        <Input type="text" id="municipality" name="municipality" aria-describedby="municipality" autoComplete='off'  onChange={handleChange} value={form.municipality}/> 
+                        <Input type="text" id="municipality" name="municipality" aria-describedby="municipality" autoComplete='off'  onChange={handleChange} value={form.municipality} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -135,23 +195,15 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>State</InputLabel>
-                        <Input type="text" id="state" name="state" aria-describedby="state" autoComplete='off'  onChange={handleChange} value={form.state}/> 
+                        <Input type="text" id="state" name="state" aria-describedby="state" autoComplete='off'  onChange={handleChange} value={form.state} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
                 <Grid item md={4}>
                     <div>
                         <FormControl>
-                        <InputLabel variant="standard" required={true}>Celphone</InputLabel>
-                        <Input type="text" id="celphone" name="celphone" aria-describedby="celphone" autoComplete='off'  onChange={handleChange} value={form.celphone}/> 
-                        </FormControl>
-                    </div>
-                </Grid>
-                <Grid item md={4}>
-                    <div>
-                        <FormControl>
-                        <InputLabel variant="standard" required={true}>Landline</InputLabel>
-                        <Input type="number" id="landline" name="landline" aria-describedby="landline" autoComplete='off'  onChange={handleChange} value={form.landline}/> 
+                        <InputLabel variant="standard" required={true}>Cellphone</InputLabel>
+                        <Input type="text" id="celphone" name="celphone" aria-describedby="celphone" autoComplete='off'  onChange={handleChange} value={form.celphone} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -159,7 +211,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>Landline</InputLabel>
-                        <Input type="text" id="landline" name="landline" aria-describedby="b200p" autoComplete='off'  onChange={handleChange} value={form.landline}/> 
+                        <Input type="text" id="landline" name="landline" aria-describedby="b200p" autoComplete='off'  onChange={handleChange} value={form.landline} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -167,7 +219,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>CURP</InputLabel>
-                        <Input type="text" id="curp" name="curp" aria-describedby="curp" autoComplete='off'  onChange={handleChange} value={form.curp}/> 
+                        <Input type="text" id="curp" name="curp" aria-describedby="curp" autoComplete='off'  onChange={handleChange} value={form.curp} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -175,7 +227,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>RFC</InputLabel>
-                        <Input type="text" id="rfc" name="rfc" aria-describedby="rfc" autoComplete='off'  onChange={handleChange} value={form.rfc}/> 
+                        <Input type="text" id="rfc" name="rfc" aria-describedby="rfc" autoComplete='off'  onChange={handleChange} value={form.rfc} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
@@ -183,18 +235,15 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                     <div>
                         <FormControl>
                         <InputLabel variant="standard" required={true}>No INE</InputLabel>
-                        <Input type="number" id="no_ine" name="no_ine" aria-describedby="no_ine" autoComplete='off'  onChange={handleChange} value={form.no_ine}/> 
+                        <Input type="text" id="no_ine" name="no_ine" aria-describedby="no_ine" autoComplete='off'  onChange={handleChange} value={form.no_ine} onBlur={handleBlur}/> 
                         </FormControl>
                     </div>
                 </Grid>
                 <Grid item md={12}>
-                    {/* <div style={{marginTop:'20px'}}>
-                        <span style={{color:'red'}}>The total system outcome is :</span> <span><b>{total_system}</b></span>
-                    </div> */}
                 </Grid>    
             </Grid>
             <Grid>
-                <Fab onClick={() => saveData({form,id:form.id,setLoader,handleReset,action})} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
+                <Fab disabled={block} onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
                     <SaveIcon />
                 </Fab>
                 <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>

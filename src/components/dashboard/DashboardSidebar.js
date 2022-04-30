@@ -40,6 +40,7 @@ const DashboardSidebar = (props) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     navigate('/', { replace: true });
+    window.location.reload();
   }
 
   return (

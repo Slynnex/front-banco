@@ -116,12 +116,19 @@ const Denominations = () => {
 
   const deleteData = () => {
     deleteDenomination({ id: denomina.id, handleReset, setLoader });
+    toast.success('Denomination deleted');
   }
 
   const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Create'){
+      toast.success('Denomination created');
+    }
+    if(action === 'Update'){
+      toast.success('Denomination updated');
+    }
 
   }
 
