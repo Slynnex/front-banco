@@ -85,7 +85,6 @@ export default function Dashboard() {
 
   return (
     <>
-    {console.log(account)}
     <div style={{borderRadius:"10px",boxShadow:"5px 5px 10px black",width:"100%"}}>
       <Chart
       chartType="BarChart"
