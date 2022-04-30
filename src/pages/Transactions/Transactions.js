@@ -72,6 +72,11 @@ const Transactions = () => {
       ConceptsState.getConcepts({setLoader});
     }, [search]);
 
+    const formatDate = (date) => {
+      let dateF = new Date(date)
+      return dateF.toLocaleString().toString().slice(0,-3)
+    }
+
     return (
       <>
         <ToastContainer />
@@ -98,9 +103,10 @@ const Transactions = () => {
                 <TableCell>Transaction concept</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Account Number</TableCell>
-                <TableCell>Card Number</TableCell>
-                <TableCell>Card Type</TableCell>
+                <TableCell>Number</TableCell>
+                <TableCell>Type</TableCell>
                 <TableCell>Date</TableCell>
+                <TableCell>Executive</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -121,7 +127,13 @@ const Transactions = () => {
                     <TableCell>{ex.Card.Account.no_acc}</TableCell>
                     <TableCell>{ex.Card.card_number}</TableCell>
                     <TableCell>{ex.Card.Account.type}</TableCell>
-                    <TableCell>{ex.date}</TableCell>
+                    <TableCell>{
+                     formatDate(ex.date)
+                    }</TableCell>
+                    <TableCell>
+                      {ex.Executive.name}<br></br>
+                      {ex.Executive.lastname}
+                    </TableCell>
 
 
                   </TableRow>
