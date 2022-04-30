@@ -159,6 +159,7 @@ const Clients = () => {
     }
 
     const handleClient = (e) => {
+        console.log(e.target)
         setFormClient({
             ...formClient,[e.target.name]:e.target.value
         })
