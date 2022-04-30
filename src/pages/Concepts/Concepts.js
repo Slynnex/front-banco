@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
-import Fab from '@material-ui/core/Fab'
+// import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,14 +18,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../../assets/Loader'
 
 //icons
-import DeleteIcon from '@material-ui/icons/Delete'
-import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
+// import DeleteIcon from '@material-ui/icons/Delete'
+// import AddIcon from '@material-ui/icons/Add'
+// import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 
 //Modal
-import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
-import ModalConcepts from './ModalConcepts'
+// import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
+// import ModalConcepts from './ModalConcepts'
 import ModalConceptsDescription from './ModalConceptsDescription'
 
 // Form: new concept
@@ -34,14 +34,14 @@ const initialForm = {
   name: ''
 }
 
-const validationForm = {
-  name: false
-}
+// const validationForm = {
+//   name: false
+// }
 
-const message = {
-  title: 'Deleted',
-  description: 'Are you sure to delete'
-}
+// const message = {
+//   title: 'Deleted',
+//   description: 'Are you sure to delete'
+// }
 
 export default function Concepts() {
 
@@ -49,20 +49,20 @@ export default function Concepts() {
 
   //info form
   const [form, setForm] = useState(initialForm);
-  const [validate, setValidate] = useState(validationForm)
+  // const [validate, setValidate] = useState(validationForm)
 
   //modal state vars
-  const [open, setOpen] = useState(false)
-  const [openD, setOpenD] = useState(false)
+  // const [open, setOpen] = useState(false)
+  // const [openD, setOpenD] = useState(false)
   const [openV, setOpenV] = useState(false)
-  const [conceptD, setConceptD] = useState(initialForm)
+  // const [conceptD, setConceptD] = useState(initialForm)
 
-  const handleOpen = () => setOpen(true)
-  const handleOpenD = () => setOpenD(true)
+  // const handleOpen = () => setOpen(true)
+  // const handleOpenD = () => setOpenD(true)
   const handleOpenV = () => setOpenV(true)
 
-  const handleClose = () => setOpen(false)
-  const handleCloseD = () => setOpenD(false)
+  // const handleClose = () => setOpen(false)
+  // const handleCloseD = () => setOpenD(false)
   const handleCloseV = () => setOpenV(false)
 
   //loading state
@@ -76,22 +76,22 @@ export default function Concepts() {
       ...form, [e.target.name]: e.target.value
     })
 
-    if (form.name.length < 1) {
-      setValidate({ name: false })
-    } else {
-      validateForm(form)
-    }
+    // if (form.name.length < 1) {
+    //   setValidate({ name: false })
+    // } else {
+    //   validateForm(form)
+    // }
 
   }
 
-  const validateForm = (form) => {
-    const text = /^([a-zñA-ZÑ0-9\s]){2,55}[a-zñA-ZÑ0-9]$/
-    let name = text.test(form.name) ? true : false
-    // console.log(num);
-    setValidate({ name: name })
-    // console.log(validate)
+  // const validateForm = (form) => {
+  //   const text = /^([a-zñA-ZÑ0-9\s]){2,55}[a-zñA-ZÑ0-9]$/
+  //   let name = text.test(form.name) ? true : false
+  //   // console.log(num);
+  //   setValidate({ name: name })
+  //   // console.log(validate)
 
-  }
+  // }
 
   // Edit concepts
   // const editData = (id) => {
@@ -118,9 +118,9 @@ export default function Concepts() {
     handleOpenV()
   }
 
-  const deleteData = () => {
-    deleteConcept({ id: conceptD.id, handleReset, setLoader });
-  }
+  // const deleteData = () => {
+  //   deleteConcept({ id: conceptD.id, handleReset, setLoader });
+  // }
 
   // use Effect
   useEffect(() => {
@@ -134,8 +134,8 @@ export default function Concepts() {
 
   // Handle reset
   const handleReset = (e) => {
-    handleClose()
-    handleCloseD()
+    // handleClose()
+    // handleCloseD()
     handleCloseV()
     setForm(initialForm)
     if (action === 'Create') {
@@ -156,7 +156,7 @@ export default function Concepts() {
       <Loader display={loader} />
       <div style={{ padding: '5px' }}>
         <span style={{ fontSize: '20px' }}>Concepts</span>
-        <Fab color="primary" aria-label="add" size="small"
+        {/* <Fab color="primary" aria-label="add" size="small"
           onClick={() => {
             handleOpen();
             setAction('Create');
@@ -166,7 +166,7 @@ export default function Concepts() {
           }}
           style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
-        </Fab>
+        </Fab> */}
       </div>
       <TableContainer component={Paper} style={{ marginTop: 20, minWidth: 250, maxWidth: 500 }}>
         <Table sx={{ maxWidth: 550 }} aria-label="simple table">
@@ -205,7 +205,7 @@ export default function Concepts() {
         </Table>
       </TableContainer>
       {/* modal */}
-      <ModalConcepts
+      {/* <ModalConcepts
         form={form}
         handleChange={handleChange}
         action={action}
@@ -215,7 +215,7 @@ export default function Concepts() {
         setLoader={setLoader}
         open={open}
         validate={validate}
-      />
+      /> */}
 
       <ModalConceptsDescription
         form={form}
@@ -227,14 +227,14 @@ export default function Concepts() {
         open={openV}
       />
 
-      <Alert_Dialog
+      {/* <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
         title={message.title}
         description={message.description}
         name={`${conceptD.name}`}
         deleteData={deleteData}
-      />
+      /> */}
 
     </>
   )
