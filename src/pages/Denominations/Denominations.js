@@ -7,8 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
-import Fab from '@material-ui/core/Fab'
+// import IconButton from '@material-ui/core/IconButton'
+// import Fab from '@material-ui/core/Fab'
 
 //alerts toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,13 +18,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../../assets/Loader'
 
 //icons
-import DeleteIcon from '@material-ui/icons/Delete'
-import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
+// import DeleteIcon from '@material-ui/icons/Delete'
+// import AddIcon from '@material-ui/icons/Add'
+// import EditIcon from '@material-ui/icons/Edit'
 
 //Modal
-import ModalDenominations from './ModalDenominations';
-import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
+// import ModalDenominations from './ModalDenominations';
+// import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 
 import { Context } from '../../context/Denominations/DenominationsContext'
 
@@ -34,11 +34,16 @@ const initialForm = {
   value: ''
 }
 
-const validationForm = {
-  id: false,
-  name: false,
-  value: false
-}
+// const validationForm = {
+//   id: false,
+//   name: false,
+//   value: false
+// }
+
+// const message = {
+//   title: 'Deleted',
+//   description: 'Are you sure to delete'
+// }
 
 const Denominations = () => {
 
@@ -47,25 +52,25 @@ const Denominations = () => {
 
   //info form
   const [form, setForm] = useState(initialForm)
-  const [validate, setValidate] = useState(validationForm)
+  // const [validate, setValidate] = useState(validationForm)
 
 
   //modal state vars
-  const [open, setOpen] = useState(false)
-  const [openD, setOpenD] = useState(false)
-  const [denomina, setDenomina] = useState(initialForm)
-  const handleOpenD = () => setOpenD(true)
-  const handleCloseD = () => setOpenD(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => {
-    setOpen(false)
-    setValidate({ id: true, name: true, value: true })
-    // console.log("close")
-  }
+  // const [open, setOpen] = useState(false)
+  // const [openD, setOpenD] = useState(false)
+  // const [denomina, setDenomina] = useState(initialForm)
+  // const handleOpenD = () => setOpenD(true)
+  // const handleCloseD = () => setOpenD(false)
+  // const handleOpen = () => setOpen(true)
+  // const handleClose = () => {
+  //   setOpen(false)
+  //   setValidate({ id: true, name: true, value: true })
+  //   // console.log("close")
+  // }
   //loading state
   const [loader, setLoader] = useState('none')
   //action state
-  const [action, setAction] = useState('Create')
+  // const [action, setAction] = useState('Create')
 
 
   const handleChange = (e) => {
@@ -73,52 +78,59 @@ const Denominations = () => {
       ...form, [e.target.name]: e.target.value
     })
     // console.log(form.id)
-    if (form.id.length < 1 && form.value.length < 1 && form.name.length < 1) {
-      setValidate({ id: false, name: false, value: false })
-    } else {
-      validateForm(form)
-    }
+    // if (form.id.length < 1 && form.value.length < 1 && form.name.length < 1) {
+    //   setValidate({ id: false, name: false, value: false })
+    // } else {
+    //   validateForm(form)
+    // }
   }
 
   // Validate inputs
-  const validateForm = (form) => {
-    const idValue = /^[a-zA-Z0-9]*$/
-    const text = /^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/
-    const value = /^[0-9]+([.][0-9]+)?$/
-    let id = idValue.test(form.id) ? true : false
-    let name = text.test(form.name) ? true : false
-    let num = value.test(form.value) ? true : false
+  // const validateForm = (form) => {
+  //   const idValue = /^[a-zA-Z0-9]*$/
+  //   const text = /^([a-zñA-ZÑ0-9\s]){0,55}[a-zñA-ZÑ0-9]$/
+  //   const value = /^[0-9]+([.][0-9]+)?$/
+  //   let id = idValue.test(form.id) ? true : false
+  //   let name = text.test(form.name) ? true : false
+  //   let num = value.test(form.value) ? true : false
 
-    // console.log(num);
-    setValidate({ id: id, name: name, value: num })
-    console.log(validate)
+  //   // console.log(num);
+  //   setValidate({ id: id, name: name, value: num })
+  //   // console.log(validate)
 
-  }
+  // }
 
-  const editData = (id) => {
-    setAction('Update')
-    let [denom] = state.denominations.filter(el => el.id === id)
-    setForm(denom)
-    handleOpen()
-    setValidate({ id: true, name: true, value: true })
-  }
+  // const editData = (id) => {
+  //   setAction('Update')
+  //   let [denom] = state.denominations.filter(el => el.id === id)
+  //   setForm(denom)
+  //   handleOpen()
+  //   setValidate({ id: true, name: true, value: true })
+  // }
 
-  const setDataToDelete = (id) => {
-    let [denom] = state.denominations.filter(el => el.id === id)
-    handleOpenD()
-    setDenomina(denom)
-  }
+  // const setDataToDelete = (id) => {
+  //   let [denom] = state.denominations.filter(el => el.id === id)
+  //   handleOpenD()
+  //   setDenomina(denom)
+  // }
 
-  const deleteData = () => {
-    deleteDenomination({ id: denomina.id, handleReset, setLoader });
-  }
+  // const deleteData = () => {
+  //   deleteDenomination({ id: denomina.id, handleReset, setLoader });
+  //   toast.success('Denomination deleted');
+  // }
 
-  const handleReset = (e) => {
-    handleClose()
-    handleCloseD()
-    setForm(initialForm)
+  // const handleReset = (e) => {
+  //   handleClose()
+  //   handleCloseD()
+  //   setForm(initialForm)
+  //   if (action === 'Create') {
+  //     toast.success('Denomination created');
+  //   }
+  //   if (action === 'Update') {
+  //     toast.success('Denomination updated');
+  //   }
 
-  }
+  // }
 
   useEffect(() => {
     getDenominations({ setLoader });
@@ -133,7 +145,7 @@ const Denominations = () => {
       <Loader display={loader} />
       <div style={{ padding: '5px' }}>
         <span style={{ fontSize: '20px' }}>Denominations</span>
-        <Fab color="primary" aria-label="add" size="small"
+        {/* <Fab color="primary" aria-label="add" size="small"
           onClick={() => {
             handleOpen();
             setAction('Create');
@@ -143,9 +155,9 @@ const Denominations = () => {
           }}
           style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
-        </Fab>
+        </Fab> */}
       </div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ margin: 20, minWidth: 400, maxWidth: 700 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -165,14 +177,14 @@ const Denominations = () => {
                 {/* <TableCell>{denomination.id}</TableCell> */}
                 <TableCell>{denomination.name}</TableCell>
                 <TableCell>{denomination.value}</TableCell>
-                <TableCell style={{ margin: '5px' }}>
+                {/* <TableCell style={{ margin: '5px' }}>
                   <IconButton aria-label="edit" size="small" onClick={(e) => editData(denomination.id)}>
                     <EditIcon size="small" />
                   </IconButton>
                   <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(denomination.id)}>
                     <DeleteIcon />
                   </IconButton>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
@@ -180,7 +192,7 @@ const Denominations = () => {
       </TableContainer>
       {/* modal */}
 
-      <ModalDenominations
+      {/* <ModalDenominations
         form={form}
         validate={validate}
         handleChange={handleChange}
@@ -194,9 +206,11 @@ const Denominations = () => {
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={`${denomina.name}`}
         deleteData={deleteData}
-      />
+      /> */}
 
     </>
   )

@@ -7,9 +7,12 @@ import Manager from './Manager';
 import Loader from '../assets/Loader';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import jwt_decode from "jwt-decode";
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [loader, setLoader] = useState('none')
+  const[block, setBlock] = useState(true);
   const [errorS, setErrorS] = useState({
     display:"none",
     message:'invalid user or password'
@@ -18,9 +21,11 @@ const Login = () => {
     userid: '',
     password: ''
   });
-  const [user, setUser] = React.useState([]);
   const navigate = useNavigate();
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
+  const [decoded, setDecoded] = React.useState('');
+  const [clicked, setClicked] = React.useState(false);
+ 
 
   useState(()=>{
     if(!localStorage.getItem('token')){
@@ -50,14 +55,11 @@ const Login = () => {
     axios.post('http://localhost:9000/api/v1/login',loginInfo)
     .then(({data}) =>{
         if(!data.token){
-          console.log('hola')
           setErrorS({...errorS,display:'block'});
         }else{
-          setUser(data);
           localStorage.setItem('username', loginInfo.userid);
           localStorage.setItem("token", data.token);
-          navigate('/manager/', { replace: true });
-          window.location.reload(true);
+          setDecoded(jwt_decode(data.token));
         }
         setLoader('none')
     })
@@ -66,6 +68,37 @@ const Login = () => {
         setLoader('none')
     });
 }
+
+React.useEffect(()=>{
+  console.log(decoded);
+  if(decoded !== ''){
+    localStorage.setItem('name', decoded.session.name);
+    localStorage.setItem('rol', decoded.session.rol);
+    setClicked(true);
+  }
+  //
+},[decoded]);
+React.useEffect(()=>{
+  if(clicked === true){
+    if(decoded.session.rol === 'manager'){
+      navigate('/manager/', { replace: true });
+    }else if(decoded.session.rol === 'executive'){
+      navigate('/executive/', { replace: true });
+    }else{
+      navigate('/cashier/', { replace: true });
+    }
+  }
+},[clicked]);
+
+
+const changeBlock=()=>{
+  if(loginInfo.userid.length !== 0 && loginInfo.password.length !== 0){
+    setBlock(false);
+  }else{
+    setBlock(true);
+  }
+}
+
 
   return (
   <>
@@ -90,15 +123,15 @@ const Login = () => {
               <div className='fields'>
                 <div className='field'>
                   <p>User ID</p>
-                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" name="userid" autoComplete='off' value={loginInfo.userid} onChange={saveLoginInfo}/>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" name="userid" autoComplete='off' value={loginInfo.userid} onChange={(e)=>{saveLoginInfo(e); changeBlock()}} onBlur={changeBlock}/>
                 </div>
                 <div className='field'>
                   <p>Password</p>
-                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={saveLoginInfo}/>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={(e)=>{saveLoginInfo(e); changeBlock()}} onBlur={changeBlock}/>
                 </div>
               </div>
               <div className='footer-login'>
-                <Button style={{textAling:'right'}} variant="contained" color="primary" size="large" onClick={onSubmit}>Sign in</Button>
+                <Button disabled={block} style={{textAling:'right'}} variant="contained" color="primary" size="large" onClick={onSubmit}>Sign in</Button>
               </div>
             </form>
           </div>

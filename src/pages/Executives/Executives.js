@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -31,24 +31,38 @@ import { Context } from '../../context/Executives/ExecutivesContext'
 
 
 const initialForm = {
-  name:'',
-  lastname:'',
-  userid:'',
-  password:'',
-  PositionId:'',
-  AreaId:'',
-  BranchId:'1',
-  date_init:new Date(),
-  id:null
+  name: '',
+  lastname: '',
+  userid: '',
+  password: '',
+  AreaId: '',
+  BranchId: '1',
+  date_init: new Date(),
+  id: null
+}
+
+const validationForm = {
+  name: false,
+  lastname: false,
+  userid: false,
+  password: false,
+  AreaId: false,
+}
+
+const message = {
+  title: 'Deleted',
+  description: 'Are you sure to delete'
 }
 
 export default function Executives() {
-  console.log(Context);
 
-  const { saveExecutives, getExecutives, state, deleteExecutive} = useContext(Context);
+  const { saveExecutives, getExecutives, state, deleteExecutive } = useContext(Context);
+  // console.log(state);
 
   //info form
-  const [form,setForm] = useState(initialForm)
+  const [form, setForm] = useState(initialForm)
+  const [validate, setValidate] = useState(validationForm)
+
 
   //modal state vars
   const [open, setOpen] = useState(false)
@@ -67,49 +81,86 @@ export default function Executives() {
   const notify = (message) => toast.success(message)
   const notifyE = (message) => toast.error(message)
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     setForm({
-      ...form,[e.target.name]:e.target.value
+      ...form, [e.target.name]: e.target.value
     })
+
+    if (form.name.length < 1 && form.lastname.length < 1 && form.userid.length < 1 && form.password.length < 1 && form.AreaId.length < 1 && form.BranchId.length < 1) {
+      setValidate({ name: false, lastname: false, userid: false, password: false, AreaId: false })
+    } else {
+      validateForm(form)
+    }
+
   }
 
-  const editData = (id)=>{
+  const validateForm = (form) => {
+    const exname = /^([a-zñA-ZÑ\s]){0,55}[a-zñA-ZÑ]$/
+    const text = /^([a-zñA-ZÑ0-9]){4,40}[a-zñA-ZÑ0-9]$/
+    const user = /^[a-zñA-ZÑ0-9]*$/
+    const pass = /^[a-z0-9_\s]{4,18}$/
+    let name = exname.test(form.name) ? true : false
+    let lastname = exname.test(form.lastname) ? true : false
+    let userid = text.test(form.userid) ? true : false
+    let password = pass.test(form.password) ? true : false
+    let AreaId = user.test(form.AreaId) ? true : false
+
+    console.log(userid);
+    setValidate({ name: name, lastname: lastname, userid: userid, password: password, AreaId: AreaId })
+    // console.log(validate)
+
+  }
+
+  const editData = (id) => {
     setAction('Update')
-    let [user] = state.executives.filter(el=>el.id===id)
+    let [user] = state.executives.filter(el => el.id === id)
     user.password = ''
     setForm(user)
     handleOpen()
   }
 
-  const setDataToDelete = (id) =>{
-    let [user] = state.executives.filter(el=>el.id===id)
+  const setDataToDelete = (id) => {
+    let [user] = state.executives.filter(el => el.id === id)
     handleOpenD()
     setUserD(user)
   }
 
-  const deleteData = () =>{
-    deleteExecutive({id: userD.id, handleReset, setLoader});
+  const deleteData = () => {
+    deleteExecutive({ id: userD.id, handleReset, setLoader });
+    toast.success('Executive deleted');
   }
 
-  const handleReset = (e)=>{
+  const handleReset = (e) => {
     handleClose()
     handleCloseD()
     setForm(initialForm)
+    if(action === 'Update'){
+      toast.success('Executive updated');
+    }
+    if(action === 'Create'){
+      toast.success('Executive created');
+    }
   }
-    
+
   useEffect(() => {
-    getExecutives({setLoader});
-    
+    getExecutives({ setLoader });
   }, [])
 
 
   return (
     <>
-    <ToastContainer autoClose={2000}/>
-      <Loader display={loader}/>
-      <div style={{padding:'5px'}}>
-        <span style={{fontSize:'20px'}}>Ejecutivos</span>
-        <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+      <ToastContainer autoClose={2000} />
+      <Loader display={loader} />
+      <div style={{ padding: '5px' }}>
+        <span style={{ fontSize: '20px' }}>Ejecutivos</span>
+        <Fab color="primary" aria-label="add" size="small"
+          onClick={() => {
+            handleOpen();
+            setAction('Create');
+            setForm(initialForm)
+            setValidate({ name: true, lastname: true, userid: true, password: true, AreaId: true })
+          }}
+          style={{ float: 'right', marginBottom: '20px' }}>
           <AddIcon />
         </Fab>
       </div>
@@ -120,30 +171,30 @@ export default function Executives() {
               <TableCell>#</TableCell>
               <TableCell>Full Name</TableCell>
               <TableCell>User</TableCell>
-              <TableCell>Position</TableCell>
+              {/* <TableCell>Position</TableCell> */}
               <TableCell>Area</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-              {state.executives.map((ex,index) => (
+            {state.executives.map((ex, index) => (
               <TableRow
                 key={ex.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{index+1}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell component="th" scope="row">
                   {`${ex.name} ${ex.lastname}`}
                 </TableCell>
                 <TableCell>{ex.userid}</TableCell>
-                <TableCell>{ex.Area.Position.name}</TableCell>
+                {/* <TableCell>{ex.Area.Position.name}</TableCell> */}
                 <TableCell>{ex.Area.name}</TableCell>
-                <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
-                    <EditIcon size="small"/>
+                <TableCell style={{ margin: '5px' }}>
+                  <IconButton aria-label="edit" size="small" onClick={(e) => editData(ex.id)}>
+                    <EditIcon size="small" />
                   </IconButton>
-                  <IconButton aria-label="delete" size="small" onClick={(e)=>setDataToDelete(ex.id)}>
-                    <DeleteIcon/>
+                  <IconButton aria-label="delete" size="small" onClick={(e) => setDataToDelete(ex.id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -152,22 +203,25 @@ export default function Executives() {
         </Table>
       </TableContainer>
       {/* modal */}
-      
+
       <ModalExecutives
-          form={form}
-          handleChange = {handleChange}
-          action={action}
-          positions={state.positions}
-          areas={state.areas}
-          saveData={saveExecutives}
-          handleClose={handleClose}
-          handleReset={handleReset}
-          setLoader = {setLoader}
-          open={open}
-        />
+        form={form}
+        handleChange={handleChange}
+        action={action}
+        // positions={state.positions}
+        validate={validate}
+        areas={state.areas}
+        saveData={saveExecutives}
+        handleClose={handleClose}
+        handleReset={handleReset}
+        setLoader={setLoader}
+        open={open}
+      />
       <Alert_Dialog
         openD={openD}
         handleCloseD={handleCloseD}
+        title={message.title}
+        description={message.description}
         name={`${userD.name} ${userD.lastname}`}
         deleteData={deleteData}
       />
