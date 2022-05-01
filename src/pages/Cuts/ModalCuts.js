@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { styled } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import FormControl from '@material-ui/core/FormControl'
@@ -17,6 +17,8 @@ import Fab from '@material-ui/core/Fab'
 import CancelIcon from '@material-ui/icons/Cancel'
 import SaveIcon from '@material-ui/icons/Save'
 import { object } from 'yup'
+
+import { Context } from '../../context/Cuts/CutsContext'
 
 const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
@@ -39,6 +41,7 @@ const style = {
 const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleReset,setLoader,cashboxes,total_system, state, setForm}) => {
     const [errors, setErrors] = React.useState('');
     const [block, setBlock] = React.useState(true);
+    const {getCashBoxes} = useContext(Context);
 
     
 
@@ -62,6 +65,11 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
             saveData({form,id:form.id,setLoader,handleReset,action});
             setErrors('');
         }
+    }
+
+    const handleType = (e) => {
+        handleChange(e);
+        getCashBoxes({type: e.target.value})
     }
 
     const handleBlur = (e) =>{
@@ -116,7 +124,7 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
                     <div>
                         <FormControl style={{width:'100%'}}>
                             <div>&nbsp;</div>
-                            <Select id="type" name="type" style={{width:'180px'}} onChange={handleChange} value={form.type}>
+                            <Select id="type" name="type" style={{width:'180px'}} onChange={handleType} value={form.type}>
                                 <MenuItem key={200002} value={'initial'}>inital</MenuItem>
                                 <MenuItem key={200001} value={'final'}>final</MenuItem>
                             </Select>
@@ -128,12 +136,9 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
                         <FormControl style={{width:'100%'}}>
                             <div>&nbsp;</div>
                             <Select id="CashboxId" name="CashboxId" style={{width:'180px'}} onChange={handleChange} value={form.CashboxId}>
-                                {cashboxes && cashboxes.map((cashbox,index)=>{
-                                    console.log(cashbox.Cuts.length)
-                                    if(cashbox.Cuts.length===0){
-                                        return <MenuItem key={index} value={cashbox.id}>{cashbox.name}</MenuItem>
-                                    }
-                                })}
+                                {state.cashboxes.map((value) => (
+                                    value.Cuts.length === 0 && <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>

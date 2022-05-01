@@ -6,11 +6,13 @@ let url = '/cuts/'
 const cutsReducer = (state, action) => {
   switch (action.type) {
     case "get_cuts":
-      return { cuts: action.payload.cuts, cashboxes: action.payload.cashboxes, total_system: action.payload.total_system, errors:[] };
+      return {...state, cuts: action.payload.cuts, total_system: action.payload.total_system, errors:[] };
     case "refresh":
       return { ...state, cuts: action.payload.cuts, errors:[] };
+    case "get_cashboxes":
+      return {...state, cashboxes: action.payload}
     case "errors":
-      return {cuts: action.payload.cuts, cashboxes: action.payload.cashboxes, total_system: action.payload.total_system, errors: action.payload.errors};
+      return {cuts: action.payload.cuts, total_system: action.payload.total_system, errors: action.payload.errors};
     default:
       return state;
   }
@@ -20,10 +22,9 @@ const getCuts = dispatch => async ({ setLoader }) => {
   try {
     setLoader('flex');
     const cuts = await server.get(url);
-    const cashboxes = await server.get('/cashboxes/initial')
     const total_system = await server.get('/cuts/search/cashboxes/')
     setLoader('none');
-    dispatch({ type: "get_cuts", payload: { cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors:[] } })
+    dispatch({ type: "get_cuts", payload: { cuts: cuts.data.data, total_system: total_system.data.data, errors:[] } })
   } catch (error) {
     console.log({ error })
   }
@@ -48,10 +49,18 @@ const saveCuts = dispatch => async ({ setLoader, id, form, handleReset, action }
   } catch (error) {
     console.log(error.response.data);
     const cuts = await server.get(url);
-    const cashboxes = await server.get('/cashboxes/initial')
     const total_system = await server.get('/cuts/search/cashboxes/')
-    dispatch({type: "errors", payload:{cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors: error.response.data}});
+    dispatch({type: "errors", payload:{cuts: cuts.data.data, total_system: total_system.data.data, errors: error.response.data}});
     setLoader('none');
+  }
+}
+
+const getCashBoxes = dispatch => async ({type}) => {
+  try{
+    const response = await server.get(`/cashboxes/${type}`);
+    dispatch({type: "get_cashboxes", payload:response.data.data})
+  }catch(error){
+    console.log(error)
   }
 }
 
@@ -81,5 +90,5 @@ const refreshData = async () => {
 }
 
 export const { Provider, Context } = cutsDataContext(
-  cutsReducer, { getCuts, saveCuts, deleteCuts }, { cuts: [], cashboxes:[], total_system:null, errors:[] }
+  cutsReducer, { getCuts, saveCuts, deleteCuts,getCashBoxes }, { cuts: [], cashboxes:[], total_system:null, errors:[] }
 )
