@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,14 +15,16 @@ import { Button, ThemeProvider} from '@material-ui/core';
 import { theme } from './DashboardStyles';
 import {gerente, cashier, executives} from './UserRoutes';
 import { useNavigate } from "react-router-dom";
+import { Context } from '../../context/User/UserContext';
 
 const DashboardSidebar = (props) => {
   const [userInfo, setuserInfo] = React.useState('');
   const [routes, setRoutes] = React.useState([]);
+  const {state} = useContext(Context)
   const navigate = useNavigate();
 
   useEffect(()=>{
-    let upperUser = localStorage.getItem('name').slice(0,localStorage.getItem('name').indexOf(' '));
+    let upperUser = state.name.slice(0,state.name.indexOf(' '));
     setuserInfo(upperUser);
     if(props.role === 1){
       setRoutes(gerente);
