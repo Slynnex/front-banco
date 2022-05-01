@@ -13,21 +13,21 @@ import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
 import { useNavigate } from 'react-router-dom'
-import { Context } from '../context/User/UserContext'
+import jwt_decode from "jwt-decode";
 
 const Executive = () => {
-  const {state} = useContext(Context)
   const navigate = useNavigate();
 
-  // Protection of routes and redirection
   React.useEffect(()=>{
-    if (!state.token) {
+    const token = localStorage.getItem('token');
+    const decode = jwt_decode(token);
+    if (!token) {
       navigate('/', { replace: true });
     }
-    if(state.rol === 'manager'){
+    if(decode.session.rol === 'manager'){
       navigate('/manager', { replace: true });
     }
-    if(state.rol === 'cashier'){
+    if(decode.session.rol === 'cashier'){
       navigate('/cashier', { replace: true });
     }
   },[])

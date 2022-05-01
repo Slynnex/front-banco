@@ -14,28 +14,26 @@ import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
 import { useNavigate } from "react-router-dom";
 import Mortgages from './Mortgages/Mortgages'
-import { Context } from '../context/User/UserContext'
+import jwt_decode from "jwt-decode";
 
 const Manager = () => {
-  const {state} = useContext(Context)
   const navigate = useNavigate();
 
   // Protection of routes and redirection
   React.useEffect(()=>{
-    if (!state.token) {
+    const token = localStorage.getItem('token');
+    const decode = jwt_decode(token);
+    if (!token) {
       navigate('/', { replace: true });
     }
-    if(state.rol === 'executive'){
+    if(decode.session.rol === 'executive'){
       navigate('/executive', { replace: true });
     }
-    if(state.rol === 'cashier'){
+    if(decode.session.rol === 'cashier'){
       navigate('/cashier', { replace: true });
     }
   },[])
   
-
-  
-
   return (
     <DashboardSidebar role={1}>
             <Routes>
