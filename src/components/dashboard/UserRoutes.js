@@ -74,6 +74,12 @@ export const gerente = [
         nameRoute:"Cuts",
         route: "/manager/cuts",
         icon: <MoneyIcon/>
+      },
+      {
+        id:12,
+        nameRoute:"Mortgages",
+        route: "/manager/mortgages",
+        icon: <MoneyIcon/>
       }
 ]
 

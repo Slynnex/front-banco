@@ -166,6 +166,7 @@ const Cuts = () => {
               <TableCell>Type</TableCell>
               <TableCell>date</TableCell>
               <TableCell>total cut</TableCell>
+              <TableCell>Executive</TableCell>
               <TableCell>Actions</TableCell>
               {/* <TableCell>total system</TableCell> */}
               {/* <TableCell>Diference</TableCell>
@@ -183,6 +184,10 @@ const Cuts = () => {
                 <TableCell>{ex.type}</TableCell>
                 <TableCell>{ex.date.substring(0, 10)}</TableCell>
                 <TableCell>{ex.total_cut}</TableCell>
+                <TableCell>
+                    {ex.Executive.name}<br></br>
+                    {ex.Executive.lastname}
+                </TableCell>
                 {/* <TableCell>{!ex.total_system ? '-' :ex.total_system}</TableCell>
                 <TableCell>{!ex.diference? '-' :ex.diference}</TableCell> */}
                 <TableCell style={{margin:'5px'}}>

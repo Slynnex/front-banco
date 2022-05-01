@@ -16,10 +16,9 @@ import SaveIcon from '@material-ui/icons/Save'
 
 const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
     formBeneficiarie,handleBeneficiarie,setDialog,setCreate,updateFieldChanged,setCreditDetail,creditDetail,type,setType,
-      handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties,handleClose}) => {
+      handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties,handleClose,validate}) => {
   const [value, setValue] = useState(0);
   
-
   const handleChange = (event, newValue) => {
     console.log(newValue)
     setValue(newValue);
@@ -114,7 +113,7 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
           </TabPanel>
       </div>
       <Grid>
-            <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
+            <Fab disabled={!validate} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
             <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => handleClose()}>

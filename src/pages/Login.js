@@ -1,13 +1,13 @@
-import React,{useState} from 'react';
+import React,{useContext, useState} from 'react';
 import {Card, CardContent, TextField, Button} from '@material-ui/core';
 import '../styles/login.css';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import Manager from './Manager';
 import Loader from '../assets/Loader';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import jwt_decode from "jwt-decode";
+import { toast } from 'react-toastify';
+import { Context } from '../context/User/UserContext';
 
 
 const Login = () => {
@@ -24,6 +24,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
+
   const [decoded, setDecoded] = React.useState('');
   const [clicked, setClicked] = React.useState(false);
   
@@ -36,7 +37,10 @@ const Login = () => {
     }
   },[])
 
-  //Saving the logging info
+
+  const {login,state,tryLocalSignin} = useContext(Context);
+ 
+
   const saveLoginInfo = (e) =>{
     if(e.target.name === 'userid'){
         setloginInfo({
@@ -55,47 +59,29 @@ const Login = () => {
   //Request to database for the validation of loginInfo and returning the user if found it
   const onSubmit = () =>{
     setLoader('flex')
-    axios.post('http://localhost:9000/api/v1/login',loginInfo)
-    .then(({data}) =>{
-        if(!data.token){
-          setErrorS({...errorS,display:'block'});
-        }else{
-          localStorage.setItem('username', loginInfo.userid);
-          localStorage.setItem("token", data.token);
-          setDecoded(jwt_decode(data.token));
-        }
-        setLoader('none')
-        
-    })
-    .catch(({response}) =>{
-        setErrorS({message:response,display:'block'})
-        setLoader('none')
-    });
+    login({loginInfo,setLoader,setErrorS});
 }
-// Set info obtained from the token
-React.useEffect(()=>{
-  if(decoded !== ''){
-    localStorage.setItem('name', decoded.session.name);
-    localStorage.setItem('role', decoded.session.rol);
-    setClicked(true);
-  }
-  //
-},[decoded]);
 
-//Redirection to each case of role
+
 React.useEffect(()=>{
-  if(clicked === true){
-    if(decoded.session.rol === 'manager'){
+  if(state.token){
+    if(state.rol === 'manager'){
       navigate('/manager/', { replace: true });
-    }else if(decoded.session.rol === 'executive'){
+    }else if(state.rol === 'executive'){
       navigate('/executive/', { replace: true });
     }else{
       navigate('/cashier/', { replace: true });
     }
   }
-},[clicked]);
+},[state]);
 
-//Blocking and unblocking the login botton
+
+
+React.useEffect(() => {
+  tryLocalSignin();
+},[])
+
+
 const changeBlock=()=>{
   if(loginInfo.userid.length !== 0 && loginInfo.password.length !== 0){
     setBlock(false);
