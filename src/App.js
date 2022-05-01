@@ -1,5 +1,6 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
 
 import Login from './pages/Login';
 import Manager from './pages/Manager';
@@ -17,8 +18,10 @@ import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditD
 import {Provider as InterestsProvider} from './context/Interests/InterestsContext';
 import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
 import Executive from './pages/Executive';
+import NotFound from './NotFound';
 
 function App() {
+
   return (
     <ExecutiveProvider>
       <PositionAreaProvider>
@@ -36,6 +39,7 @@ function App() {
                             <Route exact path='/manager/*' element={<Manager />} />
                             <Route exact path='/cashier/*' element={<Cashier />} />
                             <Route exact path='/executive/*' element={<Executive/>}/> 
+                            <Route path='*' element={<NotFound/>}/>
                           </Routes>
                         </Router>
                       </CutsProvider>

@@ -8,9 +8,10 @@ import Loader from '../assets/Loader';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import jwt_decode from "jwt-decode";
-import { toast } from 'react-toastify';
+
 
 const Login = () => {
+  // States to use
   const [loader, setLoader] = useState('none')
   const[block, setBlock] = useState(true);
   const [errorS, setErrorS] = useState({
@@ -25,8 +26,8 @@ const Login = () => {
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
   const [decoded, setDecoded] = React.useState('');
   const [clicked, setClicked] = React.useState(false);
- 
-
+  
+  //Validation of route
   useState(()=>{
     if(!localStorage.getItem('token')){
       setisLoggedIn(false);
@@ -35,6 +36,7 @@ const Login = () => {
     }
   },[])
 
+  //Saving the logging info
   const saveLoginInfo = (e) =>{
     if(e.target.name === 'userid'){
         setloginInfo({
@@ -50,6 +52,7 @@ const Login = () => {
     }
   }
 
+  //Request to database for the validation of loginInfo and returning the user if found it
   const onSubmit = () =>{
     setLoader('flex')
     axios.post('http://localhost:9000/api/v1/login',loginInfo)
@@ -62,22 +65,24 @@ const Login = () => {
           setDecoded(jwt_decode(data.token));
         }
         setLoader('none')
+        
     })
     .catch(({response}) =>{
         setErrorS({message:response,display:'block'})
         setLoader('none')
     });
 }
-
+// Set info obtained from the token
 React.useEffect(()=>{
-  console.log(decoded);
   if(decoded !== ''){
     localStorage.setItem('name', decoded.session.name);
-    localStorage.setItem('rol', decoded.session.rol);
+    localStorage.setItem('role', decoded.session.rol);
     setClicked(true);
   }
   //
 },[decoded]);
+
+//Redirection to each case of role
 React.useEffect(()=>{
   if(clicked === true){
     if(decoded.session.rol === 'manager'){
@@ -90,7 +95,7 @@ React.useEffect(()=>{
   }
 },[clicked]);
 
-
+//Blocking and unblocking the login botton
 const changeBlock=()=>{
   if(loginInfo.userid.length !== 0 && loginInfo.password.length !== 0){
     setBlock(false);

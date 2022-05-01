@@ -22,8 +22,12 @@ const DashboardSidebar = (props) => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    let upperUser = localStorage.getItem('name').slice(0,localStorage.getItem('name').indexOf(' '));
-    setuserInfo(upperUser);
+    if(!localStorage.getItem('name')){
+      console.log('hola');
+    }else{
+      let upperUser = localStorage.getItem('name').slice(0,localStorage.getItem('name').indexOf(' '));
+      setuserInfo(upperUser);
+    }
     if(props.role === 1){
       setRoutes(gerente);
     }else if(props.role === 2){
@@ -39,7 +43,7 @@ const DashboardSidebar = (props) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('name');
-    localStorage.removeItem('rol');
+    localStorage.removeItem('role');
     navigate('/', { replace: true });
     window.location.reload();
   }

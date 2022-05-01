@@ -12,8 +12,24 @@ import Interests from './Interests/Interests'
 import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
+import { useNavigate } from 'react-router-dom'
 
 const Cashier = () => {
+  const navigate = useNavigate();
+
+    // Protection of routes and redirection
+  React.useEffect(()=>{
+    if (!localStorage.getItem('token')) {
+      navigate('/', { replace: true });
+    }
+    if(localStorage.getItem('role') === 'executive'){
+      navigate('/executive', { replace: true });
+    }
+    if(localStorage.getItem('role') === 'manager'){
+      navigate('/managerr', { replace: true });
+    }
+  },[])
+
   return (
     <DashboardSidebar role={2}>
             <Routes>
