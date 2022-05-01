@@ -3,30 +3,26 @@ import axios from 'axios';
 import '../../styles/clients.css'
 import { FormControl, InputLabel, Input, MenuItem, Select} from '@material-ui/core'
 
+import Estados_Municipios from '../../list/estados-municipios.json';
+
 const TabPersonalInfo = ({form,handleForm}) => {
   const [states,setStates] = useState([]);
   const [cities,setCities] = useState([]);
   const [colonies, setColonies] = useState([])
-  const token = '37363a69-39fa-4609-a4fe-48986af8a616';
-
-  useEffect(() => {
-    const estados = async() => {
-      const response = await axios(`https://api.copomex.com/query/get_estados?token=${token}`);
-      setStates(response.data.response.estado);
-    }
-    estados();
+  useEffect(() => {  
+      const keys = Object.keys(Estados_Municipios);
+      setStates(keys);
   },[])
 
   const handleState = async(e) => {
     handleForm(e);
-    const response = await axios(`https://api.copomex.com/query/get_municipio_por_estado/${e.target.value}?token=${token}`);
-    setCities(response.data.response.municipios);
+    const cities = Estados_Municipios[e.target.value];
+    setCities(cities);
   }
 
   const handleCity = async(e) => {
     handleForm(e);
-    const response = await axios(`https://api.copomex.com/query/get_colonia_por_municipio/${e.target.value}?token=${token}`);
-    setColonies(response.data.response.colonia);
+    
   }
 
   return (
@@ -46,6 +42,7 @@ const TabPersonalInfo = ({form,handleForm}) => {
             <FormControl className='item gender'>
                 <InputLabel variant="standard" required={true}>Gender</InputLabel>
                 <Select id="gender" name="gender" onChange={handleForm} value={form.gender}>
+                <MenuItem value={"-"}>Select</MenuItem>
                     <MenuItem value={0}>Male</MenuItem>
                     <MenuItem value={1}>Female</MenuItem>
                 </Select>
@@ -80,11 +77,7 @@ const TabPersonalInfo = ({form,handleForm}) => {
       <div className='item'>
         <FormControl className='item gender'>
             <InputLabel variant="standard" required={true}>Colony</InputLabel>
-            <Select id="colony" name="colony"  onChange={handleForm} value={form.colony}>
-              {colonies.map((colony,index) => (
-                <MenuItem value={colony} key={index}>{colony}</MenuItem>
-              ))}
-            </Select>
+            <Input id="colony" name="colony" aria-describedby="colony" autoComplete='off' onChange={handleForm} value={form.colony} /> 
         </FormControl>
       </div>
       <div className='item'>
@@ -96,13 +89,13 @@ const TabPersonalInfo = ({form,handleForm}) => {
           <div className='item'>
             <FormControl>
                 <InputLabel variant="standard" required={true}>Number ext</InputLabel>
-                <Input id="number_ext" name="number_ext" aria-describedby="number_ext" autoComplete='off' onChange={handleForm} value={form.number_ext}/> 
+                <Input id="number_ext" name="number_ext" aria-describedby="number_ext" autoComplete='off' type='number' onChange={handleForm} value={form.number_ext}/> 
             </FormControl>
           </div>
           <div className='item'>
             <FormControl>
                 <InputLabel variant="standard" required={true}>Postal Code</InputLabel>
-                <Input id="postalcode" name="postalcode" aria-describedby="postalcode" autoComplete='off' onChange={handleForm} value={form.postalcode}/> 
+                <Input id="postalcode" name="postalcode" aria-describedby="postalcode" autoComplete='off' type='number' onChange={handleForm} value={form.postalcode}/> 
             </FormControl>
           </div>
           <div className='item'>
