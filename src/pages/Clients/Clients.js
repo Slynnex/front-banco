@@ -32,11 +32,11 @@ import { ToastContainer, toast } from 'react-toastify';
 const initialClientForm = {
         name: "",
         lastname: "",
-        gender: 0,
+        gender: "-",
         street: "",
-        number_ext: 0,
+        number_ext: "",
         colony: "",
-        postalcode: 0,
+        postalcode: "",
         city: "",
         municipality: "",
         state: "",
@@ -85,7 +85,7 @@ const initialDocuments = [
 
 const initialMortgage = {
     solicited_amount: "",
-    solicitied_date: "",
+    solicited_date: "",
     InterestId: ""
 }
 
@@ -125,6 +125,7 @@ const Clients = () => {
     const [openS, setOpenS] = useState(false)
     const [dataClient, setDataClient] = useState(initialShowClient)
     const [type, setType] = useState("debit");
+    const [validate,setValidate] = useState(false);
     const [selectId, setSelectId] = useState(0);
      //loading state
     const [loader, setLoader] = useState('none')
@@ -159,7 +160,16 @@ const Clients = () => {
     }
 
     const handleClient = (e) => {
-        console.log(e.target)
+        if(e.target.name === 'postalcode' || e.target.name === 'number_ext'){
+            if(e.target.value === ''){
+                return setFormClient({
+                    ...formClient,[e.target.name]:e.target.value
+                })
+            }
+            return setFormClient({
+                ...formClient,[e.target.name]:parseInt(e.target.value)
+            })
+        }
         setFormClient({
             ...formClient,[e.target.name]:e.target.value
         })
@@ -264,7 +274,6 @@ const Clients = () => {
             break;
             }
         case "credit":{
-          console.log(creditDetail)
             const form = {
                 client: formClient,
                 account: {
@@ -289,7 +298,6 @@ const Clients = () => {
                 guarantees: formGuarantees,
                 properties: formProperties
             }
-            console.log(form)
             save({form,setCreate,setDialog,setShow,type});
             break;
         }
@@ -349,6 +357,63 @@ const Clients = () => {
     },[search])
 
 
+    useEffect(() => {
+        let resultAmount = false;
+        let resultNip = false;
+        let resultCreditDetail = false;
+        let resultDocuments = true;
+        let resultPropertie = true;
+        let resultGuarantees = true;
+        const resultClient = Object.values(formClient).every((value) => value !== ''); //Validate if is not empty the form client
+        formDocuments.forEach((document) =>{                                           //Validate if is not empty the documents
+            if(!Object.values(document).every((value) => value !== '')){
+                resultDocuments = false;
+            }
+        })
+
+        const resultBeneficiaries = Object.values(formBeneficiarie).every((value) => value !== '')//Validate if is not empty the form Beneficiaries
+        const resultMortgage = Object.values(formMortgage).every((value) => value !== '');  //Validate if is not empty the form Mortgage
+        formProperties.forEach((property) =>{                                           //Validate if is not empty the form Properties
+            if(!Object.values(property).every((value) => value !== '')){
+                resultPropertie = false;
+            }
+        })
+
+        formGuarantees.forEach((guarante) =>{                                           //Validate if is not empty the form Properties
+            if(!Object.values(guarante).every((value) => value !== '')){
+                resultGuarantees = false;
+            }
+        })
+
+        if(amount !== ''){
+            resultAmount = true;}
+        if(nip !== '')
+            resultNip = true;
+        if(creditDetail !== '')
+            resultCreditDetail = true;
+        
+        if(type === 'debit'){
+            if(resultClient && resultNip && resultAmount && resultDocuments && resultBeneficiaries){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }else if(type === 'credit'){
+            if(resultClient && resultAmount && resultCreditDetail && resultDocuments){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }else if(type === 'mortgages'){
+            if(resultClient && resultMortgage && resultDocuments && resultPropertie && resultGuarantees){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }
+    },[type,formClient,formDocuments,formBeneficiarie,amount,nip,creditDetail,formMortgage,formProperties,formGuarantees])
+
+
   return (
     <>
         <ToastContainer autoClose={2000}/>
@@ -395,6 +460,7 @@ const Clients = () => {
                     formGuarantees={formGuarantees}
                     updateFieldProperties={updateFieldProperties}
                     formProperties={formProperties}
+                    validate={validate}
                   />
                 :<Accounts
                     dialog={dialog}
