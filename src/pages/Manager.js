@@ -12,9 +12,29 @@ import Interests from './Interests/Interests'
 import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
+import { useNavigate } from "react-router-dom";
 import Mortgages from './Mortgages/Mortgages'
 
+
 const Manager = () => {
+  const navigate = useNavigate();
+
+  // Protection of routes and redirection
+  React.useEffect(()=>{
+    if (!localStorage.getItem('token')) {
+      navigate('/', { replace: true });
+    }
+    if(localStorage.getItem('role') === 'executive'){
+      navigate('/executive', { replace: true });
+    }
+    if(localStorage.getItem('role') === 'cashier'){
+      navigate('/cashier', { replace: true });
+    }
+  },[])
+  
+
+  
+
   return (
     <DashboardSidebar role={1}>
             <Routes>

@@ -9,7 +9,9 @@ import Stack from '@mui/material/Stack';
 import { toast } from 'react-toastify';
 import { Context } from '../context/User/UserContext';
 
+
 const Login = () => {
+  // States to use
   const [loader, setLoader] = useState('none')
   const[block, setBlock] = useState(true);
   const [errorS, setErrorS] = useState({
@@ -22,8 +24,23 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
+
+  const [decoded, setDecoded] = React.useState('');
+  const [clicked, setClicked] = React.useState(false);
+  
+  //Validation of route
+  useState(()=>{
+    if(!localStorage.getItem('token')){
+      setisLoggedIn(false);
+    }else{
+      setisLoggedIn(true);
+    }
+  },[])
+
+
   const {login,state,tryLocalSignin} = useContext(Context);
  
+
   const saveLoginInfo = (e) =>{
     if(e.target.name === 'userid'){
         setloginInfo({
@@ -39,6 +56,7 @@ const Login = () => {
     }
   }
 
+  //Request to database for the validation of loginInfo and returning the user if found it
   const onSubmit = () =>{
     setLoader('flex')
     login({loginInfo,setLoader,setErrorS});
@@ -58,9 +76,11 @@ React.useEffect(()=>{
 },[state]);
 
 
+
 React.useEffect(() => {
   tryLocalSignin();
 },[])
+
 
 const changeBlock=()=>{
   if(loginInfo.userid.length !== 0 && loginInfo.password.length !== 0){
