@@ -112,14 +112,13 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
             {`${action} Cuts`}
             </Typography>
             <Grid container>
-                <Grid item md={4}>
+            <Grid item md={4}>
                     <div>
                         <FormControl style={{width:'100%'}}>
                             <div>&nbsp;</div>
-                            <Select id="CashboxId" name="CashboxId" style={{width:'180px'}} onChange={handleChange} value={form.CashboxId}>
-                                {cashboxes.map((cashbox,index)=>{
-                                return <MenuItem key={index} value={cashbox.id}>{cashbox.name}</MenuItem>
-                                })}
+                            <Select id="type" name="type" style={{width:'180px'}} onChange={handleChange} value={form.type}>
+                                <MenuItem key={200002} value={'initial'}>inital</MenuItem>
+                                <MenuItem key={200001} value={'final'}>final</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -128,9 +127,13 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
                     <div>
                         <FormControl style={{width:'100%'}}>
                             <div>&nbsp;</div>
-                            <Select id="type" name="type" style={{width:'180px'}} onChange={handleChange} value={form.type}>
-                                <MenuItem key={200002} value={'initial'}>inital</MenuItem>
-                                <MenuItem key={200001} value={'final'}>final</MenuItem>
+                            <Select id="CashboxId" name="CashboxId" style={{width:'180px'}} onChange={handleChange} value={form.CashboxId}>
+                                {cashboxes && cashboxes.map((cashbox,index)=>{
+                                    console.log(cashbox.Cuts.length)
+                                    if(cashbox.Cuts.length===0){
+                                        return <MenuItem key={index} value={cashbox.id}>{cashbox.name}</MenuItem>
+                                    }
+                                })}
                             </Select>
                         </FormControl>
                     </div>

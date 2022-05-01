@@ -20,7 +20,7 @@ const getCuts = dispatch => async ({ setLoader }) => {
   try {
     setLoader('flex');
     const cuts = await server.get(url);
-    const cashboxes = await server.get('/cashboxes/')
+    const cashboxes = await server.get('/cashboxes/initial')
     const total_system = await server.get('/cuts/search/cashboxes/')
     setLoader('none');
     dispatch({ type: "get_cuts", payload: { cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors:[] } })
@@ -48,7 +48,7 @@ const saveCuts = dispatch => async ({ setLoader, id, form, handleReset, action }
   } catch (error) {
     console.log(error.response.data);
     const cuts = await server.get(url);
-    const cashboxes = await server.get('/cashboxes/')
+    const cashboxes = await server.get('/cashboxes/initial')
     const total_system = await server.get('/cuts/search/cashboxes/')
     dispatch({type: "errors", payload:{cuts: cuts.data.data, cashboxes: cashboxes.data.data, total_system: total_system.data.data, errors: error.response.data}});
     setLoader('none');
