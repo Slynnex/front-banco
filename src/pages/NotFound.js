@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/404.css'
+import '../styles/404.css'
 import { Button } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 

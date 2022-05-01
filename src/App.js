@@ -18,7 +18,7 @@ import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditD
 import {Provider as InterestsProvider} from './context/Interests/InterestsContext';
 import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
 import Executive from './pages/Executive';
-import NotFound from './NotFound';
+import NotFound from './pages/NotFound';
 
 function App() {
 
