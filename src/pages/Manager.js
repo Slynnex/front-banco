@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import DashboardSidebar from '../components/dashboard/DashboardSidebar'
 import {BrowserRouter as Router,  Routes, Route} from 'react-router-dom'
 import Dashboard from './Dashboard'
@@ -14,20 +14,21 @@ import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
 import { useNavigate } from "react-router-dom";
 import Mortgages from './Mortgages/Mortgages'
-
+import { Context } from '../context/User/UserContext'
 
 const Manager = () => {
+  const {state} = useContext(Context)
   const navigate = useNavigate();
 
   // Protection of routes and redirection
   React.useEffect(()=>{
-    if (!localStorage.getItem('token')) {
+    if (!state.token) {
       navigate('/', { replace: true });
     }
-    if(localStorage.getItem('role') === 'executive'){
+    if(state.rol === 'executive'){
       navigate('/executive', { replace: true });
     }
-    if(localStorage.getItem('role') === 'cashier'){
+    if(state.rol === 'cashier'){
       navigate('/cashier', { replace: true });
     }
   },[])

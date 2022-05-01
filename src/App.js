@@ -41,6 +41,7 @@ function App() {
                               <Route exact path='/manager/*' element={<Manager />} />
                               <Route exact path='/cashier/*' element={<Cashier />} />
                               <Route exact path='/executive/*' element={<Executive/>}/> 
+                              <Route path='*' element={<NotFound/>}/>
                             </Routes>
                           </Router>
                         </UserProvider>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import DashboardSidebar from '../components/dashboard/DashboardSidebar'
 import {BrowserRouter as Router,  Routes, Route} from 'react-router-dom'
 import Dashboard from './Dashboard'
@@ -13,22 +13,25 @@ import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
 import { useNavigate } from 'react-router-dom'
+import { Context } from '../context/User/UserContext'
 
 const Cashier = () => {
+  const {state} = useContext(Context)
   const navigate = useNavigate();
 
-    // Protection of routes and redirection
+  // Protection of routes and redirection
   React.useEffect(()=>{
-    if (!localStorage.getItem('token')) {
+    if (!state.token) {
       navigate('/', { replace: true });
     }
-    if(localStorage.getItem('role') === 'executive'){
+    if(state.rol === 'manager'){
+      navigate('/manager', { replace: true });
+    }
+    if(state.rol === 'executive'){
       navigate('/executive', { replace: true });
     }
-    if(localStorage.getItem('role') === 'manager'){
-      navigate('/managerr', { replace: true });
-    }
   },[])
+
 
   return (
     <DashboardSidebar role={2}>
