@@ -16,6 +16,7 @@ import {Provider as ClientsProvider} from './context/Clients/ClientsContext';
 import {Provider as CreditDetailsProvider} from './context/CreditDetails/CreditDetailsContext';
 import {Provider as InterestsProvider} from './context/Interests/InterestsContext';
 import {Provider as TransactionsProvider} from './context/Transactions/TransactionsContext';
+import {Provider as UserProvider} from './context/User/UserContext';
 import Executive from './pages/Executive';
 
 function App() {
@@ -30,14 +31,16 @@ function App() {
                   <ConceptProvider>
                     <TransactionsProvider>
                       <CutsProvider>
-                        <Router>
-                          <Routes>
-                            <Route exact path='/' element={<Login />} />
-                            <Route exact path='/manager/*' element={<Manager />} />
-                            <Route exact path='/cashier/*' element={<Cashier />} />
-                            <Route exact path='/executive/*' element={<Executive/>}/> 
-                          </Routes>
-                        </Router>
+                        <UserProvider>
+                          <Router>
+                            <Routes>
+                              <Route exact path='/' element={<Login />} />
+                              <Route exact path='/manager/*' element={<Manager />} />
+                              <Route exact path='/cashier/*' element={<Cashier />} />
+                              <Route exact path='/executive/*' element={<Executive/>}/> 
+                            </Routes>
+                          </Router>
+                        </UserProvider>
                       </CutsProvider>
                     </TransactionsProvider>
                   </ConceptProvider>
