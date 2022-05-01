@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Fab} from '@material-ui/core'
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../../assets/Loader'
 import AddIcon from '@material-ui/icons/Add'
 import { ToastContainer, toast } from 'react-toastify';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 //Modal
 import ModalTransactions from './ModalTransactions';
@@ -14,6 +16,7 @@ import { Context } from '../../context/Transactions/TransactionsContext';
 import { Context as ConceptContext } from '../../context/Concepts/ConceptsContext';
 
 import {FormControl, TextField} from '@material-ui/core';
+import { set } from 'react-hook-form';
 
 
 // Init the object where the input info will be saved
@@ -33,6 +36,8 @@ const Transactions = () => {
     const [concepts, setConcepts] = React.useState([]);
     const [concept, setConcept] = React.useState('');
     const [search, setSearch] = React.useState('inicial');
+    const [page, setPage] = React.useState(1);
+    const [totalPages, setTotalPages] = React.useState(2);
 
     React.useEffect(()=>{
       setConcepts(ConceptsState.state.concepts);
@@ -68,13 +73,27 @@ const Transactions = () => {
     }
   // Set the transactions to show and get the concepts for the database
     React.useEffect(() => {
-      getTransactions({setLoader},search);
+      getTransactions({setLoader},search,page);
       ConceptsState.getConcepts({setLoader});
-    }, [search]);
+    }, [search,page]);
 
     const formatDate = (date) => {
       let dateF = new Date(date)
       return dateF.toLocaleString().toString().slice(0,-3)
+    }
+
+    const changePage = (e) =>{
+      let intPage = parseInt(e.target.textContent)
+      if(e.target.textContent!=='' && e.target.type==='button' && intPage!==page){
+        setPage(intPage)
+      }else if(e.target.dataset.testid!==undefined){
+        if(e.target.dataset.testid==="NavigateNextIcon"){
+          setPage(page+1)
+        }else if(e.target.dataset.testid==="NavigateBeforeIcon"){
+          setPage(page-1)
+        }
+      }
+      // console.log(e.target.textContent,e.target.dataset.testid)
     }
 
     return (
@@ -88,7 +107,7 @@ const Transactions = () => {
                     <TextField autoComplete='off'
                     label="Type account number to search"
                     name="search"
-                    onChange={e => setSearch(e.target.value)} 
+                    onChange={e => {setSearch(e.target.value)}} 
                     />
         </FormControl>
           <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
@@ -110,11 +129,10 @@ const Transactions = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-                {!state.transactions
+                {!state.transactions.rows
                 ? <TableRow><TableCell></TableCell></TableRow>
                 : 
-                state.transactions.map((ex,index) => (
-                  ex.Card!==null &&
+                state.transactions.rows.map((ex,index) => (
                   <TableRow
                     key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -142,6 +160,12 @@ const Transactions = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
+     
+        <Stack spacing={2} style={{marginTop:'20px'}}>
+          <Pagination count={Math.ceil(state.transactions.count/5)} variant="outlined" shape="rounded" onClick={(e)=>{changePage(e)}} style={{margin:'0px',padding:'0px',display:"flex"}}/>
+        </Stack>
+      
         
         <ModalTransactions
             form={form}

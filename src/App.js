@@ -48,7 +48,6 @@ function App() {
         </DenominationProvider>
       </PositionAreaProvider>
     </ExecutiveProvider>
-
   );
 }
 export default App;
