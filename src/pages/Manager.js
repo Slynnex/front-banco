@@ -12,6 +12,7 @@ import Interests from './Interests/Interests'
 import CreditDetails from './CreditDetails/CreditDetails'
 import Clients from './Clients/Clients'
 import Cuts from './Cuts/Cuts'
+import Mortgages from './Mortgages/Mortgages'
 
 const Manager = () => {
   return (
@@ -28,6 +29,7 @@ const Manager = () => {
                 <Route exact path={'/interests'} element={<Interests/>}/>
                 <Route exact path={'/creditdetails'} element={<CreditDetails/>}/>
                 <Route exact path={'/cuts'} element={<Cuts/>}/>
+                <Route exact path={'/mortgages'} element={<Mortgages/>}/>
             </Routes>
     </DashboardSidebar>
   )
