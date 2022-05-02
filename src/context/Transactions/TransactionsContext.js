@@ -44,7 +44,8 @@ const saveTransactions = dispatch => async({setLoader, id, form, handleReset}) =
         })
         setLoader('none')
     } catch (err) {
-        const transactions = await server.get('/transactions')
+        const transactions = await server.get('/transactions/initial/page=1')
+        console.log(transactions)
         dispatch({type: "error", payload:{transactions: transactions.data.data, errors: err.response.data}});
         setLoader('none');
     }

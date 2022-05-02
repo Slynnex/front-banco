@@ -4,15 +4,26 @@ import Modal from '@material-ui/core/Modal'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-
+import IconButton from '@material-ui/core/IconButton'
+import server from '../../config/bdApi';
 //Icons
 import CancelIcon from '@material-ui/icons/Cancel'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import EmailIcon from '@material-ui/icons/Email'
 
-const Show_info = ({openS,handleCloseS,data}) => {
-    useEffect(() => {
-      
-    }, [data])
+
+
+const Show_info = ({openS,handleCloseS,data,toast}) => {
+    
+
+      //Send Email About Account
+      const sendEmail = async (id) => {
+        try{
+          await server.get(`/reports/amortizations/${id}`);
+          toast.success("Email sended");
+        }catch(error){
+          console.log(error)
+        }
+      }
     
 
     const style = {
@@ -51,12 +62,11 @@ const Show_info = ({openS,handleCloseS,data}) => {
               <li>INE: <b>{data.no_ine}</b></li>
               <li>Street: <b>{data.street} {data.number_ext}</b></li>
               <li>Colony: <b>{data.colony}</b></li>
-              <li>Municipality: <b>{data.municipality}</b></li>
               <li>State: <b>{data.state}</b></li>
 
             </div>
             
-            <div style={{margin:'10px',fontSize:'15px'}}>
+            <div style={{margin:'15px',fontSize:'15px'}}>
               <b>Accounts:</b>
             </div>
             {data.Accounts.map((el,index)=>(
@@ -68,6 +78,12 @@ const Show_info = ({openS,handleCloseS,data}) => {
               <li key={'a'+index}>Account number: <b>{el.no_acc}</b></li>
               <li key={'b'+index}> Account type: <b>{el.type}</b></li>
               <li key={'c'+index}>Account amount: <b>{el.amount}</b></li>
+              {el.type === 'credit' || el.type === 'mortgage'
+                ?<IconButton aria-label="delete" size="small" onClick={() => {sendEmail(el.id)}}>
+                  <EmailIcon />
+                </IconButton>
+                :null
+              }
               {el.Cards.map((card,indexCard)=>(
                 <div style={{marginTop:'10px'}}>
                   <div><b>Cards</b></div>

@@ -102,7 +102,6 @@ const Accounts = ({handleClose,id,toast}) => {
             resultNip = true;
         if(creditDetail !== '')
             resultCreditDetail = true;
-        
         if(type === 'debit'){
             if(resultNip && resultAmount && resultDocuments && resultBeneficiaries){
                 setValidate(true);
@@ -115,8 +114,8 @@ const Accounts = ({handleClose,id,toast}) => {
             }else{
                 setValidate(false);
             }
-        }else if(type === 'mortgages'){
-            if(resultMortgage && resultDocuments && resultPropertie && resultGuarantees){
+        }else if(type === 'mortgage'){
+            if(resultMortgage && resultPropertie && resultGuarantees && resultDocuments){
                 setValidate(true);
             }else{
                 setValidate(false);
@@ -291,8 +290,8 @@ const Accounts = ({handleClose,id,toast}) => {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
             >
-                <Tab label="Account" {...a11yProps(0)} />
-                <Tab label="Documents" {...a11yProps(1)} />
+                <Tab label="Account" {...a11yProps(0)}  disabled={type === 'mortgage' ?true :false}/>
+                <Tab label="Documents" {...a11yProps(1)}/>
                 <Tab label="Beneficiaries" {...a11yProps(2)} disabled={type === 'debit' ?false :true}/>
                 <Tab label="Mortgage" {...a11yProps(3)} disabled={type === 'mortgage' ?false :true}/>
             </Tabs>

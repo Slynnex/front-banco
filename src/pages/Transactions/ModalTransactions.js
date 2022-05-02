@@ -37,7 +37,7 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
 
 // Search account in database with the card number
     const searchAcount = () =>{
-        axios.get('http://localhost:9000/api/v1/transactions/client/' + form.card_no)
+        axios.get('https://bancomex-improving.herokuapp.com/api/v1/transactions/client/' + form.card_no)
         .then(function (response) {
             if(response.data.data === null){
                 setFlag(true);
