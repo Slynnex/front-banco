@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext,useEffect} from 'react';
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -52,7 +52,7 @@ const initialGuarantees = [
 
 ]
 
-const Accounts = ({handleClose,id}) => {
+const Accounts = ({handleClose,id,toast}) => {
     const [value, setValue] = useState(0);
     const [type, setType] = useState('debit');
     const [nip, setNip] = useState('')
@@ -64,9 +64,66 @@ const Accounts = ({handleClose,id}) => {
     const [formMortgage, setFormMortgage] = useState(initialMortgage);
     const [formProperties, setFormProperties] = useState(initialProperties);
     const [formGuarantees, setFormGuarantees] = useState(initialGuarantees);
+    const [validate, setValidate] = useState(false);
     
 
     const {get} = useContext(Context)
+
+    useEffect(() => {
+        let resultAmount = false;
+        let resultNip = false;
+        let resultCreditDetail = false;
+        let resultDocuments = true;
+        let resultPropertie = true;
+        let resultGuarantees = true;
+        formDocuments.forEach((document) =>{                                           //Validate if is not empty the documents
+            if(!Object.values(document).every((value) => value !== '')){
+                resultDocuments = false;
+            }
+        })
+
+        const resultBeneficiaries = Object.values(formBeneficiarie).every((value) => value !== '')//Validate if is not empty the form Beneficiaries
+        const resultMortgage = Object.values(formMortgage).every((value) => value !== '');  //Validate if is not empty the form Mortgage
+        formProperties.forEach((property) =>{                                           //Validate if is not empty the form Properties
+            if(!Object.values(property).every((value) => value !== '')){
+                resultPropertie = false;
+            }
+        })
+
+        formGuarantees.forEach((guarante) =>{                                           //Validate if is not empty the form Properties
+            if(!Object.values(guarante).every((value) => value !== '')){
+                resultGuarantees = false;
+            }
+        })
+
+        if(amount !== ''){
+            resultAmount = true;}
+        if(nip !== '')
+            resultNip = true;
+        if(creditDetail !== '')
+            resultCreditDetail = true;
+        
+        if(type === 'debit'){
+            if(resultNip && resultAmount && resultDocuments && resultBeneficiaries){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }else if(type === 'credit'){
+            if(resultAmount && resultCreditDetail && resultDocuments){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }else if(type === 'mortgages'){
+            if(resultMortgage && resultDocuments && resultPropertie && resultGuarantees){
+                setValidate(true);
+            }else{
+                setValidate(false);
+            }
+        }
+    },[type,formDocuments,formBeneficiarie,amount,nip,creditDetail,formMortgage,formProperties,formGuarantees])
+
 
     function a11yProps(index) {
         return {
@@ -107,7 +164,7 @@ const Accounts = ({handleClose,id}) => {
         })
     }
 
-    const save = () => {
+    const save = async () => {
         if(type === 'debit'){
             const form = {
                 account: {
@@ -123,11 +180,16 @@ const Accounts = ({handleClose,id}) => {
                 }
             }
             try{
-                server.post(`accounts/debit`,form);
+                await server.post(`accounts/debit`,form);
                 get('inicial');  
                 handleClose();
-            }catch(error){
-                console.log(error.response);
+            }catch(err){
+                let errors = err.response.data.message;
+                errors.shift();
+                errors.map((error) => (
+                    console.log(error),
+                    toast.error(`${error.msg} -  ${error.param}`)
+                ))
             }
 
         }else if(type === 'credit'){
@@ -142,11 +204,15 @@ const Accounts = ({handleClose,id}) => {
                 }
             }
             try{
-                server.post(`accounts/credit`,form);
+                await server.post(`accounts/credit`,form);
                 handleClose();
                 get('inicial');  
-            }catch(error){
-                console.log(error.response);
+            }catch(err){
+                let errors = err.response.data.message;
+                errors.shift();
+                errors.map((error) => (
+                    toast.error(`${error.msg} -  ${error.param}`)
+                ))
             }
         }else{
             const form = {
@@ -159,13 +225,16 @@ const Accounts = ({handleClose,id}) => {
                 guarantees: formGuarantees,
                 properties: formProperties
             }
-            console.log(form)
             try{
-                server.post(`accounts/mortgage`,form);
+                await server.post(`accounts/mortgage`,form);
                 handleClose();
                 get('inicial');  
-            }catch(error){
-                console.log(error.response);
+            }catch(err){
+                let errors = err.response.data.message;
+                errors.shift();
+                errors.map((error) => (
+                    toast.error(`${error.msg} -  ${error.param.split('[')[0]}`)
+                ))
             }
         }
     }
@@ -264,7 +333,7 @@ const Accounts = ({handleClose,id}) => {
             </TabPanel>
         </div>
         <Grid>
-            <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
+            <Fab color="primary" disabled={!validate} aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
             <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => handleClose()}>

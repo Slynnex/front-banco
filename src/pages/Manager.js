@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import DashboardSidebar from '../components/dashboard/DashboardSidebar'
 import {BrowserRouter as Router,  Routes, Route} from 'react-router-dom'
 import Dashboard from './Dashboard'
@@ -18,7 +18,6 @@ import jwt_decode from "jwt-decode";
 
 const Manager = () => {
   const navigate = useNavigate();
-
   // Protection of routes and redirection
   React.useEffect(()=>{
     const token = localStorage.getItem('token');
