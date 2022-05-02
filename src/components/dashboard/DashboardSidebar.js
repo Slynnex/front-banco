@@ -41,7 +41,7 @@ const DashboardSidebar = (props) => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('name');
-    localStorage.removeItem('rol');
+    localStorage.removeItem('role');
     navigate('/', { replace: true });
     window.location.reload();
   }
