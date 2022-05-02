@@ -137,8 +137,9 @@ const ModalCuts = ({form,handleChange,action,saveData,handleClose,open,handleRes
                             <div>&nbsp;</div>
                             <Select id="CashboxId" name="CashboxId" style={{width:'180px'}} onChange={handleChange} value={form.CashboxId}>
                                 {state.cashboxes.map((value) => (
-                                    value.Cuts.length === 0 && <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
-                                ))}
+                                    value.Cuts.length === 0 && form.type === 'initial' && <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem> ))}
+                                {state.cashboxes.map((value) => (
+                                    value.Cuts.length > 0 && form.type === 'final' && <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem> ))}
                             </Select>
                         </FormControl>
                     </div>
