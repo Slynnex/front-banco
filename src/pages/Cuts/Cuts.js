@@ -85,7 +85,6 @@ const Cuts = () => {
   }
 
   const editData = (id)=>{
-    console.log(state.cuts)
     setAction('Update')
     let [cut] = state.cuts.filter(el=>el.id===id)
     
@@ -110,7 +109,6 @@ const Cuts = () => {
       },
       id:cut.id
     }
-    console.log(cutDenomination)
     for (const de of cut.Denominations) {
       if(de.id in cutDenomination.denominations){
         cutDenomination.denominations[de.id]=de.DenominationCuts.amount

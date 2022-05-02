@@ -105,7 +105,6 @@ export default function Executives() {
     let password = pass.test(form.password) ? true : false
     let AreaId = user.test(form.AreaId) ? true : false
 
-    console.log(userid);
     setValidate({ name: name, lastname: lastname, userid: userid, password: password, AreaId: AreaId })
     // console.log(validate)
 
@@ -152,7 +151,7 @@ export default function Executives() {
       <ToastContainer autoClose={2000} />
       <Loader display={loader} />
       <div style={{ padding: '5px' }}>
-        <span style={{ fontSize: '20px' }}>Ejecutivos</span>
+        <span style={{ fontSize: '20px' }}>Executives</span>
         <Fab color="primary" aria-label="add" size="small"
           onClick={() => {
             handleOpen();

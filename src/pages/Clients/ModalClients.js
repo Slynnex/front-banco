@@ -72,8 +72,6 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
         }
         const actions = ()=>{
             saveData({form,id:form.id,setLoader,handleReset,action})
-            console.log(form);
-            console.log('actions');
         }
         const initialClientForm = {
             name: "",

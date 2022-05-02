@@ -13,12 +13,12 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
 
   return (
     <div>
+      <span style={{ fontSize: '15px', marginLeft:'10px' }}>Mortgage</span>
       <div className='row'>
             <div>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Solicited amount</InputLabel>
                     <Input id="solicited_amount" name="solicited_amount" aria-describedby="solicited_amount" autoComplete='off' type='number' value={formMortgage.solicited_amount} onChange={handleMortgage}/> 
-                    <Input id="solicited_amount" name="solicited_amount" aria-describedby="solicited_amount" autoComplete='off' value={formMortgage.solicited_amount} onChange={handleMortgage}/> 
                 </FormControl>
             </div>
             <div className='item'>
@@ -42,6 +42,7 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
                 />
              </div>
       </div>
+      <span style={{ fontSize: '15px', marginLeft:'10px' }}>Guarantees</span>
       <div className='row'>
           <div>
                 <FormControl>
@@ -69,6 +70,7 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
                 </FormControl>
           </div>
         </div>
+        <span style={{ fontSize: '15px', marginLeft:'10px' }}>Properties</span>
         <div className='row'>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Value</InputLabel>

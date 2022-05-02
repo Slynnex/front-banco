@@ -192,10 +192,12 @@ const Clients = () => {
         })
     }
 
-    const handleClose = () => {
+    const handleClose = ({type}) => {
         setDialog(false);
-        setShow(true);
-        setCreate(false);
+        if(type !== 'dialog'){
+            setShow(true);
+            setCreate(false);
+        }
     }
 
     const editData = (id) => {
@@ -492,7 +494,7 @@ const Clients = () => {
 
         <Alert_Dialog
             openD={dialog}
-            handleCloseD={handleClose}
+            handleCloseD={() => (handleClose({type: "dialog"}))}
             name={`${formClient.name} ${formClient.lastname}`}
             deleteData={saveData}
             description={"You want to create: "}

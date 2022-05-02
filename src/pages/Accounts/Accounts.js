@@ -182,12 +182,11 @@ const Accounts = ({handleClose,id,toast}) => {
             try{
                 await server.post(`accounts/debit`,form);
                 get('inicial');  
-                handleClose();
-            }catch(err){
-                let errors = err.response.data.message;
+                handleClose({type: ""});
+            }catch(error){
+                let errors = error.response.data.message;
                 errors.shift();
                 errors.map((error) => (
-                    console.log(error),
                     toast.error(`${error.msg} -  ${error.param}`)
                 ))
             }
@@ -205,10 +204,11 @@ const Accounts = ({handleClose,id,toast}) => {
             }
             try{
                 await server.post(`accounts/credit`,form);
-                handleClose();
+                handleClose({type: ""});
                 get('inicial');  
-            }catch(err){
-                let errors = err.response.data.message;
+            }catch(error){
+                console.log(error)
+                let errors = error.response.data.message;
                 errors.shift();
                 errors.map((error) => (
                     toast.error(`${error.msg} -  ${error.param}`)
@@ -227,10 +227,10 @@ const Accounts = ({handleClose,id,toast}) => {
             }
             try{
                 await server.post(`accounts/mortgage`,form);
-                handleClose();
+                handleClose({type: ""});
                 get('inicial');  
-            }catch(err){
-                let errors = err.response.data.message;
+            }catch(error){
+                let errors = error.response.data.message;
                 errors.shift();
                 errors.map((error) => (
                     toast.error(`${error.msg} -  ${error.param.split('[')[0]}`)
@@ -336,7 +336,7 @@ const Accounts = ({handleClose,id,toast}) => {
             <Fab color="primary" disabled={!validate} aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
-            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => handleClose()}>
+            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => handleClose({type:""})}>
                 <CancelIcon />
             </Fab>
         </Grid>
