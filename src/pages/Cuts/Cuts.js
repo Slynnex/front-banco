@@ -26,6 +26,7 @@ import ModalCuts from './ModalCuts';
 import Alert_Dialog from '../../components/alert_dialog/Alert_Dialog'
 
 import { Context } from '../../context/Cuts/CutsContext'
+import jwt_decode from "jwt-decode";
 
 const initialForm = {
   total_cut:0,
@@ -58,6 +59,7 @@ const Cuts = () => {
   //modal state vars
   const [open, setOpen] = useState(false)
   const [openD, setOpenD] = useState(false)
+  const [isManager, setIsManager] = React.useState(false);
   const [cutD, setCutD] = useState(initialForm)
   const handleOpenD = () => setOpenD(true)
   const handleCloseD = () => setOpenD(false)
@@ -146,16 +148,27 @@ const Cuts = () => {
     getCuts({setLoader})
   }, [])
 
+  useEffect(()=>{
+    const token = localStorage.getItem('token');
+    const decode = jwt_decode(token);
+    if(decode.session.rol === 'manager'){
+      setIsManager(true);
+    }
+  },[])
+
 
   return (
     <>
     <ToastContainer autoClose={2000}/>
       <Loader display={loader}/>
       <div style={{padding:'5px'}}>
-        <span style={{fontSize:'20px'}}>Ejecutivos</span>
-        <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
-          <AddIcon />
-        </Fab>
+        <span style={{fontSize:'20px'}}>Cuts</span>
+        {isManager
+          ?null
+          :<Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+            <AddIcon />
+          </Fab>
+        }
       </div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -191,9 +204,13 @@ const Cuts = () => {
                 {/* <TableCell>{!ex.total_system ? '-' :ex.total_system}</TableCell>
                 <TableCell>{!ex.diference? '-' :ex.diference}</TableCell> */}
                 <TableCell style={{margin:'5px'}}>
-                  <IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
-                    <EditIcon size="small"/>
-                  </IconButton>
+                  {isManager
+                    ?null
+                    :<IconButton aria-label="edit" size="small" onClick={(e)=>editData(ex.id)}>
+                      <EditIcon size="small"/>
+                    </IconButton>
+                  }
+
                   {/* <IconButton aria-label="delete" size="small" onClick={(e)=>setDataToDelete(ex.id)}>
                     <DeleteIcon/>
                   </IconButton> */}

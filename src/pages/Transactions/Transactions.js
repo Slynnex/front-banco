@@ -16,6 +16,7 @@ import { Context } from '../../context/Transactions/TransactionsContext';
 import { Context as ConceptContext } from '../../context/Concepts/ConceptsContext';
 
 import {FormControl, TextField} from '@material-ui/core';
+import jwt_decode from "jwt-decode";
 import { set } from 'react-hook-form';
 
 
@@ -37,7 +38,15 @@ const Transactions = () => {
     const [concept, setConcept] = React.useState('');
     const [search, setSearch] = React.useState('inicial');
     const [page, setPage] = React.useState(1);
-    const [totalPages, setTotalPages] = React.useState(2);
+    const [isManager, setIsManager] = React.useState(false);
+
+    React.useEffect(()=>{
+      const token = localStorage.getItem('token');
+      const decode = jwt_decode(token);
+      if(decode.session.rol === 'manager'){
+        setIsManager(true);
+      }
+    },[])
 
     React.useEffect(()=>{
       setConcepts(ConceptsState.state.concepts);
@@ -110,9 +119,12 @@ const Transactions = () => {
                     onChange={e => {setSearch(e.target.value)}} 
                     />
         </FormControl>
-          <Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
+        {isManager
+          ?null
+          :<Fab color="primary" aria-label="add" size="small" onClick={()=>{handleOpen();setAction('Create');setForm(initialForm)}} style={{float:'right',marginBottom:'20px'}}>
             <AddIcon />
           </Fab>
+        }
         </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">

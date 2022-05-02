@@ -39,7 +39,6 @@ const DashboardSidebar = (props) => {
   },[props.role]);
 
   useEffect(() => {
-    console.log(state)
     tryLocalSignin();
   },[props.role])
 

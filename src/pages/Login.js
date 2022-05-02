@@ -78,7 +78,6 @@ React.useEffect(()=>{
 
 
 React.useEffect(() => {
-  console.log("Entro")
   tryLocalSignin();
 },[])
 
