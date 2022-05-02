@@ -303,11 +303,10 @@ const Clients = () => {
                 guarantees: formGuarantees,
                 properties: formProperties
             }
+
             save({form,setCreate,setDialog,setShow,type});
             break;
-        }
-
-        }
+        }}
     }
 
     //Update documents from client
@@ -316,6 +315,7 @@ const Clients = () => {
         newDocuments[index].document_url = document;
         setFormDocuments(newDocuments);
     }
+
 
     //Change state to create account
     const createAccount = (id) => {
@@ -350,6 +350,7 @@ const Clients = () => {
             }
         }
     }
+
 
     const [search, setSearch] = React.useState('inicial');
 
