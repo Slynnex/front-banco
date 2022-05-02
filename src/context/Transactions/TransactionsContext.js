@@ -42,7 +42,6 @@ const saveTransactions = dispatch => async({setLoader, id, form, handleReset}) =
         transactions.then(function(value){
             dispatch({type: "refresh", payload:{transactions:value, errors: []}})
         })
-        console.log(response);
         setLoader('none')
     } catch (err) {
         const transactions = await server.get('/transactions')

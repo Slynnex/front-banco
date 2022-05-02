@@ -59,7 +59,6 @@ const ModalTransactions = ({form,handleChange,action,saveData,handleClose,open,h
     React.useEffect(()=>{
         if(accountType === 'debit'){
             setnewConcepts(concepts.filter(obj => obj.name === 'withdraw' || obj.name === 'deposit' ));
-            console.log(concepts);
         }
         if(accountType === 'credit' || accountType === 'mortgage'){
             setnewConcepts(concepts.filter(obj => obj.name === 'payment'));
