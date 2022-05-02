@@ -115,7 +115,7 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
             <Fab disabled={!validate} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
-            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => handleClose()}>
+            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => handleClose({type:""})}>
                 <CancelIcon />
             </Fab>
       </Grid>

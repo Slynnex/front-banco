@@ -194,11 +194,6 @@ export default function Concepts() {
                     <DeleteIcon />
                   </IconButton>
                 </TableCell> */}
-                <TableCell>
-                  <IconButton aria-label="visibility" size="small" onClick={(e) => visibility(ex.id)}>
-                    <VisibilityIcon />
-                  </IconButton>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>

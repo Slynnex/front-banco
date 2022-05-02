@@ -11,7 +11,6 @@ const TabDocuments = ({updateFieldChanged}) => {
        data.append("upload_preset", "lccyzc02");
        try{
         const res = await axios.post('https://api.cloudinary.com/v1_1/dnesdnfxy/image/upload',data);
-        console.log(res.data.url)
         updateFieldChanged(index,res.data.url);
         }
        catch(error){

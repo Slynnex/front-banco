@@ -12,9 +12,7 @@ const TabAccount = ({type, nip, amount, setAmount, setNip,setCreditDetail,credit
         getCreditDetails({setLoader});
     },[])
 
-    useEffect(() => {
-        console.log(state)
-    },[state])
+
 
   return (
     <div>
