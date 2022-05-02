@@ -108,12 +108,12 @@ const TabPersonalInfo = ({form,handleForm}) => {
       <div className='row'>
           <FormControl>
               <InputLabel variant="standard" required={true}>Celphone</InputLabel>
-              <Input id="celphone" name="celphone" aria-describedby="celphone" autoComplete='off' onChange={handleForm} value={form.celphone}/> 
+              <Input id="celphone" name="celphone" aria-describedby="celphone" autoComplete='off' type='number' onChange={handleForm} value={form.celphone}/> 
           </FormControl>
           <div className='item'>
             <FormControl>
                 <InputLabel variant="standard" required={true}>Landline</InputLabel>
-                <Input id="landline" name="landline" aria-describedby="landline" autoComplete='off' onChange={handleForm} value={form.landline}/> 
+                <Input id="landline" name="landline" aria-describedby="landline" autoComplete='off' type='number' onChange={handleForm} value={form.landline}/> 
             </FormControl>
           </div>
       </div>

@@ -107,7 +107,6 @@ const initialGuarantees = [
 ]
 
 const Clients = () => {
-    const {state} = useContext(Context)
     //Formulario de clientes
     const [formClient,setFormClient] = useState(initialClientForm)
     const [formBeneficiarie, setFormBeneficiarie] = useState(initialBeneficiarieForm)
@@ -130,13 +129,19 @@ const Clients = () => {
      //loading state
     const [loader, setLoader] = useState('none')
 
-    const {save, get} = useContext(Context);
+    const {save, get, state} = useContext(Context);
     const handleOpenM = () => setOpen(true)
     const handleOpenS = () => setOpenS(true)
     const handleCloseS = () => setOpenS(false)
     const handleCloseM = () => setOpen(false)
 
-    
+    useEffect(() => {
+        if(state.errors.length > 0){
+            state.errors.map((error) => (
+                toast.error(`${error.msg} -  ${error.param.split('.')[0]} - ${error.param.split('.')[1]}`)
+            ))
+        }
+    },[state])
 
     const handleReset = (e)=>{
         handleOpenM()
@@ -420,13 +425,16 @@ const Clients = () => {
         <Loader display={loader}/>
         <div style={{padding:'5px'}}>
             <span style={{fontSize:'20px'}}>Clients</span>
-            <FormControl fullWidth={true} style={{marginTop:'10px',marginBottom:'20px'}}>
-                    <TextField autoComplete='off'
-                    label="Type the full name of any client"
-                    name="search"
-                    onChange={e => setSearch(e.target.value)} 
-                    />
-            </FormControl>
+            {show
+                ?<FormControl fullWidth={true} style={{marginTop:'10px',marginBottom:'20px'}}>
+                        <TextField autoComplete='off'
+                        label="Type the name of any client"
+                        name="search"
+                        onChange={e => setSearch(e.target.value)} 
+                        />
+                </FormControl>
+                :null
+            }
             {show
                 ?<Fab color="primary" aria-label="add" size="small" style={{float:'right',marginBottom:'20px'}} onClick={()=>{handleCreate();}}>
                     <AddIcon />
@@ -467,6 +475,7 @@ const Clients = () => {
                     setDialog={setDialog}
                     handleClose={handleClose}
                     id={selectId}
+                    toast={toast}
                 />
         }
         <ModalClients

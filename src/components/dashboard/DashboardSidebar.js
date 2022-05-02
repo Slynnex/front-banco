@@ -16,15 +16,18 @@ import { theme } from './DashboardStyles';
 import {gerente, cashier, executives} from './UserRoutes';
 import { useNavigate } from "react-router-dom";
 import { Context } from '../../context/User/UserContext';
+import jwt_decode from "jwt-decode";
 
 const DashboardSidebar = (props) => {
   const [userInfo, setuserInfo] = React.useState('');
   const [routes, setRoutes] = React.useState([]);
-  const {state} = useContext(Context)
+  const {state,tryLocalSignin} = useContext(Context)
   const navigate = useNavigate();
 
   useEffect(()=>{
-    let upperUser = state.name.slice(0,state.name.indexOf(' '));
+    const token = localStorage.getItem('token');
+    const decode = jwt_decode(token);
+    let upperUser = decode.session.name.slice(0,decode.session.name.indexOf(' '));
     setuserInfo(upperUser);
     if(props.role === 1){
       setRoutes(gerente);
@@ -34,6 +37,11 @@ const DashboardSidebar = (props) => {
       setRoutes(executives);
     }
   },[props.role]);
+
+  useEffect(() => {
+    console.log(state)
+    tryLocalSignin();
+  },[props.role])
 
   const classes = useStyles();
 

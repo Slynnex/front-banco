@@ -4,10 +4,11 @@ import server from '../../config/bdApi';
 const clientsReducer = (state, action) =>{
     switch(action.type){
         case "get_clients":
-            return{clients: action.payload};
+            return{clients: action.payload,errors:[]};
         case "refresh":
-            console.log(action.payload)
-            return{clients: action.payload}
+            return{clients: action.payload,errors:[]}
+        case "errors":
+            return{...state,errors: action.payload}
         default: 
             return state;
     }
@@ -33,7 +34,9 @@ const save = dispatch => async({form,setCreate,setDialog,setShow,type}) => {
        setDialog(false);
        setShow(true);
     }catch(err){
-        console.log({err})
+        let errors = err.response.data.message;
+        errors.shift();
+        dispatch({type: "errors", payload: errors})
     }
 }
 
@@ -48,5 +51,5 @@ const refreshData = async ()=>{
   }
 
 export const {Provider, Context} = dataContext(
-    clientsReducer,{save,get},{clients:[]}
+    clientsReducer,{save,get},{clients:[],errors:[]}
 )

@@ -46,14 +46,14 @@ const TabBeneficiaries = ({form,handleForm}) => {
             <div className='item'>
             <FormControl className='item'>
                 <InputLabel variant="standard" required={true}>Percentage</InputLabel>
-                <Input id="percentage" name="percentage" aria-describedby="percentage" autoComplete='off' value={form.percentage} onChange={handleForm} /> 
+                <Input id="percentage" name="percentage" aria-describedby="percentage" autoComplete='off' type='number' value={form.percentage} onChange={handleForm} /> 
             </FormControl>
           </div>
          </div>
          <div className='row'>
             <FormControl>
                 <InputLabel variant="standard" required={true}>Phone</InputLabel>
-                <Input id="phone" name="phone" aria-describedby="phone" autoComplete='off' value={form.phone} onChange={handleForm}/> 
+                <Input id="phone" name="phone" aria-describedby="phone" autoComplete='off' type='number' value={form.phone} onChange={handleForm}/> 
             </FormControl>
             <div className='item'>
             <FormControl className='item'>

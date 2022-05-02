@@ -22,14 +22,14 @@ const TabAccount = ({type, nip, amount, setAmount, setNip,setCreditDetail,credit
             <div className='item'>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Amount</InputLabel>
-                    <Input id="amount" name="amount" aria-describedby="amount" autoComplete='off' onChange={(e) => setAmount(e.target.value)} value={amount}/> 
+                    <Input id="amount" name="amount" aria-describedby="amount" autoComplete='off' type='number' onChange={(e) => setAmount(e.target.value)} value={amount}/> 
                 </FormControl>
             </div>
             {type === 'debit'
                 ?<div className='item'>
                     <FormControl>
                         <InputLabel variant="standard" required={true}>NIP</InputLabel>
-                        <Input id="nip" name="nip" aria-describedby="nip" autoComplete='off' onChange={(e) => setNip(e.target.value)} value={nip}/> 
+                        <Input id="nip" name="nip" aria-describedby="nip" autoComplete='off' type='number' onChange={(e) => setNip(e.target.value)} value={nip}/> 
                     </FormControl>
                 </div>
                 :null
