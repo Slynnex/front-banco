@@ -4,18 +4,19 @@ import server from '../../config/bdApi';
 const clientsReducer = (state, action) =>{
     switch(action.type){
         case "get_clients":
-            return{clients: action.payload};
+            return{clients: action.payload,errors:[]};
         case "refresh":
-            console.log(action.payload)
-            return{clients: action.payload}
+            return{clients: action.payload,errors:[]}
+        case "errors":
+            return{...state,errors: action.payload}
         default: 
             return state;
     }
 }
 
-const get = dispatch => async() => {
+const get = dispatch => async(search) => {
     try{
-        const response = await server.get('/clients');
+        const response = await server.get(`/clients/index/name/${search}`);
         dispatch({type: "get_clients", payload: response.data.data})
     }catch(error){
         console.log({error});
@@ -33,13 +34,15 @@ const save = dispatch => async({form,setCreate,setDialog,setShow,type}) => {
        setDialog(false);
        setShow(true);
     }catch(err){
-        console.log({err})
+        let errors = err.response.data.message;
+        errors.shift();
+        dispatch({type: "errors", payload: errors})
     }
 }
 
 const refreshData = async ()=>{
     try{
-        const response = await server.get('/clients')
+        const response = await server.get(`/clients/index/name/inicial`)
         return  response.data.data;
 
     }catch(err){
@@ -48,5 +51,5 @@ const refreshData = async ()=>{
   }
 
 export const {Provider, Context} = dataContext(
-    clientsReducer,{save,get},{clients:[]}
+    clientsReducer,{save,get},{clients:[],errors:[]}
 )

@@ -13,9 +13,9 @@ import TextField from '@material-ui/core/TextField'
 //Icons
 import Fab from '@material-ui/core/Fab'
 import CancelIcon from '@material-ui/icons/Cancel'
-import SaveIcon from '@material-ui/icons/Save'
+// import SaveIcon from '@material-ui/icons/Save'
 
-const ModalConcepts = ({ form, handleChange, action, saveData, handleClose, open, handleReset, setLoader, validate }) => {
+const ModalConcepts = ({ form, handleChange, saveData, handleClose, open, handleReset, setLoader }) => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -29,17 +29,7 @@ const ModalConcepts = ({ form, handleChange, action, saveData, handleClose, open
     p: 4,
   };
 
-  const validation = () => {
-    if (form.name.length >= 1) {
-      // console.log("saveData")
-      saveData({ form, id: form.id, setLoader, handleReset })
-    } else {
-      validate.name = false
-    }
-  }
-
   return (
-
     <Modal
       open={open}
       onClose={handleClose}
@@ -48,26 +38,16 @@ const ModalConcepts = ({ form, handleChange, action, saveData, handleClose, open
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          {`${action} Concept`}
+          {`${form.name} concept information`}
         </Typography>
 
         <FormControl fullWidth={true}>
           {/* <InputLabel variant="standard" required={true}>Concept</InputLabel>
           <Input id="name" name="name" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} /> */}
-
-          <TextField id="name" name="name" label="Concept *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} error={!validate.name} helperText={validate.name ? "" : "Concept must be greater than 4 characters"} />
+          <TextField id="name" name="name" label="Concept *" aria-describedby="name" autoComplete='off' onChange={handleChange} value={form.name} />
         </FormControl>
 
         <Grid>
-          {form.name.length >= 4 ?
-            <Fab onClick={validation} color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
-              <SaveIcon />
-            </Fab>
-            :
-            <Fab onClick={validation} disabled color="primary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
-              <SaveIcon />
-            </Fab>
-          }
           <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{ float: 'right', marginTop: '20px', marginRight: '10px' }}>
             <CancelIcon />
           </Fab>

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import '../../styles/clients.css'
-import { FormControl, InputLabel, Input, MenuItem, Select} from '@material-ui/core'
+import { FormControl, InputLabel, Input, MenuItem, Select, TextField} from '@material-ui/core'
 import { Context } from '../../context/Interests/InterestsContext'
 
 const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties}) => {
@@ -17,6 +17,7 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
             <div>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Solicited amount</InputLabel>
+                    <Input id="solicited_amount" name="solicited_amount" aria-describedby="solicited_amount" autoComplete='off' type='number' value={formMortgage.solicited_amount} onChange={handleMortgage}/> 
                     <Input id="solicited_amount" name="solicited_amount" aria-describedby="solicited_amount" autoComplete='off' value={formMortgage.solicited_amount} onChange={handleMortgage}/> 
                 </FormControl>
             </div>
@@ -30,6 +31,16 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
                   </Select>
               </FormControl>
             </div>
+            <div className='item'>
+                <TextField
+                    id="date"
+                    label="Solicited date"
+                    type="date"
+                    name='solicited_date'
+                    value={formMortgage.solicited_date} 
+                    onChange={handleMortgage}
+                />
+             </div>
       </div>
       <div className='row'>
           <div>
@@ -53,14 +64,16 @@ const TabMortage = ({handleMortgage,formMortgage,updateFieldGuarantees,formGuara
           <div className='item'>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Telephone</InputLabel>
-                    <Input id="telephone" name="telephone" aria-describedby="telephone" autoComplete='off' value={formGuarantees[0].telephone} onChange={e => updateFieldGuarantees(0,e)}/> 
+                    <Input id="telephone" name="telephone" aria-describedby="telephone" autoComplete='off' type='number' value={formGuarantees[0].telephone} onChange={e => updateFieldGuarantees(0,e)}/> 
+
                 </FormControl>
           </div>
         </div>
         <div className='row'>
                 <FormControl>
                     <InputLabel variant="standard" required={true}>Value</InputLabel>
-                    <Input id="value" name="value" aria-describedby="value" autoComplete='off' value={formProperties[0].value} onChange={e => updateFieldProperties(0,e)}/> 
+                    <Input id="value" name="value" aria-describedby="value" autoComplete='off' type='number' value={formProperties[0].value} onChange={e => updateFieldProperties(0,e)}/> 
+
                 </FormControl>
                 <div className='item'>
                   <input type="file" id="url" name="url" onChange={e => updateFieldProperties(0,e)}/>

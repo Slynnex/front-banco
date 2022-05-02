@@ -16,12 +16,10 @@ import SaveIcon from '@material-ui/icons/Save'
 
 const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
     formBeneficiarie,handleBeneficiarie,setDialog,setCreate,updateFieldChanged,setCreditDetail,creditDetail,type,setType,
-      handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties}) => {
+      handleMortgage,formMortgage,updateFieldGuarantees,formGuarantees,updateFieldProperties,formProperties,handleClose,validate}) => {
   const [value, setValue] = useState(0);
   
-
   const handleChange = (event, newValue) => {
-    console.log(newValue)
     setValue(newValue);
   };
 
@@ -70,8 +68,8 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
               aria-label="scrollable auto tabs example"
             >
               <Tab label="Personal Information" {...a11yProps(0)} />
-              <Tab label="Account" {...a11yProps(1)} />
-              <Tab label="Documents" {...a11yProps(2)} />
+              <Tab label="Account" {...a11yProps(1)} disabled={type !== 'mortgages' ?false :true}/>
+              <Tab label="Documents" {...a11yProps(2)}/>
               <Tab label="Beneficiaries" {...a11yProps(3)} disabled={type === 'debit' ?false :true}/>
               <Tab label="Mortgages" {...a11yProps(4)} disabled={type === 'mortgages' ?false :true}/>
             </Tabs>
@@ -114,10 +112,10 @@ const TabsClients = ({handleClient,formClient,nip,amount,setAmount,setNip,
           </TabPanel>
       </div>
       <Grid>
-            <Fab color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}} onClick={() => setDialog(true)}>
+            <Fab disabled={!validate} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => setDialog(true)}>
                 <SaveIcon />
             </Fab>
-            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => setCreate(false)}>
+            <Fab color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}  onClick={() => handleClose()}>
                 <CancelIcon />
             </Fab>
       </Grid>

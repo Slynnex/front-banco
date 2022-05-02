@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://localhost:9000/api/v1'
+    baseURL: 'https://bancomex-improving.herokuapp.com/api/v1'
 });
 
 instance.interceptors.request.use(

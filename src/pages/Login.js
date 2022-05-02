@@ -1,15 +1,19 @@
-import React,{useState} from 'react';
+import React,{useContext, useState} from 'react';
 import {Card, CardContent, TextField, Button} from '@material-ui/core';
 import '../styles/login.css';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import Manager from './Manager';
 import Loader from '../assets/Loader';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { toast } from 'react-toastify';
+import { Context } from '../context/User/UserContext';
+
 
 const Login = () => {
+  // States to use
   const [loader, setLoader] = useState('none')
+  const[block, setBlock] = useState(true);
   const [errorS, setErrorS] = useState({
     display:"none",
     message:'invalid user or password'
@@ -18,10 +22,13 @@ const Login = () => {
     userid: '',
     password: ''
   });
-  const [user, setUser] = React.useState([]);
   const navigate = useNavigate();
   const [isLoggedIn, setisLoggedIn] = React.useState(false);
 
+  const [decoded, setDecoded] = React.useState('');
+  const [clicked, setClicked] = React.useState(false);
+  
+  //Validation of route
   useState(()=>{
     if(!localStorage.getItem('token')){
       setisLoggedIn(false);
@@ -29,6 +36,10 @@ const Login = () => {
       setisLoggedIn(true);
     }
   },[])
+
+
+  const {login,state,tryLocalSignin} = useContext(Context);
+ 
 
   const saveLoginInfo = (e) =>{
     if(e.target.name === 'userid'){
@@ -45,27 +56,41 @@ const Login = () => {
     }
   }
 
+  //Request to database for the validation of loginInfo and returning the user if found it
   const onSubmit = () =>{
     setLoader('flex')
-    axios.post('http://localhost:9000/api/v1/login',loginInfo)
-    .then(({data}) =>{
-        if(!data.token){
-          console.log('hola')
-          setErrorS({...errorS,display:'block'});
-        }else{
-          setUser(data);
-          localStorage.setItem('username', loginInfo.userid);
-          localStorage.setItem("token", data.token);
-          navigate('/manager/', { replace: true });
-          window.location.reload(true);
-        }
-        setLoader('none')
-    })
-    .catch(({response}) =>{
-        setErrorS({message:response,display:'block'})
-        setLoader('none')
-    });
+    login({loginInfo,setLoader,setErrorS});
 }
+
+
+React.useEffect(()=>{
+  if(state.token){
+    if(state.rol === 'manager'){
+      navigate('/manager/', { replace: true });
+    }else if(state.rol === 'executive'){
+      navigate('/executive/', { replace: true });
+    }else{
+      navigate('/cashier/', { replace: true });
+    }
+  }
+},[state]);
+
+
+
+React.useEffect(() => {
+  console.log("Entro")
+  tryLocalSignin();
+},[])
+
+
+const changeBlock=()=>{
+  if(loginInfo.userid.length !== 0 && loginInfo.password.length !== 0){
+    setBlock(false);
+  }else{
+    setBlock(true);
+  }
+}
+
 
   return (
   <>
@@ -90,15 +115,15 @@ const Login = () => {
               <div className='fields'>
                 <div className='field'>
                   <p>User ID</p>
-                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" name="userid" autoComplete='off' value={loginInfo.userid} onChange={saveLoginInfo}/>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" name="userid" autoComplete='off' value={loginInfo.userid} onChange={(e)=>{saveLoginInfo(e); changeBlock()}} onBlur={changeBlock}/>
                 </div>
                 <div className='field'>
                   <p>Password</p>
-                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={saveLoginInfo}/>
+                  <TextField className='input-login' id="outlined-basic" label="Write here" variant="outlined" type="password" name="password" value={loginInfo.password} onChange={(e)=>{saveLoginInfo(e); changeBlock()}} onBlur={changeBlock}/>
                 </div>
               </div>
               <div className='footer-login'>
-                <Button style={{textAling:'right'}} variant="contained" color="primary" size="large" onClick={onSubmit}>Sign in</Button>
+                <Button disabled={block} style={{textAling:'right'}} variant="contained" color="primary" size="large" onClick={onSubmit}>Sign in</Button>
               </div>
             </form>
           </div>
