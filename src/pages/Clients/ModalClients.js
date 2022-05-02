@@ -184,14 +184,6 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                 <Grid item md={4}>
                     <div>
                         <FormControl>
-                        <InputLabel variant="standard" required={true}>Municipality</InputLabel>
-                        <Input type="text" id="municipality" name="municipality" aria-describedby="municipality" autoComplete='off'  onChange={handleChange} value={form.municipality} onBlur={handleBlur}/> 
-                        </FormControl>
-                    </div>
-                </Grid>
-                <Grid item md={4}>
-                    <div>
-                        <FormControl>
                         <InputLabel variant="standard" required={true}>State</InputLabel>
                         <Input type="text" id="state" name="state" aria-describedby="state" autoComplete='off'  onChange={handleChange} value={form.state} onBlur={handleBlur}/> 
                         </FormControl>
@@ -241,7 +233,7 @@ const ModalClients = ({form,handleChange,action,saveData,handleClose,open,handle
                 </Grid>    
             </Grid>
             <Grid>
-                <Fab disabled={block} onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
+                <Fab  onClick={actions} color="primary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
                     <SaveIcon />
                 </Fab>
                 <Fab onClick={handleClose} color="secondary" aria-label="add" size="small" style={{float:'right',marginTop:'20px',marginRight:'10px'}}>
